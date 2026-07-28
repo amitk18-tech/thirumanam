@@ -1,0 +1,220 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use App\Services\ApiService;
+
+class MemberController extends Controller
+{
+    protected ApiService $api;
+
+    public function __construct(ApiService $api)
+    {
+        $this->api = $api;
+    }
+
+    public function index(Request $request)
+    {
+        $params = array_filter([
+            'per_page' => 12,
+            'page'     => $request->get('page', 1),
+            'search'   => $request->get('search'),
+        ]);
+
+        $response = $this->api->authGet('browse-members', $params);
+
+        $members     = $response['data']['data']         ?? [];
+        $total       = $response['data']['total']        ?? 0;
+        $lastPage    = $response['data']['last_page']    ?? 1;
+        $currentPage = $response['data']['current_page'] ?? 1;
+
+        return view('members.index', compact('members', 'total', 'lastPage', 'currentPage'));
+    }
+
+    public function show(Request $request, $id)
+    {
+        $response = $this->api->authGet("browse-members/{$id}");
+
+        if (!($response['success'] ?? false)) {
+            abort(404);
+        }
+
+        $d = $response['data'];
+
+        $myProfile    = session('user') ?? [];
+        $myMembership = $myProfile['profile']['membership_type'] ?? 'default';
+        $restricted   = in_array($myMembership, ['default']);
+
+        $member = [
+            'id'         => $d['id'],
+            'profile_id' => $d['profile_id'] ?? null,
+            'member_no'  => $d['member_no'],
+            'restricted' => $restricted,
+            'is_own'     => ($myProfile['profile']['id'] ?? null) === ($d['profile_id'] ?? null) ? true : false,
+            'basic' => [
+                'name'            => $d['name'],
+                'age'             => $d['age'],
+                'dob'             => $d['dob'],
+                'gender'          => $d['gender'],
+                'marital_status'  => $d['marital_status'],
+                'religion'        => $d['religion'],
+                'caste'           => $d['caste'],
+                'subcaste'        => $d['subcaste'],
+                'city'            => $d['city'],
+                'state'           => $d['state'],
+                'country'         => $d['country'],
+                'education'       => $d['education'],
+                'occupation'      => $d['occupation'],
+                'income'          => $d['income'],
+                'bio'             => $d['bio'],
+                'height'          => $d['height'],
+                'weight'          => $d['weight'],
+                'profile_photo'   => (str_starts_with($d['profile_photo'] ?? '', 'http') ? $d['profile_photo'] : 'https://api.thirumanam.info/' .($d['profile_photo'] ?? '')),
+                'membership_type' => $d['membership_type'],
+                'physical_status' => $d['physical_status'] ?? null,
+                'mother_tongue'   => $d['mother_tongue'] ?? null,
+                'introduction'    => $d['introduction'] ?? $d['bio'],
+            ],
+            'horoscope' => [
+                'dob'                => $d['dob'],
+                'birth_time'         => $d['birth_time'],
+                'birth_city'         => $d['birth_city'] ?? $d['birth_place'] ?? null,
+                'birth_place'        => $d['birth_place'] ?? null,
+                'star'               => $d['star'],
+                'rasi'               => $d['rasi'],
+                'nakshatra'          => $d['nakshatra'],
+                'dosham'             => $d['dosham'],
+                'paksha'             => $d['paksha'] ?? null,
+                'tithi'              => $d['tithi'] ?? null,
+                'ganam'              => $d['ganam'] ?? null,
+                'nadi'               => $d['nadi'] ?? null,
+                'lakknam'            => $d['lakknam'] ?? null,
+                'padam'              => $d['padam'] ?? null,
+                'horoscope_matching' => $d['horoscope_matching'] ?? null,
+                'directional_balance'=> $d['directional_balance'] ?? null,
+            ],
+            'physical' => [
+                'height'          => $d['height'] ?? null,
+                'weight'          => $d['weight'] ?? null,
+                'complexion'      => $d['complexion'] ?? null,
+                'body_type'       => $d['body_type'] ?? null,
+                'blood_group'     => $d['blood_group'] ?? null,
+                'physical_status' => $d['physical_status'] ?? null,
+                'eye_color'       => $d['eye_color'] ?? null,
+                'hair_color'      => $d['hair_color'] ?? null,
+            ],
+            'career' => [
+                'education'      => $d['education'] ?? null,
+                'occupation'     => $d['occupation'] ?? null,
+                'income'         => $d['income'] ?? null,
+                'work_location'  => $d['work_location'] ?? null,
+                'career_profile' => $d['career_profile'] ?? null,
+                'study_details'  => $d['study_details'] ?? null,
+                'earnings'       => $d['earnings'] ?? null,
+                'income_amount'  => $d['income_amount'] ?? null,
+            ],
+            'contact' => [
+                'mobile'           => $d['mobile'] ?? $d['user']['phone'] ?? null,
+                'alternate_number' => $d['alternate_number'] ?? null,
+                'landline'         => $d['landline'] ?? null,
+                'address'          => $d['address'] ?? null,
+                'current_city'     => $d['current_city'] ?? $d['city'] ?? null,
+                'city'             => $d['city'] ?? null,
+                'state'            => $d['state'] ?? null,
+                'country'          => $d['country'] ?? null,
+                'postal_code'      => $d['postal_code'] ?? null,
+                'native_place'     => $d['native_place'] ?? null,
+            ],
+            'partner' => [
+                'preferred_age'  => $d['partner_preference']['preferred_age'] ?? null,
+                'education'      => $d['partner_preference']['education'] ?? null,
+                'caste'          => $d['partner_preference']['caste'] ?? null,
+                'marital_status' => $d['partner_preference']['marital_status'] ?? null,
+                'dosham'         => $d['partner_preference']['dosham'] ?? null,
+                'about_partner'  => $d['partner_preference']['about_partner'] ?? null,
+            ],
+            'family'             => $d['family'],
+            'partner_preference' => $d['partner_preference'],
+            'horoscope_boxes'    => $d['horoscope_boxes'] ?? [],
+            'photos'             => $d['photos'] ?? [],
+        ];
+
+        if (!$member['is_own']) {
+            $this->api->authPost('interaction/consume-view');
+        }
+
+        return view('members.show', compact('member'));
+    }
+
+    public function sendInterest(Request $request, $id)
+    {
+        $profileId = $request->input('profile_id');
+
+        if (!$profileId) {
+            return response()->json(['message' => 'Profile not found.'], 422);
+        }
+
+        $response = $this->api->authPost('interaction/interest', [
+            'receiver_profile_id' => $profileId,
+        ]);
+
+        if ($response['success'] ?? false) {
+            return response()->json(['message' => 'Interest sent successfully!']);
+        }
+
+        $msg = $response['message'] ?? 'Could not send interest. Please try again.';
+        $status = ($response['status_code'] ?? 422) === 409 ? 409 : 422;
+        return response()->json(['message' => $msg], $status);
+    }
+
+    public function shortlist(Request $request, $id)
+    {
+        $profileId = $request->input('profile_id');
+
+        if (!$profileId) {
+            return response()->json(['message' => 'Profile not found.'], 422);
+        }
+
+        $response = $this->api->authPost('interaction/toggle-action', [
+            'to_profile_id' => $profileId,
+            'action_type'   => 'shortlist',
+        ]);
+
+        if ($response['success'] ?? false) {
+            $active = $response['data']['active'] ?? false;
+            return response()->json([
+                'message' => $active ? 'Added to shortlist.' : 'Removed from shortlist.',
+                'active'  => $active,
+            ]);
+        }
+
+        $msg = $response['message'] ?? 'Could not update shortlist. Please try again.';
+        return response()->json(['message' => $msg], 422);
+    }
+
+    public function block(Request $request, $id)
+    {
+        $profileId = $request->input('profile_id');
+
+        if (!$profileId) {
+            return response()->json(['message' => 'Profile not found.'], 422);
+        }
+
+        $response = $this->api->authPost('interaction/toggle-action', [
+            'to_profile_id' => $profileId,
+            'action_type'   => 'block',
+        ]);
+
+        if ($response['success'] ?? false) {
+            $active = $response['data']['active'] ?? false;
+            return response()->json([
+                'message' => $active ? 'Member blocked.' : 'Member unblocked.',
+                'active'  => $active,
+            ]);
+        }
+
+        $msg = $response['message'] ?? 'Could not block member. Please try again.';
+        return response()->json(['message' => $msg], 422);
+    }
+}

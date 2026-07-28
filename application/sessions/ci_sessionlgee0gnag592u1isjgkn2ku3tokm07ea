@@ -1,0 +1,14 @@
+__ci_last_regenerate|i:1783729788;msg|s:382:"<div id="flash" style="
+    position: fixed;
+    right: 5%;
+    top: 23px;
+    z-index: 9999999;
+    width: 30%;
+    height: 60px;
+    padding: 14px 14px 14px 26px;
+    background-color: #f24570;
+    color: rgb(253 255 254);"  class="alert alert-danger alert-dismissible show" role="alert">
+    <center><strong>Capcha Response Error</strong>
+    </center>
+    
+  </div>";__ci_vars|a:1:{s:3:"msg";s:3:"old";}

@@ -1,0 +1,14 @@
+__ci_last_regenerate|i:1784829111;THIRUMANAM_ADMIN_SESSION|a:11:{s:8:"admin_id";s:1:"1";s:4:"name";s:12:"Master Admin";s:5:"phone";s:10:"8749062767";s:7:"address";s:2:"NY";s:5:"email";s:21:"admin@thirumanam.info";s:8:"password";s:40:"372bc298f0b0a44e74ab5f84daba3c4062918d22";s:4:"role";s:1:"1";s:9:"timestamp";s:10:"1476397936";s:13:"active_status";s:1:"1";s:13:"delete_status";s:1:"0";s:9:"user_type";i:1;}language|s:7:"english";msg|s:381:"<div id="flash" style="
+    position: fixed;
+    right: 5%;
+    top: 23px;
+    z-index: 9999999;
+    width: 30%;
+    height: 60px;
+    padding: 14px 14px 14px 26px;
+    background-color: #f24570;
+    color: rgb(253 255 254);"  class="alert alert-warning alert-dismissible show" role="alert">
+    <center><strong>Invalid Credentials</strong>
+    </center>
+    
+  </div>";__ci_vars|a:1:{s:3:"msg";s:3:"old";}

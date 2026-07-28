@@ -1,0 +1,20 @@
+{
+    "name": "bits/package",
+    "description": "Shared reusable Laravel base classes",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Bits\\Package\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Bits\\Package\\BitsServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}

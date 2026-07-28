@@ -1,0 +1,53 @@
+# Node modules
+/node_modules/
+
+# Composer vendor directory
+vendor/
+
+# Laravel specific directories
+/public/storage
+/storage/*.key
+/.env
+/.phpunit.result.cache
+/.vscode/
+
+
+# Laravel IDE helper
+/_ide_helper.php
+/_ide_helper_models.php
+
+
+
+# Log files
+/storage/logs/*.log
+
+# Cache files
+/bootstrap/cache/*
+/storage/framework/cache/*
+/storage/framework/sessions/*
+/storage/framework/views/*
+
+# Compiled assets
+/public/hot
+/public/mix-manifest.json
+/public/build
+
+# Environment specific files
+.env.*
+!.env.example
+
+# Temporary files
+*.swp
+*.swo
+*.tmp
+
+# IDE & Editor specific files
+.idea
+.vscode
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Ignore .htaccess file
+.htaccess

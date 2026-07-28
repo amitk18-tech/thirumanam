@@ -1,0 +1,20 @@
+{
+    "noto sans tamil": {
+        "100": "noto_sans_tamil_100_5a818e617b0539016f7c2a605e7f1d92"
+    },
+    "montserrat": {
+        "normal": "montserrat_normal_b74b751c20b429298921949795391ef1"
+    },
+    "tangerine": {
+        "normal": "tangerine_normal_19ce16c8d386f49ccf94be2beb5587b6"
+    },
+    "baamini": {
+        "normal": "baamini_normal_64f3f24759009cd919def3225ee12aa8"
+    },
+    "bamini, sans-serif": {
+        "normal": "bamini__sans_serif_normal_64f3f24759009cd919def3225ee12aa8"
+    },
+    "bamini": {
+        "normal": "bamini_normal_64f3f24759009cd919def3225ee12aa8"
+    }
+}

@@ -1,0 +1,110 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use App\Services\ApiService;
+
+class MemberController extends Controller
+{
+    protected ApiService $api;
+
+    public function __construct(ApiService $api)
+    {
+        $this->api = $api;
+    }
+
+    public function index(Request $request)
+    {
+        $params = array_filter([
+            'per_page' => 12,
+            'page'     => $request->get('page', 1),
+            'search'   => $request->get('search'),
+        ]);
+
+        $response = $this->api->authGet('browse-members', $params);
+
+        $members     = $response['data']['data']         ?? [];
+        $total       = $response['data']['total']        ?? 0;
+        $lastPage    = $response['data']['last_page']    ?? 1;
+        $currentPage = $response['data']['current_page'] ?? 1;
+
+        return view('members.index', compact('members', 'total', 'lastPage', 'currentPage'));
+    }
+
+    public function show(Request $request, $id)
+    {
+        $response = $this->api->authGet("browse-members/{$id}");
+
+        if (!($response['success'] ?? false)) {
+            abort(404);
+        }
+
+        $d = $response['data'];
+
+        $myProfile    = session('user') ?? [];
+        $myMembership = $myProfile['profile']['membership_type'] ?? 'default';
+        $restricted   = in_array($myMembership, ['default']);
+
+        $member = [
+            'id'         => $d['id'],
+            'member_no'  => $d['member_no'],
+            'restricted' => $restricted,
+            'basic' => [
+                'name'           => $d['name'],
+                'age'            => $d['age'],
+                'dob'            => $d['dob'],
+                'gender'         => $d['gender'],
+                'marital_status' => $d['marital_status'],
+                'religion'       => $d['religion'],
+                'caste'          => $d['caste'],
+                'subcaste'       => $d['subcaste'],
+                'city'           => $d['city'],
+                'state'          => $d['state'],
+                'country'        => $d['country'],
+                'education'      => $d['education'],
+                'occupation'     => $d['occupation'],
+                'income'         => $d['income'],
+                'bio'            => $d['bio'],
+                'height'         => $d['height'],
+                'weight'         => $d['weight'],
+                'profile_photo'  => $d['profile_photo'],
+                'membership_type'=> $d['membership_type'],
+                'physical_status'=> null,
+                'mother_tongue'  => null,
+                'introduction'   => $d['bio'],
+            ],
+            'horoscope' => [
+                'dob'        => $d['dob'],
+                'birth_time' => $d['birth_time'],
+                'birth_city' => $d['birth_place'],
+                'star'       => $d['star'],
+                'rasi'       => $d['rasi'],
+                'nakshatra'  => $d['nakshatra'],
+                'dosham'     => $d['dosham'],
+                'padam'      => null,
+                'lakknam'    => null,
+                'paksha'     => null,
+                'tithi'      => null,
+            ],
+            'family'             => $d['family'],
+            'partner_preference' => $d['partner_preference'],
+            'horoscope_boxes'    => $d['horoscope_boxes'] ?? [],
+            'photos'             => $d['photos'] ?? [],
+        ];
+
+        return view('members.show', compact('member'));
+    }
+
+    public function sendInterest(Request $request, $userId)
+    {
+        $response = $this->api->authPost("match-action/{$userId}/interest", []);
+
+        if (isset($response['status']) && $response['status'] === true) {
+            return response()->json(['message' => 'Interest sent successfully!']);
+        }
+
+        $msg = $response['message'] ?? 'Could not send interest. Please try again.';
+        return response()->json(['message' => $msg], 422);
+    }
+}

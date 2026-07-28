@@ -1,0 +1,1 @@
+import{a as n,b as s}from"./chunk-JPTLKWG7.js";import{M as e,P as i,ic as o}from"./chunk-4ZA63CSP.js";var l=(()=>{class t extends s{constructor(r){super(r),this.http=r,this.baseUrl=`${n.apiUrl}/roles`}static{this.\u0275fac=function(a){return new(a||t)(i(o))}}static{this.\u0275prov=e({token:t,factory:t.\u0275fac,providedIn:"root"})}}return t})();export{l as a};
