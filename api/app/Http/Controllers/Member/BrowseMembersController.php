@@ -110,6 +110,7 @@ class BrowseMembersController extends Controller
                             ? 'storage/default_image/default_female.jpg'
                             : 'storage/default_image/default_male.jpg'),
                     'membership_type' => $profile?->membership_type,
+                'membership_slug' => $member->membership->slug ?? null,
                 ];
             });
 
@@ -211,6 +212,7 @@ class BrowseMembersController extends Controller
                 'native_place'   => $profile?->native_place,
                 'mother_tongue'  => $profile?->mother_tongue,
                 'membership_type' => $profile?->membership_type,
+                'membership_slug' => $member->membership->slug ?? null,
                 'profile_photo'  => $profile?->profile_photo ?: ($gender === 'female' ? 'storage/default_image/default_female.jpg' : 'storage/default_image/default_male.jpg'),
                 'photos'              => $profile?->photos ?? [],
                 'interests_sent_count'       => DB::table('interests')->where('sender_profile_id', $profile?->id)->count(),
@@ -316,6 +318,7 @@ class BrowseMembersController extends Controller
                 'native_place'   => $profile?->native_place,
                 'mother_tongue'  => $profile?->mother_tongue,
                 'membership_type' => $profile?->membership_type,
+                'membership_slug' => $member->membership->slug ?? null,
                 'profile_photo'  => $profile?->profile_photo
                     ?: ($gender === 'female'
                         ? 'storage/default_image/default_female.jpg'

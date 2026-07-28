@@ -81,17 +81,6 @@
                         class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary">
                 </div>
 
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Membership Plan <span class="text-red-500">*</span></label>
-                    <select x-model="membership_type"
-                        class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary">
-                        <option value="">Select plan</option>
-                        <option value="default">Default (Free)</option>
-                        <option value="essential">Essential</option>
-                        <option value="classic">Classic</option>
-                        <option value="premium">Prime</option>
-                    </select>
-                </div>
 
             </div>
 
@@ -116,7 +105,7 @@ function profileForm() {
         education: '',
         occupation: '',
         city: '',
-        membership_type: '',
+        
         loading: false,
         error: '',
 
@@ -124,7 +113,6 @@ function profileForm() {
             this.error = '';
             if (!this.dob) { this.error = 'Please enter your date of birth.'; return; }
             if (!this.marital_status) { this.error = 'Please select marital status.'; return; }
-            if (!this.membership_type) { this.error = 'Please select a membership plan.'; return; }
 
             this.loading = true;
             try {
@@ -143,7 +131,7 @@ function profileForm() {
                         education: this.education,
                         occupation: this.occupation,
                         city: this.city,
-                        membership_type: this.membership_type,
+                        
                     }),
                 });
                 const text = await res.text();

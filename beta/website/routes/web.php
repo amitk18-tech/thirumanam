@@ -97,3 +97,6 @@ Route::get('/forgot-password/verify', [App\Http\Controllers\Auth\ForgotPasswordC
 Route::post('/forgot-password/verify-otp', [App\Http\Controllers\Auth\ForgotPasswordController::class, 'verifyOtp']);
 Route::get('/forgot-password/reset', [App\Http\Controllers\Auth\ForgotPasswordController::class, 'showReset']);
 Route::post('/forgot-password/reset', [App\Http\Controllers\Auth\ForgotPasswordController::class, 'resetPassword']);
+
+// Contact form POST
+Route::post('/contact', [App\Http\Controllers\ContactController::class, 'submit'])->name('contact.submit');

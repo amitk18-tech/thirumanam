@@ -141,7 +141,6 @@ class RegisterController extends Controller
             'gender'         => 'required|in:male,female',
             'dob'            => 'required|date',
             'marital_status' => 'required|string',
-            'membership_type'=> 'required|string',
         ]);
 
         $user   = Session::get('user');
@@ -150,10 +149,10 @@ class RegisterController extends Controller
         // Step 1: Save profile
         $response = $this->api->authPost('/profile', array_merge(
             $request->only([
-                'gender', 'dob', 'marital_status', 'membership_type',
+                'gender', 'dob', 'marital_status',
                 'education', 'occupation', 'city', 'state',
             ]),
-            ['user_id' => $userId]
+            ['user_id' => $userId, 'membership_type' => 'default']
         ));
 
         if (!($response['success'] ?? false)) {

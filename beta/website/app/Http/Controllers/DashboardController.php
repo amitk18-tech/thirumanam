@@ -39,7 +39,7 @@ class DashboardController extends Controller
             ],
             'interests_sent'             => $profile['interests_sent_count'] ?? 0,
             'interests_received'         => $profile['interests_received_count'] ?? 0,
-            'profiles_viewed'            => $profile['shortlisted_profiles_count'] ?? 0,
+            'profiles_viewed'            => ($meResponse['data']['profiles_view_allowed'] ?? 0) - ($meResponse['data']['profiles_view_remaining'] ?? 0),
             'profiles_view_remaining'    => $meResponse['data']['profiles_view_remaining'] ?? null,
             'profiles_view_allowed'      => $meResponse['data']['profiles_view_allowed'] ?? null,
             'sent_interest_remaining'    => $meResponse['data']['sent_interest_remaining'] ?? null,

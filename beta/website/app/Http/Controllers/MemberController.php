@@ -50,7 +50,8 @@ class MemberController extends Controller
         $d = $response['data'];
 
         $myProfile    = session('user') ?? [];
-        $myMembership = $myProfile['profile']['membership_type'] ?? 'default';
+        $meResponse   = $this->api->authGet('browse-members/me');
+        $myMembership = $meResponse['data']['membership_slug'] ?? $myProfile['profile']['membership_type'] ?? 'default';
         $restricted   = in_array($myMembership, ['default']);
 
         $member = [
