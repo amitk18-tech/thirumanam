@@ -4,7 +4,7 @@
 
             <!-- Brand -->
             <div>
-                <h3 class="text-2xl font-bold text-white mb-3">திருமணம்</h3>
+                <h3 class="text-lg font-bold text-white mb-3">Sri Sowdeswari Amman Narpani Mandram</h3>
                 <p class="text-sm text-gray-400">A trusted Tamil matrimonial platform connecting families across India.</p>
             </div>
 
@@ -34,7 +34,7 @@
         </div>
 
         <div class="border-t border-gray-700 pt-6 text-center text-sm text-gray-500">
-            &copy; {{ date('Y') }} Thirumanam.info. All rights reserved.
+            &copy; {{ date('Y') }} Sri Sowdeswari Amman Narpani Mandram. All rights reserved.
         </div>
     </div>
 </footer>

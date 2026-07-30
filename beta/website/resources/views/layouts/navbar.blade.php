@@ -74,7 +74,8 @@
 
             {{-- Logo --}}
             <a href="{{ url('/') }}" class="flex items-center space-x-2">
-                <span class="text-2xl font-bold text-primary">திருமணம்</span>
+            <img src="{{ asset('logo-ssam.png') }}" alt="Logo" class="h-9 w-9 object-contain rounded-full">
+            <span class="text-sm font-bold text-primary leading-tight">Sri Sowdeswari Amman<br>Narpani Mandram</span>
             </a>
 
             {{-- Desktop Menu --}}

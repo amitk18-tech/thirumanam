@@ -31,6 +31,9 @@ Route::post('/register/profile', [RegisterController::class, 'saveProfile']);
 // Public routes
 
 Route::get('/contact', function() { return view('contact'); });
+Route::get('/faq', function() { return view('pages.faq'); })->name('faq');
+Route::get('/privacy', function() { return view('pages.privacy'); })->name('privacy');
+Route::get('/terms', function() { return view('pages.terms'); })->name('terms');
 
 // Protected routes
 Route::middleware('auth.session')->group(function () {

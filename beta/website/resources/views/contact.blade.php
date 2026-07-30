@@ -27,9 +27,13 @@
                 </div>
                 <h6 class="font-semibold text-gray-800 mb-2">Address</h6>
                 <p class="text-gray-500 text-sm leading-relaxed">
-                    Thirumanam Matrimony<br>
-                    Salem – Namakkal, Tamil Nadu<br>
-                    India
+                    <span class="font-semibold text-gray-700">Sri Sowdeswari Amman Narpani Mandram</span><br>
+                    <span class="text-xs text-gray-400">(Manage by Alagirisamy Vijayalakshmi Charitable Trust)</span><br><br>
+                    Sri Vijayalakshmi Mahal Thirumana Mandapam<br>
+                    32/1 Chinnusamy Nagar Main Road,<br>
+                    (Behind Dharan Hospital),<br>
+                    Seelanaickenpatty,<br>
+                    Salem – 636 201.
                 </p>
             </div>
 
