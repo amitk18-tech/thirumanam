@@ -35,10 +35,16 @@
     <!-- Navigation -->
     @include('layouts.navbar')
 
+    <!-- Notification Ticker -->
+    @include('layouts.ticker')
+
     <!-- Main Content -->
     <main>
         @yield('content')
     </main>
+
+    <!-- Mobile bottom nav spacer -->
+    <div class="md:hidden h-14"></div>
 
     <!-- Footer -->
     @include('layouts.footer')

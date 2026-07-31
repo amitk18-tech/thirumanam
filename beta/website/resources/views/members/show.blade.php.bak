@@ -7,6 +7,7 @@
 
     {{-- PROFILE HEADER --}}
     <div class="bg-white rounded-2xl shadow-md overflow-hidden mb-4">
+        {{-- Red banner — photo only --}}
         <div style="background: linear-gradient(to right, #c94040, #e8607a); height: 5rem; position: relative;">
             <div class="absolute -bottom-10 left-6">
                 <div class="w-20 h-20 rounded-full border-4 border-white bg-gray-200 overflow-hidden shadow flex-shrink-0">
@@ -20,6 +21,7 @@
                 </div>
             </div>
         </div>
+        {{-- Name + actions in white area --}}
         <div class="pt-12 px-6 pb-5 flex flex-col sm:flex-row items-start sm:items-center gap-4">
             <div class="flex-1">
                 <h1 class="text-xl font-bold text-gray-900">{{ $member['basic']['name'] ?? 'Unknown' }}</h1>
@@ -29,137 +31,146 @@
                     @if(!empty($member['basic']['gender'])) &bull; {{ ucfirst($member['basic']['gender']) }} @endif
                 </p>
             </div>
-
             {{-- ACTION BUTTONS --}}
-            @if($member['is_own'] ?? false)
-                <div class="flex gap-2">
-                    <a href="{{ url('/profile/edit') }}"
-                        class="px-4 py-2 bg-[#8B1A1A] text-white rounded-lg text-sm hover:bg-[#6e1515] transition">
-                        <i class="fas fa-user-edit mr-1"></i> Edit Profile
-                    </a>
-                    <button onclick="document.getElementById('deactivateModal').classList.remove('hidden')"
-                        class="px-4 py-2 border border-red-400 text-red-500 rounded-lg text-sm hover:bg-red-50 transition">
-                        <i class="fas fa-power-off mr-1"></i> Deactivate
-                    </button>
-                </div>
+@if($member['is_own'] ?? false)
+<div class="flex gap-2">
+    <a href="{{ url('/profile/edit') }}"
+        class="px-4 py-2 bg-[#8B1A1A] text-white rounded-lg text-sm hover:bg-[#6e1515] transition">
+        <i class="fas fa-user-edit mr-1"></i> Edit Profile
+    </a>
+    <button onclick="document.getElementById('deactivateModal').classList.remove('hidden')"
+        class="px-4 py-2 border border-red-400 text-red-500 rounded-lg text-sm hover:bg-red-50 transition">
+        <i class="fas fa-power-off mr-1"></i> Deactivate
+    </button>
+</div>
 
-                {{-- Deactivate Modal --}}
-                <div id="deactivateModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4">
-                    <div class="bg-white rounded-2xl shadow-xl max-w-sm w-full p-6">
-                        <div class="text-center mb-4">
-                            <div class="w-14 h-14 rounded-full bg-red-100 flex items-center justify-center mx-auto mb-3">
-                                <i class="fas fa-power-off text-red-500 text-xl"></i>
-                            </div>
-                            <h3 class="text-lg font-bold text-gray-900">Deactivate Profile?</h3>
-                            <p class="text-gray-500 text-sm mt-2">Your profile will be hidden from other members and you will be logged out of all devices. You can request reactivation by contacting support.</p>
-                        </div>
-                        <div class="flex gap-3 mt-5">
-                            <button onclick="document.getElementById('deactivateModal').classList.add('hidden')"
-                                class="flex-1 px-4 py-2 border border-gray-300 text-gray-600 rounded-lg text-sm hover:bg-gray-50 transition">
-                                Cancel
-                            </button>
-                            <button onclick="confirmDeactivate()" id="deactivateBtn"
-                                class="flex-1 px-4 py-2 bg-red-500 text-white rounded-lg text-sm hover:bg-red-600 transition">
-                                Yes, Deactivate
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
+{{-- Deactivate Confirmation Modal --}}
+<div id="deactivateModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4">
+    <div class="bg-white rounded-2xl shadow-xl max-w-sm w-full p-6">
+        <div class="text-center mb-4">
+            <div class="w-14 h-14 rounded-full bg-red-100 flex items-center justify-center mx-auto mb-3">
+                <i class="fas fa-power-off text-red-500 text-xl"></i>
+            </div>
+            <h3 class="text-lg font-bold text-gray-900">Deactivate Profile?</h3>
+            <p class="text-gray-500 text-sm mt-2">Your profile will be hidden from other members and you will be logged out of all devices. You can request reactivation by contacting support.</p>
+        </div>
+        <div class="flex gap-3 mt-5">
+            <button onclick="document.getElementById('deactivateModal').classList.add('hidden')"
+                class="flex-1 px-4 py-2 border border-gray-300 text-gray-600 rounded-lg text-sm hover:bg-gray-50 transition">
+                Cancel
+            </button>
+            <button onclick="confirmDeactivate()"
+                id="deactivateBtn"
+                class="flex-1 px-4 py-2 bg-red-500 text-white rounded-lg text-sm hover:bg-red-600 transition">
+                Yes, Deactivate
+            </button>
+        </div>
+    </div>
+</div>
             @elseif(!($member['restricted'] ?? true))
-                {{-- Only paid plan viewers get interaction buttons --}}
-                @php
-                    $interactions    = $member['interactions'] ?? [];
-                    $hasSentInterest = $interactions['has_sent_interest'] ?? false;
-                    $isFollowing     = $interactions['is_following'] ?? false;
-                    $hasShortlisted  = $interactions['has_shortlisted'] ?? false;
-                    $hasBlocked      = $interactions['has_blocked'] ?? false;
-                @endphp
-                <div class="flex gap-2 flex-wrap">
-                    <button onclick="sendInterest({{ $member['id'] }}, {{ $member['profile_id'] ?? 0 }})"
-                        {{ $hasSentInterest ? 'disabled' : '' }}
-                        class="px-4 py-2 rounded-lg text-sm transition {{ $hasSentInterest ? 'bg-gray-300 text-gray-500 cursor-not-allowed' : 'bg-[#F24570] text-white hover:bg-[#d63560]' }}">
-                        <i class="fas fa-heart mr-1"></i> {{ $hasSentInterest ? 'Interest Sent' : 'Interest' }}
-                    </button>
-                    <button id="shortlistBtn"
-                        onclick="toggleShortlist(this, {{ $member['id'] }}, {{ $member['profile_id'] ?? 0 }})"
-                        data-active="{{ $hasShortlisted ? 'true' : 'false' }}"
-                        class="px-4 py-2 rounded-lg text-sm transition {{ $hasShortlisted ? 'bg-[#8B1A1A] text-white' : 'border border-[#8B1A1A] text-[#8B1A1A] hover:bg-[#8B1A1A]/10' }}">
-                        <i class="fas fa-bookmark mr-1"></i> <span>{{ $hasShortlisted ? 'Shortlisted' : 'Shortlist' }}</span>
-                    </button>
-                    <button id="followBtn"
-                        onclick="toggleFollow(this, {{ $member['id'] }}, {{ $member['profile_id'] ?? 0 }})"
-                        data-active="{{ $isFollowing ? 'true' : 'false' }}"
-                        class="px-4 py-2 rounded-lg text-sm transition {{ $isFollowing ? 'bg-blue-500 text-white' : 'border border-blue-400 text-blue-500 hover:bg-blue-50' }}">
-                        <i class="fas fa-user-plus mr-1"></i> <span>{{ $isFollowing ? 'Following' : 'Follow' }}</span>
-                    </button>
-                    <button onclick="blockMember({{ $member['id'] }}, {{ $member['profile_id'] ?? 0 }})"
-                        class="px-4 py-2 border border-gray-300 text-gray-500 rounded-lg text-sm hover:bg-gray-100 transition">
-                        <i class="fas fa-ban mr-1"></i> {{ $hasBlocked ? 'Unblock' : 'Block' }}
-                    </button>
-                    <button onclick="document.getElementById('reportModal').classList.remove('hidden')"
-                        class="px-4 py-2 border border-orange-300 text-orange-500 rounded-lg text-sm hover:bg-orange-50 transition">
-                        <i class="fas fa-flag mr-1"></i> Report
-                    </button>
-                </div>
-            @endif
-
-            {{-- Report Modal --}}
-            @if(!($member['is_own'] ?? false))
-            <div id="reportModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4">
-                <div class="bg-white rounded-2xl shadow-xl max-w-sm w-full p-6">
-                    <h3 class="text-lg font-bold text-gray-900 mb-3"><i class="fas fa-flag text-orange-400 mr-2"></i>Report Profile</h3>
-                    <p class="text-gray-500 text-sm mb-4">Please provide a reason for reporting this profile.</p>
-                    <textarea id="reportReason" rows="3" placeholder="Enter reason..."
-                        class="w-full border border-gray-200 rounded-lg p-3 text-sm text-gray-700 focus:outline-none focus:border-orange-400 resize-none"></textarea>
-                    <div class="flex gap-3 mt-4">
-                        <button onclick="document.getElementById('reportModal').classList.add('hidden')"
-                            class="flex-1 px-4 py-2 border border-gray-300 text-gray-600 rounded-lg text-sm hover:bg-gray-50 transition">
-                            Cancel
-                        </button>
-                        <button onclick="submitReport({{ $member['id'] }}, {{ $member['profile_id'] ?? 0 }})"
-                            id="reportBtn"
-                            class="flex-1 px-4 py-2 bg-orange-500 text-white rounded-lg text-sm hover:bg-orange-600 transition">
-                            Submit Report
-                        </button>
-                    </div>
-                </div>
+            @php
+                $interactions  = $member['interactions'] ?? [];
+                $hasSentInterest = $interactions['has_sent_interest'] ?? false;
+                $isFollowing     = $interactions['is_following'] ?? false;
+                $hasShortlisted  = $interactions['has_shortlisted'] ?? false;
+                $hasBlocked      = $interactions['has_blocked'] ?? false;
+            @endphp
+            <div class="flex gap-2 flex-wrap">
+                <button onclick="sendInterest({{ $member['id'] }}, {{ $member['profile_id'] ?? 0 }})"
+                    {{ $hasSentInterest ? 'disabled' : '' }}
+                    class="px-4 py-2 rounded-lg text-sm transition {{ $hasSentInterest ? 'bg-gray-300 text-gray-500 cursor-not-allowed' : 'bg-[#F24570] text-white hover:bg-[#d63560]' }}">
+                    <i class="fas fa-heart mr-1"></i> {{ $hasSentInterest ? 'Interest Sent' : 'Interest' }}
+                </button>
+                <button id="shortlistBtn"
+                    onclick="toggleShortlist(this, {{ $member['id'] }}, {{ $member['profile_id'] ?? 0 }})"
+                    data-active="{{ $hasShortlisted ? 'true' : 'false' }}"
+                    class="px-4 py-2 rounded-lg text-sm transition {{ $hasShortlisted ? 'bg-[#8B1A1A] text-white' : 'border border-[#8B1A1A] text-[#8B1A1A] hover:bg-[#8B1A1A]/10' }}">
+                    <i class="fas fa-bookmark mr-1"></i> <span>{{ $hasShortlisted ? 'Shortlisted' : 'Shortlist' }}</span>
+                </button>
+                <button id="followBtn"
+                    onclick="toggleFollow(this, {{ $member['id'] }}, {{ $member['profile_id'] ?? 0 }})"
+                    data-active="{{ $isFollowing ? 'true' : 'false' }}"
+                    class="px-4 py-2 rounded-lg text-sm transition {{ $isFollowing ? 'bg-blue-500 text-white' : 'border border-blue-400 text-blue-500 hover:bg-blue-50' }}">
+                    <i class="fas fa-user-plus mr-1"></i> <span>{{ $isFollowing ? 'Following' : 'Follow' }}</span>
+                </button>
+                <button onclick="blockMember({{ $member['id'] }}, {{ $member['profile_id'] ?? 0 }})"
+                    class="px-4 py-2 border border-gray-300 text-gray-500 rounded-lg text-sm hover:bg-gray-100 transition">
+                    <i class="fas fa-ban mr-1"></i> {{ $hasBlocked ? 'Unblock' : 'Block' }}
+                </button>
+                <button onclick="document.getElementById('reportModal').classList.remove('hidden')"
+                    class="px-4 py-2 border border-orange-300 text-orange-500 rounded-lg text-sm hover:bg-orange-50 transition">
+                    <i class="fas fa-flag mr-1"></i> Report
+                </button>
             </div>
             @endif
+
+{{-- Report Modal — outside header card, before upgrade banner --}}
+@if(!($member['is_own'] ?? false))
+<div id="reportModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4">
+    <div class="bg-white rounded-2xl shadow-xl max-w-sm w-full p-6">
+        <h3 class="text-lg font-bold text-gray-900 mb-3"><i class="fas fa-flag text-orange-400 mr-2"></i>Report Profile</h3>
+        <p class="text-gray-500 text-sm mb-4">Please provide a reason for reporting this profile.</p>
+        <textarea id="reportReason" rows="3" placeholder="Enter reason..."
+            class="w-full border border-gray-200 rounded-lg p-3 text-sm text-gray-700 focus:outline-none focus:border-orange-400 resize-none"></textarea>
+        <div class="flex gap-3 mt-4">
+            <button onclick="document.getElementById('reportModal').classList.add('hidden')"
+                class="flex-1 px-4 py-2 border border-gray-300 text-gray-600 rounded-lg text-sm hover:bg-gray-50 transition">
+                Cancel
+            </button>
+            <button onclick="submitReport({{ $member['id'] }}, {{ $member['profile_id'] ?? 0 }})"
+                id="reportBtn"
+                class="flex-1 px-4 py-2 bg-orange-500 text-white rounded-lg text-sm hover:bg-orange-600 transition">
+                Submit Report
+            </button>
+        </div>
+    </div>
+</div>
+@endif
         </div>
     </div>
 
-    {{-- UPGRADE BANNER — only for default plan, non-own profiles --}}
-    @if(($member['restricted'] ?? false) && !($member['is_own'] ?? false))
+    {{-- UPGRADE BANNER --}}
+    @if($member['restricted'] ?? true)
     <div class="bg-yellow-50 border border-yellow-200 rounded-xl p-4 mb-4 flex flex-col sm:flex-row items-center justify-between gap-3">
         <div>
-            <p class="font-semibold text-yellow-800"><i class="fas fa-lock mr-2"></i>Family & Contact details are restricted</p>
-            <p class="text-yellow-700 text-sm mt-1">Upgrade your plan to view family information and contact details.</p>
+            <p class="font-semibold text-yellow-800"><i class="fas fa-lock mr-2"></i>Full profile is restricted</p>
+            <p class="text-yellow-700 text-sm mt-1">Upgrade your plan to view complete profile details.</p>
         </div>
         <a href="/plans" class="px-5 py-2 bg-[#8B1A1A] text-white rounded-lg text-sm font-semibold hover:bg-[#6e1515] transition whitespace-nowrap">Upgrade Now</a>
     </div>
-    @endif
 
-    {{-- FULL PROFILE — all members see tabs --}}
+    {{-- BASIC INFO (restricted) --}}
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 mb-4">
+        <div class="px-5 py-3 border-b border-gray-100 bg-gray-50 rounded-t-2xl">
+            <h2 class="text-sm font-semibold text-[#8B1A1A] uppercase tracking-wide">Basic Information</h2>
+        </div>
+        <div class="p-5 grid grid-cols-2 sm:grid-cols-3 gap-4">
+            @foreach([
+                'Age'            => $member['basic']['age'] ?? null,
+                'Gender'         => ucfirst($member['basic']['gender'] ?? ''),
+                'Marital Status' => ucwords(str_replace('_', ' ', $member['basic']['marital_status'] ?? '')),
+                'Education'      => ucwords(str_replace(['_', '/'], [' ', ' / '], $member['basic']['education'] ?? '')),
+                'Occupation'     => ucwords(str_replace('_', ' ', $member['basic']['occupation'] ?? '')),
+                'City'           => $member['basic']['city'] ?? null,
+            ] as $label => $value)
+            <div class="min-w-0">
+                <p class="text-xs text-gray-400 uppercase tracking-wide">{{ $label }}</p>
+                <p class="text-gray-800 font-medium mt-0.5 text-sm break-words">{{ $value ?: '—' }}</p>
+            </div>
+            @endforeach
+        </div>
+    </div>
+
+    @else
+    {{-- FULL PROFILE --}}
     <div x-data="{ tab: 'basic' }">
 
         {{-- TABS --}}
         <div class="flex gap-2 overflow-x-auto mb-4 pb-1">
-            @foreach([
-                'basic'    => 'Basic',
-                'horoscope'=> 'Horoscope',
-                'physical' => 'Physical',
-                'career'   => 'Career',
-                'family'   => 'Family',
-                'contact'  => 'Contact',
-                'partner'  => 'Partner Pref',
-            ] as $key => $label)
+            @foreach(['basic' => 'Basic', 'horoscope' => 'Horoscope', 'physical' => 'Physical', 'career' => 'Career', 'contact' => 'Contact', 'family' => 'Family', 'partner' => 'Partner Pref'] as $key => $label)
             <button @click="tab = '{{ $key }}'"
                 :class="tab === '{{ $key }}' ? 'bg-[#8B1A1A] text-white' : 'bg-white text-gray-600 border border-gray-200'"
-                class="px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition flex items-center gap-1">
-                @if(($member['restricted'] ?? false) && !($member['is_own'] ?? false) && in_array($key, ['family', 'contact']))
-                    <i class="fas fa-lock text-xs opacity-60"></i>
-                @endif
+                class="px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition">
                 {{ $label }}
             </button>
             @endforeach
@@ -243,17 +254,16 @@
                 $boxes = is_array($boxes) ? $boxes : $boxes->toArray();
                 $grid = ['ZODIAC' => [], 'FEATURE' => []];
                 foreach($boxes as $box) {
-                    if (!is_array($box)) continue;
                     $box = (array)$box;
                     $type = $box['type'] ?? 'ZODIAC';
-                    $bn   = $box['box_number'] ?? 0;
-                    $val  = $box['value'] ?? '';
-                    if (!isset($grid[$type][$bn])) $grid[$type][$bn] = [];
-                    if ($val) $grid[$type][$bn][] = $val;
+                    $bn = $box['box_number'] ?? 0;
+                    $val = $box['value'] ?? '';
+                    if(!isset($grid[$type][$bn])) $grid[$type][$bn] = [];
+                    if($val) $grid[$type][$bn][] = $val;
                 }
                 $getBox = function($grid, $type, $bn) {
                     $items = $grid[$type][$bn] ?? [];
-                    if (empty($items)) return '&nbsp;';
+                    if(empty($items)) return '&nbsp;';
                     return implode(' | ', array_filter($items)) ?: '&nbsp;';
                 };
             @endphp
@@ -265,25 +275,25 @@
                     <table class="w-full border-collapse text-xs" style="min-width:280px">
                         <tbody>
                             <tr>
-                                <td class="border-2 border-green-300 p-1 align-top bg-green-50" style="height:5.5em;width:25%">{!! $getBox($grid,'ZODIAC',1) !!}</td>
-                                <td class="border-2 border-green-300 p-1 align-top bg-green-50" style="height:5.5em;width:25%">{!! $getBox($grid,'ZODIAC',2) !!}</td>
-                                <td class="border-2 border-green-300 p-1 align-top bg-green-50" style="height:5.5em;width:25%">{!! $getBox($grid,'ZODIAC',3) !!}</td>
-                                <td class="border-2 border-green-300 p-1 align-top bg-green-50" style="height:5.5em;width:25%">{!! $getBox($grid,'ZODIAC',4) !!}</td>
+                                <td class="border-2 border-green-300 p-1 align-top bg-green-50" style="height:5.5em;width:25%">{!! $getBox($grid, 'ZODIAC', 1) !!}</td>
+                                <td class="border-2 border-green-300 p-1 align-top bg-green-50" style="height:5.5em;width:25%">{!! $getBox($grid, 'ZODIAC', 2) !!}</td>
+                                <td class="border-2 border-green-300 p-1 align-top bg-green-50" style="height:5.5em;width:25%">{!! $getBox($grid, 'ZODIAC', 3) !!}</td>
+                                <td class="border-2 border-green-300 p-1 align-top bg-green-50" style="height:5.5em;width:25%">{!! $getBox($grid, 'ZODIAC', 4) !!}</td>
                             </tr>
                             <tr>
-                                <td class="border-2 border-green-300 p-1 align-top bg-green-50" style="height:5.5em">{!! $getBox($grid,'ZODIAC',5) !!}</td>
+                                <td class="border-2 border-green-300 p-1 align-top bg-green-50" style="height:5.5em">{!! $getBox($grid, 'ZODIAC', 5) !!}</td>
                                 <td class="border-2 border-green-300 p-2 text-center bg-yellow-50 font-semibold text-gray-600 align-middle" colspan="2" rowspan="2">ZODIAC</td>
-                                <td class="border-2 border-green-300 p-1 align-top bg-green-50" style="height:5.5em">{!! $getBox($grid,'ZODIAC',6) !!}</td>
+                                <td class="border-2 border-green-300 p-1 align-top bg-green-50" style="height:5.5em">{!! $getBox($grid, 'ZODIAC', 6) !!}</td>
                             </tr>
                             <tr>
-                                <td class="border-2 border-green-300 p-1 align-top bg-green-50" style="height:5.5em">{!! $getBox($grid,'ZODIAC',7) !!}</td>
-                                <td class="border-2 border-green-300 p-1 align-top bg-green-50" style="height:5.5em">{!! $getBox($grid,'ZODIAC',8) !!}</td>
+                                <td class="border-2 border-green-300 p-1 align-top bg-green-50" style="height:5.5em">{!! $getBox($grid, 'ZODIAC', 7) !!}</td>
+                                <td class="border-2 border-green-300 p-1 align-top bg-green-50" style="height:5.5em">{!! $getBox($grid, 'ZODIAC', 8) !!}</td>
                             </tr>
                             <tr>
-                                <td class="border-2 border-green-300 p-1 align-top bg-green-50" style="height:5.5em">{!! $getBox($grid,'ZODIAC',9) !!}</td>
-                                <td class="border-2 border-green-300 p-1 align-top bg-green-50" style="height:5.5em">{!! $getBox($grid,'ZODIAC',10) !!}</td>
-                                <td class="border-2 border-green-300 p-1 align-top bg-green-50" style="height:5.5em">{!! $getBox($grid,'ZODIAC',11) !!}</td>
-                                <td class="border-2 border-green-300 p-1 align-top bg-green-50" style="height:5.5em">{!! $getBox($grid,'ZODIAC',12) !!}</td>
+                                <td class="border-2 border-green-300 p-1 align-top bg-green-50" style="height:5.5em">{!! $getBox($grid, 'ZODIAC', 9) !!}</td>
+                                <td class="border-2 border-green-300 p-1 align-top bg-green-50" style="height:5.5em">{!! $getBox($grid, 'ZODIAC', 10) !!}</td>
+                                <td class="border-2 border-green-300 p-1 align-top bg-green-50" style="height:5.5em">{!! $getBox($grid, 'ZODIAC', 11) !!}</td>
+                                <td class="border-2 border-green-300 p-1 align-top bg-green-50" style="height:5.5em">{!! $getBox($grid, 'ZODIAC', 12) !!}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -298,25 +308,25 @@
                     <table class="w-full border-collapse text-xs" style="min-width:280px">
                         <tbody>
                             <tr>
-                                <td class="border-2 border-green-300 p-1 align-top bg-green-50" style="height:5.5em;width:25%">{!! $getBox($grid,'FEATURE',1) !!}</td>
-                                <td class="border-2 border-green-300 p-1 align-top bg-green-50" style="height:5.5em;width:25%">{!! $getBox($grid,'FEATURE',2) !!}</td>
-                                <td class="border-2 border-green-300 p-1 align-top bg-green-50" style="height:5.5em;width:25%">{!! $getBox($grid,'FEATURE',3) !!}</td>
-                                <td class="border-2 border-green-300 p-1 align-top bg-green-50" style="height:5.5em;width:25%">{!! $getBox($grid,'FEATURE',4) !!}</td>
+                                <td class="border-2 border-green-300 p-1 align-top bg-green-50" style="height:5.5em;width:25%">{!! $getBox($grid, 'FEATURE', 1) !!}</td>
+                                <td class="border-2 border-green-300 p-1 align-top bg-green-50" style="height:5.5em;width:25%">{!! $getBox($grid, 'FEATURE', 2) !!}</td>
+                                <td class="border-2 border-green-300 p-1 align-top bg-green-50" style="height:5.5em;width:25%">{!! $getBox($grid, 'FEATURE', 3) !!}</td>
+                                <td class="border-2 border-green-300 p-1 align-top bg-green-50" style="height:5.5em;width:25%">{!! $getBox($grid, 'FEATURE', 4) !!}</td>
                             </tr>
                             <tr>
-                                <td class="border-2 border-green-300 p-1 align-top bg-green-50" style="height:5.5em">{!! $getBox($grid,'FEATURE',5) !!}</td>
+                                <td class="border-2 border-green-300 p-1 align-top bg-green-50" style="height:5.5em">{!! $getBox($grid, 'FEATURE', 5) !!}</td>
                                 <td class="border-2 border-green-300 p-2 text-center bg-yellow-50 font-semibold text-gray-600 align-middle" colspan="2" rowspan="2">FEATURE</td>
-                                <td class="border-2 border-green-300 p-1 align-top bg-green-50" style="height:5.5em">{!! $getBox($grid,'FEATURE',6) !!}</td>
+                                <td class="border-2 border-green-300 p-1 align-top bg-green-50" style="height:5.5em">{!! $getBox($grid, 'FEATURE', 6) !!}</td>
                             </tr>
                             <tr>
-                                <td class="border-2 border-green-300 p-1 align-top bg-green-50" style="height:5.5em">{!! $getBox($grid,'FEATURE',7) !!}</td>
-                                <td class="border-2 border-green-300 p-1 align-top bg-green-50" colspan="2" style="height:5.5em">{!! $getBox($grid,'FEATURE',8) !!}</td>
+                                <td class="border-2 border-green-300 p-1 align-top bg-green-50" style="height:5.5em">{!! $getBox($grid, 'FEATURE', 7) !!}</td>
+                                <td class="border-2 border-green-300 p-1 align-top bg-green-50" colspan="2" style="height:5.5em">{!! $getBox($grid, 'FEATURE', 8) !!}</td>
                             </tr>
                             <tr>
-                                <td class="border-2 border-green-300 p-1 align-top bg-green-50" style="height:5.5em">{!! $getBox($grid,'FEATURE',9) !!}</td>
-                                <td class="border-2 border-green-300 p-1 align-top bg-green-50" style="height:5.5em">{!! $getBox($grid,'FEATURE',10) !!}</td>
-                                <td class="border-2 border-green-300 p-1 align-top bg-green-50" style="height:5.5em">{!! $getBox($grid,'FEATURE',11) !!}</td>
-                                <td class="border-2 border-green-300 p-1 align-top bg-green-50" style="height:5.5em">{!! $getBox($grid,'FEATURE',12) !!}</td>
+                                <td class="border-2 border-green-300 p-1 align-top bg-green-50" style="height:5.5em">{!! $getBox($grid, 'FEATURE', 9) !!}</td>
+                                <td class="border-2 border-green-300 p-1 align-top bg-green-50" style="height:5.5em">{!! $getBox($grid, 'FEATURE', 10) !!}</td>
+                                <td class="border-2 border-green-300 p-1 align-top bg-green-50" style="height:5.5em">{!! $getBox($grid, 'FEATURE', 11) !!}</td>
+                                <td class="border-2 border-green-300 p-1 align-top bg-green-50" style="height:5.5em">{!! $getBox($grid, 'FEATURE', 12) !!}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -376,96 +386,64 @@
             </div>
         </div>
 
-        {{-- FAMILY TAB --}}
-        <div x-show="tab === 'family'">
-            @if(($member['restricted'] ?? false) && !($member['is_own'] ?? false))
-                {{-- LOCKED --}}
-                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 mb-4">
-                    <div class="p-10 flex flex-col items-center text-center gap-3">
-                        <div class="w-14 h-14 rounded-full bg-yellow-100 flex items-center justify-center">
-                            <i class="fas fa-lock text-yellow-600 text-xl"></i>
-                        </div>
-                        <h3 class="text-base font-semibold text-gray-800">Family Details are Locked</h3>
-                        <p class="text-gray-500 text-sm max-w-xs">Upgrade your membership plan to view this member's family information.</p>
-                        <a href="/plans" class="mt-2 px-6 py-2 bg-[#8B1A1A] text-white rounded-lg text-sm font-semibold hover:bg-[#6e1515] transition">
-                            <i class="fas fa-arrow-up mr-1"></i> Upgrade Plan
-                        </a>
-                    </div>
-                </div>
-            @else
-                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 mb-4">
-                    <div class="px-5 py-3 border-b border-gray-100 bg-gray-50 rounded-t-2xl">
-                        <h2 class="text-sm font-semibold text-[#8B1A1A] uppercase tracking-wide">Family Information</h2>
-                    </div>
-                    <div class="px-5 py-2">
-                        @php $fam = is_array($member['family'] ?? []) ? ($member['family'] ?? []) : (array)$member['family']; @endphp
-                        @foreach([
-                            'Surname'           => $fam['surname'] ?? null,
-                            'Father Name'       => $fam['father_name'] ?? null,
-                            'Father Vangusam'   => $fam['father_vangusam'] ?? null,
-                            'Mother Name'       => $fam['mother_name'] ?? null,
-                            'Mother Vangusam'   => $fam['mother_vangusam'] ?? null,
-                            'Mother Occupation' => $fam['mother_occupation'] ?? null,
-                            'Family Type'       => ucfirst($fam['family_type'] ?? ''),
-                            'Family Status'     => ucfirst($fam['family_status'] ?? ''),
-                            'No. of Brothers'   => $fam['brothers_count'] ?? null,
-                            'Married Brothers'  => $fam['brothers_married'] ?? null,
-                            'No. of Sisters'    => $fam['sisters_count'] ?? null,
-                            'Married Sisters'   => $fam['sisters_married'] ?? null,
-                            'Soveran Details'   => $fam['soveran_details'] ?? null,
-                            'Property'          => $fam['property_description'] ?? null,
-                        ] as $label => $value)
-                        <div class="flex py-2 border-b border-gray-50 last:border-0">
-                            <span class="w-2/5 text-xs text-gray-500 font-medium uppercase tracking-wide pt-0.5">{{ $label }}</span>
-                            <span class="w-3/5 text-sm text-gray-800 font-medium break-words">{{ $value ?: '—' }}</span>
-                        </div>
-                        @endforeach
-                    </div>
-                </div>
-            @endif
-        </div>
-
         {{-- CONTACT TAB --}}
         <div x-show="tab === 'contact'">
-            @if(($member['restricted'] ?? false) && !($member['is_own'] ?? false))
-                {{-- LOCKED --}}
-                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 mb-4">
-                    <div class="p-10 flex flex-col items-center text-center gap-3">
-                        <div class="w-14 h-14 rounded-full bg-yellow-100 flex items-center justify-center">
-                            <i class="fas fa-lock text-yellow-600 text-xl"></i>
-                        </div>
-                        <h3 class="text-base font-semibold text-gray-800">Contact Details are Locked</h3>
-                        <p class="text-gray-500 text-sm max-w-xs">Upgrade your membership plan to view this member's contact information.</p>
-                        <a href="/plans" class="mt-2 px-6 py-2 bg-[#8B1A1A] text-white rounded-lg text-sm font-semibold hover:bg-[#6e1515] transition">
-                            <i class="fas fa-arrow-up mr-1"></i> Upgrade Plan
-                        </a>
-                    </div>
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 mb-4">
+                <div class="px-5 py-3 border-b border-gray-100 bg-gray-50 rounded-t-2xl">
+                    <h2 class="text-sm font-semibold text-[#8B1A1A] uppercase tracking-wide">Contact & Address</h2>
                 </div>
-            @else
-                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 mb-4">
-                    <div class="px-5 py-3 border-b border-gray-100 bg-gray-50 rounded-t-2xl">
-                        <h2 class="text-sm font-semibold text-[#8B1A1A] uppercase tracking-wide">Contact & Address</h2>
+                <div class="px-5 py-2">
+                    @foreach([
+                        'Mobile'       => $member['contact']['mobile'] ?? null,
+                        'Alternate No' => $member['contact']['alternate_number'] ?? null,
+                        'Landline'     => $member['contact']['landline'] ?? null,
+                        'Current City' => $member['contact']['current_city'] ?? null,
+                        'Native Place' => $member['contact']['native_place'] ?? null,
+                        'State'        => $member['contact']['state'] ?? null,
+                        'Country'      => $member['contact']['country'] ?? null,
+                        'Postal Code'  => $member['contact']['postal_code'] ?? null,
+                        'Address'      => $member['contact']['address'] ?? null,
+                    ] as $label => $value)
+                    <div class="flex py-2 border-b border-gray-50 last:border-0">
+                        <span class="w-2/5 text-xs text-gray-500 font-medium uppercase tracking-wide pt-0.5">{{ $label }}</span>
+                        <span class="w-3/5 text-sm text-gray-800 font-medium break-words">{{ $value ?: '—' }}</span>
                     </div>
-                    <div class="px-5 py-2">
-                        @foreach([
-                            'Mobile'       => $member['contact']['mobile'] ?? null,
-                            'Alternate No' => $member['contact']['alternate_number'] ?? null,
-                            'Landline'     => $member['contact']['landline'] ?? null,
-                            'Current City' => $member['contact']['current_city'] ?? null,
-                            'Native Place' => $member['contact']['native_place'] ?? null,
-                            'State'        => $member['contact']['state'] ?? null,
-                            'Country'      => $member['contact']['country'] ?? null,
-                            'Postal Code'  => $member['contact']['postal_code'] ?? null,
-                            'Address'      => $member['contact']['address'] ?? null,
-                        ] as $label => $value)
-                        <div class="flex py-2 border-b border-gray-50 last:border-0">
-                            <span class="w-2/5 text-xs text-gray-500 font-medium uppercase tracking-wide pt-0.5">{{ $label }}</span>
-                            <span class="w-3/5 text-sm text-gray-800 font-medium break-words">{{ $value ?: '—' }}</span>
-                        </div>
-                        @endforeach
-                    </div>
+                    @endforeach
                 </div>
-            @endif
+            </div>
+        </div>
+
+        {{-- FAMILY TAB --}}
+        <div x-show="tab === 'family'">
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 mb-4">
+                <div class="px-5 py-3 border-b border-gray-100 bg-gray-50 rounded-t-2xl">
+                    <h2 class="text-sm font-semibold text-[#8B1A1A] uppercase tracking-wide">Family Information</h2>
+                </div>
+                <div class="px-5 py-2">
+                    @php $fam = is_array($member['family'] ?? []) ? ($member['family'] ?? []) : (array)$member['family']; @endphp
+                    @foreach([
+                        'Surname'           => $fam['surname'] ?? null,
+                        'Father Name'       => $fam['father_name'] ?? null,
+                        'Father Vangusam'   => $fam['father_vangusam'] ?? null,
+                        'Mother Name'       => $fam['mother_name'] ?? null,
+                        'Mother Vangusam'   => $fam['mother_vangusam'] ?? null,
+                        'Mother Occupation' => $fam['mother_occupation'] ?? null,
+                        'Family Type'       => ucfirst($fam['family_type'] ?? ''),
+                        'Family Status'     => ucfirst($fam['family_status'] ?? ''),
+                        'No. of Brothers'   => $fam['brothers_count'] ?? null,
+                        'Married Brothers'  => $fam['brothers_married'] ?? null,
+                        'No. of Sisters'    => $fam['sisters_count'] ?? null,
+                        'Married Sisters'   => $fam['sisters_married'] ?? null,
+                        'Soveran Details'    => $fam['soveran_details'] ?? null,
+                        'Property'          => $fam['property_description'] ?? null,
+                    ] as $label => $value)
+                    <div class="flex py-2 border-b border-gray-50 last:border-0">
+                        <span class="w-2/5 text-xs text-gray-500 font-medium uppercase tracking-wide pt-0.5">{{ $label }}</span>
+                        <span class="w-3/5 text-sm text-gray-800 font-medium break-words">{{ $value ?: '—' }}</span>
+                    </div>
+                    @endforeach
+                </div>
+            </div>
         </div>
 
         {{-- PARTNER PREF TAB --}}
@@ -501,6 +479,7 @@
         </div>
 
     </div>
+    @endif
 
 </div>
 

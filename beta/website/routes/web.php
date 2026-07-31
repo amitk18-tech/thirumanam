@@ -66,6 +66,7 @@ Route::middleware('auth.session')->group(function () {
     Route::post('/members/{id}/follow', [MemberController::class, 'follow'])->name('members.follow');
     Route::post('/members/{id}/report', [MemberController::class, 'report'])->name('members.report');
     Route::get('/shortlisted', [MemberController::class, 'shortlisted'])->name('shortlisted.index');
+    Route::get("/notifications", [App\Http\Controllers\NotificationController::class, "index"])->name("notifications.index");
 });
 
 Route::get('/debug-members', function () {
