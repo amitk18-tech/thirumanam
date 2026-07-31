@@ -17,7 +17,7 @@
                     <li><a href="{{ url('/plans') }}" class="hover:text-white transition">Plans</a></li>
                     <li><a href="{{ url('/contact') }}" class="hover:text-white transition">Contact</a></li>
                     <li><a href="{{ url('/faq') }}" class="hover:text-white transition">FAQ</a></li>
-                    <li><a href="{{ url('/privacy-policy') }}" class="hover:text-white transition">Privacy Policy</a></li>
+                    <li><a href="{{ url('/privacy') }}" class="hover:text-white transition">Privacy Policy</a></li>
                     <li><a href="{{ url('/terms') }}" class="hover:text-white transition">Terms & Conditions</a></li>
                 </ul>
             </div>

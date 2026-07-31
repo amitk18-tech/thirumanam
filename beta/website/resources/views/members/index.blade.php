@@ -236,7 +236,7 @@
                     <div class="flex items-start gap-2 col-span-2">
                       <i class="fas fa-graduation-cap text-red-400 text-xs mt-1 flex-shrink-0"></i>
                       <div>
-                        <p class="text-xs text-gray-400 leading-none mb-0.5">Education</p>
+                        <p class="text-xs text-gray-400 leading-none mb-0.5">Study Details</p>
                         <p class="text-sm font-semibold text-gray-800">{{ $education ? ucwords(str_replace('_', ' ', $education)) : '—' }}</p>
                       </div>
                     </div>
@@ -249,27 +249,19 @@
                       </div>
                     </div>
 
-                    @if($city)
-                    <div class="flex items-start gap-2">
-                      <i class="fas fa-map-marker-alt text-red-400 text-xs mt-1 flex-shrink-0"></i>
-                      <div>
-                        <p class="text-xs text-gray-400 leading-none mb-0.5">City</p>
-                        <p class="text-sm font-semibold text-gray-800">{{ $city }}</p>
-                      </div>
-                    </div>
-                    @endif
+                    
 
                   </div>
 
                   <div class="flex-1"></div>
 
                   <div class="flex gap-2 mt-3">
-                    <a href="/members/{{ $userId }}"
+                    <a href="/members/{{ $profileId }}"
                        class="flex-1 text-center text-sm font-semibold text-white py-2.5 rounded-xl transition hover:opacity-90"
                        style="background: linear-gradient(135deg, #7a1010, #a31c1c);">
                       <i class="fas fa-user mr-1 text-xs"></i> View Profile
                     </a>
-                    <button onclick="sendInterest({{ $userId }}, {{ $profileId }})"
+                    <button onclick="sendInterest({{ $profileId }}, {{ $profileId }})"
                             class="flex-1 text-sm font-semibold border-2 border-pink-400 text-pink-500 hover:bg-pink-50 py-2.5 rounded-xl transition">
                       <i class="fas fa-heart mr-1 text-xs"></i> Interest
                     </button>

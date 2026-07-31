@@ -155,7 +155,7 @@ class ApiService
 
     public function getMyProfile(): array
     {
-        return $this->authGet('/browse-members/me');
+        return $this->authGet('/members/me');
     }
 
     public function getNotificationsCount(): array

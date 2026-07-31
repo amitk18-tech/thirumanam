@@ -31,9 +31,17 @@ Route::post('/register/profile', [RegisterController::class, 'saveProfile']);
 // Public routes
 
 Route::get('/contact', function() { return view('contact'); });
-Route::get('/faq', function() { return view('pages.faq'); })->name('faq');
+Route::get('/faq', function() {
+    $faqs = require resource_path('views/pages/faq_data.php');
+    return view('pages.faq', [
+        'generalFaqs' => $faqs['general'],
+        'onlineFaqs'  => $faqs['online'],
+        'offlineFaqs' => $faqs['offline'],
+    ]);
+})->name('faq');
 Route::get('/privacy', function() { return view('pages.privacy'); })->name('privacy');
 Route::get('/terms', function() { return view('pages.terms'); })->name('terms');
+Route::get('/plans', [\App\Http\Controllers\PlansController::class, 'index'])->name('plans.index');
 
 // Protected routes
 Route::middleware('auth.session')->group(function () {
@@ -54,6 +62,10 @@ Route::middleware('auth.session')->group(function () {
     Route::post('/messages/chat', [MessageController::class, 'chatWindow'])->name('messages.chat');
     Route::post('/messages/send', [MessageController::class, 'send'])->name('messages.send');
     Route::get('/messages/unread', [MessageController::class, 'unreadCount'])->name('messages.unread');
+    Route::post('/profile/deactivate', [ProfileController::class, 'deactivate'])->name('profile.deactivate');
+    Route::post('/members/{id}/follow', [MemberController::class, 'follow'])->name('members.follow');
+    Route::post('/members/{id}/report', [MemberController::class, 'report'])->name('members.report');
+    Route::get('/shortlisted', [MemberController::class, 'shortlisted'])->name('shortlisted.index');
 });
 
 Route::get('/debug-members', function () {
@@ -72,7 +84,7 @@ Route::get('/debug-token', function () {
 // Payment routes
 
 Route::middleware('auth.session')->group(function () {
-    Route::get('/plans', [\App\Http\Controllers\PlansController::class, 'index'])->name('plans.index');
+    
     Route::get('/payment', [\App\Http\Controllers\PaymentController::class, 'show'])->name('payment.show');
     Route::post('/payment/verify', [\App\Http\Controllers\PaymentController::class, 'verify'])->name('payment.verify');
     Route::get('/payment/success', [\App\Http\Controllers\PaymentController::class, 'success'])->name('payment.success');

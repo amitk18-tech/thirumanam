@@ -219,20 +219,26 @@
                     @foreach($row as $colIdx => $bn)
                       @if($rowIdx==1 && $colIdx==1)
                         <td class="border-2 border-green-300 bg-yellow-50 text-center font-semibold text-gray-500 align-middle" colspan="2" rowspan="2" style="height:5.5em">{{ $chartType }}</td>
-                      @elseif(($rowIdx==1 && $colIdx==2) || ($rowIdx==2 && $colIdx==0) || ($rowIdx==2 && $colIdx==1))
+                      @elseif(($rowIdx==1 && $colIdx==2) || ($rowIdx==2 && $colIdx==0) || ($rowIdx==2 && $colIdx==3))
                         {{-- skip colspan/rowspan cells --}}
                       @elseif($bn !== null)
                         @php
                           $existing = $bGrid[$chartType][$bn] ?? [];
-                          $cellVal = implode(', ', array_column($existing, 'value'));
+                          $planets = ['', 'SUN', 'MOON', 'MARS', 'MERCURY', 'JUPITER', 'VENUS', 'SATURN', 'RAGU', 'KETHU', 'MANTHU', 'LAKKNAM'];
+                          $cellVal = '';
                         @endphp
-                        <td class="border-2 border-green-300 p-1 align-top bg-green-50" style="height:5.5em;width:25%">
+                        <td class="border-2 border-green-300 p-1 align-top bg-green-50" style="height:8em;width:25%;overflow-y:auto">
                           <div class="text-[10px] text-gray-400 mb-0.5">{{ $bn }}</div>
-                          <textarea
-                            class="w-full h-14 text-xs bg-transparent resize-none outline-none"
-                            data-box="{{ $bn }}"
-                            data-type="{{ $chartType }}"
-                            placeholder="planets...">{{ $cellVal }}</textarea>
+                          <div class="grid grid-cols-2 gap-0.5">
+                          @for($slot = 1; $slot <= 6; $slot++)
+                            @php $slotVal = $existing[$slot-1]['value'] ?? ''; @endphp
+                            <select class="w-full text-[10px] mb-0.5 bg-transparent border-b border-green-200 outline-none" data-box="{{ $bn }}" data-type="{{ $chartType }}" data-slot="{{ $slot }}">
+                              @foreach($planets as $p)
+                                <option value="{{ $p }}" {{ $slotVal === $p ? 'selected' : '' }}>{{ $p ?: '—' }}</option>
+                              @endforeach
+                            </select>
+                          @endfor
+                          </div>
                         </td>
                       @endif
                     @endforeach
@@ -604,14 +610,12 @@ async function saveHoroscopeBoxes(btn) {
     return;
   }
   const allItems = [];
-  document.querySelectorAll('textarea[data-type]').forEach(ta => {
-    const type = ta.dataset.type;
-    const bn = parseInt(ta.dataset.box);
-    const raw = ta.value.trim();
-    const planets = raw ? raw.split(',').map(s => s.trim()).filter(Boolean) : [''];
-    planets.forEach((val, idx) => {
-      allItems.push({ profile_id: profileId, box_number: bn, item_number: idx + 1, type: type, value: val });
-    });
+  document.querySelectorAll('select[data-type]').forEach(sel => {
+    const bn = parseInt(sel.dataset.box);
+    const slot = parseInt(sel.dataset.slot);
+    const type = sel.dataset.type;
+    const val = sel.value.trim();
+    allItems.push({ profile_id: profileId, box_number: bn, item_number: slot, type: type, value: val });
   });
   const res = await fetch('/horoscope/save-batch', {
     method: 'POST',

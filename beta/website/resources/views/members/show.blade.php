@@ -32,29 +32,100 @@
                 </p>
             </div>
             {{-- ACTION BUTTONS --}}
-            @if($member['is_own'] ?? false)
-            <div class="flex gap-2">
-                <a href="{{ url('/profile/edit') }}"
-                    class="px-4 py-2 bg-[#8B1A1A] text-white rounded-lg text-sm hover:bg-[#6e1515] transition">
-                    <i class="fas fa-user-edit mr-1"></i> Edit Profile
-                </a>
+@if($member['is_own'] ?? false)
+<div class="flex gap-2">
+    <a href="{{ url('/profile/edit') }}"
+        class="px-4 py-2 bg-[#8B1A1A] text-white rounded-lg text-sm hover:bg-[#6e1515] transition">
+        <i class="fas fa-user-edit mr-1"></i> Edit Profile
+    </a>
+    <button onclick="document.getElementById('deactivateModal').classList.remove('hidden')"
+        class="px-4 py-2 border border-red-400 text-red-500 rounded-lg text-sm hover:bg-red-50 transition">
+        <i class="fas fa-power-off mr-1"></i> Deactivate
+    </button>
+</div>
+
+{{-- Deactivate Confirmation Modal --}}
+<div id="deactivateModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4">
+    <div class="bg-white rounded-2xl shadow-xl max-w-sm w-full p-6">
+        <div class="text-center mb-4">
+            <div class="w-14 h-14 rounded-full bg-red-100 flex items-center justify-center mx-auto mb-3">
+                <i class="fas fa-power-off text-red-500 text-xl"></i>
             </div>
+            <h3 class="text-lg font-bold text-gray-900">Deactivate Profile?</h3>
+            <p class="text-gray-500 text-sm mt-2">Your profile will be hidden from other members and you will be logged out of all devices. You can request reactivation by contacting support.</p>
+        </div>
+        <div class="flex gap-3 mt-5">
+            <button onclick="document.getElementById('deactivateModal').classList.add('hidden')"
+                class="flex-1 px-4 py-2 border border-gray-300 text-gray-600 rounded-lg text-sm hover:bg-gray-50 transition">
+                Cancel
+            </button>
+            <button onclick="confirmDeactivate()"
+                id="deactivateBtn"
+                class="flex-1 px-4 py-2 bg-red-500 text-white rounded-lg text-sm hover:bg-red-600 transition">
+                Yes, Deactivate
+            </button>
+        </div>
+    </div>
+</div>
             @elseif(!($member['restricted'] ?? true))
+            @php
+                $interactions  = $member['interactions'] ?? [];
+                $hasSentInterest = $interactions['has_sent_interest'] ?? false;
+                $isFollowing     = $interactions['is_following'] ?? false;
+                $hasShortlisted  = $interactions['has_shortlisted'] ?? false;
+                $hasBlocked      = $interactions['has_blocked'] ?? false;
+            @endphp
             <div class="flex gap-2 flex-wrap">
                 <button onclick="sendInterest({{ $member['id'] }}, {{ $member['profile_id'] ?? 0 }})"
-                    class="px-4 py-2 bg-[#F24570] text-white rounded-lg text-sm hover:bg-[#d63560] transition">
-                    <i class="fas fa-heart mr-1"></i> Interest
+                    {{ $hasSentInterest ? 'disabled' : '' }}
+                    class="px-4 py-2 rounded-lg text-sm transition {{ $hasSentInterest ? 'bg-gray-300 text-gray-500 cursor-not-allowed' : 'bg-[#F24570] text-white hover:bg-[#d63560]' }}">
+                    <i class="fas fa-heart mr-1"></i> {{ $hasSentInterest ? 'Interest Sent' : 'Interest' }}
                 </button>
-                <button onclick="shortlistMember({{ $member['id'] }}, {{ $member['profile_id'] ?? 0 }})"
-                    class="px-4 py-2 border border-[#8B1A1A] text-[#8B1A1A] rounded-lg text-sm hover:bg-[#8B1A1A]/10 transition">
-                    <i class="fas fa-bookmark mr-1"></i> Shortlist
+                <button id="shortlistBtn"
+                    onclick="toggleShortlist(this, {{ $member['id'] }}, {{ $member['profile_id'] ?? 0 }})"
+                    data-active="{{ $hasShortlisted ? 'true' : 'false' }}"
+                    class="px-4 py-2 rounded-lg text-sm transition {{ $hasShortlisted ? 'bg-[#8B1A1A] text-white' : 'border border-[#8B1A1A] text-[#8B1A1A] hover:bg-[#8B1A1A]/10' }}">
+                    <i class="fas fa-bookmark mr-1"></i> <span>{{ $hasShortlisted ? 'Shortlisted' : 'Shortlist' }}</span>
+                </button>
+                <button id="followBtn"
+                    onclick="toggleFollow(this, {{ $member['id'] }}, {{ $member['profile_id'] ?? 0 }})"
+                    data-active="{{ $isFollowing ? 'true' : 'false' }}"
+                    class="px-4 py-2 rounded-lg text-sm transition {{ $isFollowing ? 'bg-blue-500 text-white' : 'border border-blue-400 text-blue-500 hover:bg-blue-50' }}">
+                    <i class="fas fa-user-plus mr-1"></i> <span>{{ $isFollowing ? 'Following' : 'Follow' }}</span>
                 </button>
                 <button onclick="blockMember({{ $member['id'] }}, {{ $member['profile_id'] ?? 0 }})"
                     class="px-4 py-2 border border-gray-300 text-gray-500 rounded-lg text-sm hover:bg-gray-100 transition">
-                    <i class="fas fa-ban mr-1"></i> Block
+                    <i class="fas fa-ban mr-1"></i> {{ $hasBlocked ? 'Unblock' : 'Block' }}
+                </button>
+                <button onclick="document.getElementById('reportModal').classList.remove('hidden')"
+                    class="px-4 py-2 border border-orange-300 text-orange-500 rounded-lg text-sm hover:bg-orange-50 transition">
+                    <i class="fas fa-flag mr-1"></i> Report
                 </button>
             </div>
             @endif
+
+{{-- Report Modal — outside header card, before upgrade banner --}}
+@if(!($member['is_own'] ?? false))
+<div id="reportModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4">
+    <div class="bg-white rounded-2xl shadow-xl max-w-sm w-full p-6">
+        <h3 class="text-lg font-bold text-gray-900 mb-3"><i class="fas fa-flag text-orange-400 mr-2"></i>Report Profile</h3>
+        <p class="text-gray-500 text-sm mb-4">Please provide a reason for reporting this profile.</p>
+        <textarea id="reportReason" rows="3" placeholder="Enter reason..."
+            class="w-full border border-gray-200 rounded-lg p-3 text-sm text-gray-700 focus:outline-none focus:border-orange-400 resize-none"></textarea>
+        <div class="flex gap-3 mt-4">
+            <button onclick="document.getElementById('reportModal').classList.add('hidden')"
+                class="flex-1 px-4 py-2 border border-gray-300 text-gray-600 rounded-lg text-sm hover:bg-gray-50 transition">
+                Cancel
+            </button>
+            <button onclick="submitReport({{ $member['id'] }}, {{ $member['profile_id'] ?? 0 }})"
+                id="reportBtn"
+                class="flex-1 px-4 py-2 bg-orange-500 text-white rounded-lg text-sm hover:bg-orange-600 transition">
+                Submit Report
+            </button>
+        </div>
+    </div>
+</div>
+@endif
         </div>
     </div>
 
@@ -351,16 +422,20 @@
                 <div class="px-5 py-2">
                     @php $fam = is_array($member['family'] ?? []) ? ($member['family'] ?? []) : (array)$member['family']; @endphp
                     @foreach([
-                        'Father Name'      => $fam['father_name'] ?? $fam['father'] ?? null,
-                        'Mother Name'      => $fam['mother_name'] ?? $fam['mother'] ?? null,
-                        'Family Type'      => ucfirst($fam['family_type'] ?? ''),
-                        'No. of Brothers'  => $fam['number_of_brothers'] ?? $fam['Number_of_brothers'] ?? null,
-                        'Married Brothers' => $fam['married_brothers'] ?? $fam['Number_of_married_brothers'] ?? null,
-                        'No. of Sisters'   => $fam['number_of_sisters'] ?? $fam['Number_of_Sisters'] ?? null,
-                        'Married Sisters'  => $fam['married_sisters'] ?? $fam['Number_of_married_sisters'] ?? null,
-                        'Property'         => $fam['property_description'] ?? $fam['Property_Description'] ?? null,
-                        'Gothram'          => $fam['gothram'] ?? null,
-                        'Surname'          => $fam['surname'] ?? $fam['Surname'] ?? null,
+                        'Surname'           => $fam['surname'] ?? null,
+                        'Father Name'       => $fam['father_name'] ?? null,
+                        'Father Vangusam'   => $fam['father_vangusam'] ?? null,
+                        'Mother Name'       => $fam['mother_name'] ?? null,
+                        'Mother Vangusam'   => $fam['mother_vangusam'] ?? null,
+                        'Mother Occupation' => $fam['mother_occupation'] ?? null,
+                        'Family Type'       => ucfirst($fam['family_type'] ?? ''),
+                        'Family Status'     => ucfirst($fam['family_status'] ?? ''),
+                        'No. of Brothers'   => $fam['brothers_count'] ?? null,
+                        'Married Brothers'  => $fam['brothers_married'] ?? null,
+                        'No. of Sisters'    => $fam['sisters_count'] ?? null,
+                        'Married Sisters'   => $fam['sisters_married'] ?? null,
+                        'Soveran Details'    => $fam['soveran_details'] ?? null,
+                        'Property'          => $fam['property_description'] ?? null,
                     ] as $label => $value)
                     <div class="flex py-2 border-b border-gray-50 last:border-0">
                         <span class="w-2/5 text-xs text-gray-500 font-medium uppercase tracking-wide pt-0.5">{{ $label }}</span>
@@ -380,16 +455,19 @@
                 <div class="px-5 py-2">
                     @php $pp = is_array($member['partner_preference'] ?? []) ? ($member['partner_preference'] ?? []) : (array)$member['partner_preference']; @endphp
                     @foreach([
-                        'Preferred Age'  => $pp['preferred_age'] ?? $pp['partner_age'] ?? null,
-                        'Height'         => $pp['preferred_height'] ?? $pp['partner_height'] ?? null,
-                        'Weight'         => $pp['preferred_weight'] ?? $pp['partner_weight'] ?? null,
-                        'Education'      => ucwords(str_replace(['_', '/'], [' ', ' / '], $pp['education'] ?? $pp['partner_education'] ?? '')),
-                        'Occupation'     => ucwords(str_replace('_', ' ', $pp['occupation'] ?? $pp['partner_profession'] ?? '')),
-                        'Marital Status' => ucwords(str_replace('_', ' ', $pp['marital_status'] ?? $pp['partner_marital_status'] ?? '')),
-                        'Caste'          => $pp['caste'] ?? null,
-                        'Dosham'         => $pp['dosham'] ?? $pp['partner_DOSHAM'] ?? null,
-                        'Body Type'      => ucfirst($pp['body_type'] ?? $pp['partner_body_type'] ?? ''),
-                        'About Partner'  => $pp['about_partner'] ?? $pp['partner_Expectation'] ?? null,
+                        'Preferred Age'    => $pp['preferred_age'] ?? null,
+                        'Preferred Height' => $pp['preferred_height'] ?? null,
+                        'Education'        => ucwords(str_replace(['_', '/'], [' ', ' / '], $pp['education'] ?? '')),
+                        'Profession'       => ucwords(str_replace('_', ' ', $pp['profession'] ?? '')),
+                        'Marital Status'   => ucwords(str_replace('_', ' ', $pp['marital_status'] ?? '')),
+                        'Physical Status'  => ucfirst($pp['physical_status'] ?? ''),
+                        'Caste'            => $pp['caste'] ?? null,
+                        'Dosham'           => $pp['dosham'] ?? null,
+                        'Type of Dosham'   => $pp['type_of_dosham'] ?? null,
+                        'Other Dosham'     => $pp['other_dosham'] ?? null,
+                        'Body Type'        => ucfirst($pp['body_type'] ?? ''),
+                        'Expectations'     => $pp['expectations'] ?? null,
+                        'About Partner'    => $pp['about_partner'] ?? null,
                     ] as $label => $value)
                     <div class="flex py-2 border-b border-gray-50 last:border-0">
                         <span class="w-2/5 text-xs text-gray-500 font-medium uppercase tracking-wide pt-0.5">{{ $label }}</span>
@@ -413,20 +491,84 @@ function sendInterest(memberId, profileId) {
         body: JSON.stringify({ profile_id: profileId })
     }).then(r => r.json()).then(d => alert(d.message)).catch(() => alert('Something went wrong.'));
 }
-function shortlistMember(memberId, profileId) {
+
+function toggleShortlist(btn, memberId, profileId) {
     fetch(`/members/${memberId}/shortlist`, {
         method: 'POST',
         headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}', 'Content-Type': 'application/json' },
         body: JSON.stringify({ profile_id: profileId })
-    }).then(r => r.json()).then(d => alert(d.message)).catch(() => alert('Something went wrong.'));
+    }).then(r => r.json()).then(d => {
+        const active = d.active;
+        btn.dataset.active = active;
+        btn.className = `px-4 py-2 rounded-lg text-sm transition ${active ? 'bg-[#8B1A1A] text-white' : 'border border-[#8B1A1A] text-[#8B1A1A] hover:bg-[#8B1A1A]/10'}`;
+        btn.querySelector('span').textContent = active ? 'Shortlisted' : 'Shortlist';
+    }).catch(() => alert('Something went wrong.'));
 }
+
+function toggleFollow(btn, memberId, profileId) {
+    fetch(`/members/${memberId}/follow`, {
+        method: 'POST',
+        headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}', 'Content-Type': 'application/json' },
+        body: JSON.stringify({ profile_id: profileId })
+    }).then(r => r.json()).then(d => {
+        const active = d.active;
+        btn.dataset.active = active;
+        btn.className = `px-4 py-2 rounded-lg text-sm transition ${active ? 'bg-blue-500 text-white' : 'border border-blue-400 text-blue-500 hover:bg-blue-50'}`;
+        btn.querySelector('span').textContent = active ? 'Following' : 'Follow';
+    }).catch(() => alert('Something went wrong.'));
+}
+
 function blockMember(memberId, profileId) {
-    if (!confirm('Are you sure you want to block this member?')) return;
+    if (!confirm('Are you sure you want to block/unblock this member?')) return;
     fetch(`/members/${memberId}/block`, {
         method: 'POST',
         headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}', 'Content-Type': 'application/json' },
         body: JSON.stringify({ profile_id: profileId })
     }).then(r => r.json()).then(d => alert(d.message)).catch(() => alert('Something went wrong.'));
+}
+
+function submitReport(memberId, profileId) {
+    const reason = document.getElementById('reportReason').value.trim();
+    if (!reason) { alert('Please enter a reason.'); return; }
+    const btn = document.getElementById('reportBtn');
+    btn.disabled = true;
+    btn.textContent = 'Submitting...';
+    fetch(`/members/${memberId}/report`, {
+        method: 'POST',
+        headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}', 'Content-Type': 'application/json' },
+        body: JSON.stringify({ profile_id: profileId, reason })
+    }).then(r => r.json()).then(d => {
+        alert(d.message);
+        document.getElementById('reportModal').classList.add('hidden');
+        btn.disabled = false;
+        btn.textContent = 'Submit Report';
+    }).catch(() => {
+        alert('Something went wrong.');
+        btn.disabled = false;
+        btn.textContent = 'Submit Report';
+    });
+}
+
+function confirmDeactivate() {
+    const btn = document.getElementById('deactivateBtn');
+    btn.disabled = true;
+    btn.textContent = 'Deactivating...';
+    fetch('/profile/deactivate', {
+        method: 'POST',
+        headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}', 'Content-Type': 'application/json' },
+    }).then(r => r.json()).then(d => {
+        if (d.success) {
+            window.location.href = '/login?message=deactivated';
+        } else {
+            alert(d.message || 'Failed to deactivate.');
+            btn.disabled = false;
+            btn.textContent = 'Yes, Deactivate';
+        }
+    }).catch(() => {
+        alert('Something went wrong.');
+        btn.disabled = false;
+        btn.textContent = 'Yes, Deactivate';
+    });
 }
 </script>
 @endsection

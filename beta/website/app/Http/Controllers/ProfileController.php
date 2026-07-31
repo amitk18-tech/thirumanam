@@ -17,18 +17,21 @@ class ProfileController extends Controller
 
     public function me()
     {
-        $memberResponse = $this->api->authGet('browse-members/me');
-        $d = $memberResponse['data'] ?? [];
         $meResponse = $this->api->authGet('members/me');
-        $phone = $meResponse['data']['profile']['user']['phone'] ?? null;
+        $meData = $meResponse['data'] ?? [];
+        $d = $meData['profile'] ?? [];
+        $phone = $d['user']['phone'] ?? null;
+
+        $boxResponse = $this->api->authGet('members/me');
+        $horoscope_boxes = $boxResponse['data']['profile']['horoscope_boxes'] ?? [];
         $member = [
-            'id'         => $d['id'] ?? null,
-            'profile_id' => $d['profile_id'] ?? null,
-            'member_no'  => $d['member_no'] ?? null,
+            'id'         => $meData['id'] ?? null,
+            'profile_id' => $meData['profile_id'] ?? null,
+            'member_no'  => $meData['member_no'] ?? null,
             'restricted' => false,
             'is_own'     => true,
             'basic' => [
-                'name'            => $d['name'] ?? null,
+                'name'            => $d['user']['name'] ?? null,
                 'age'             => $d['age'] ?? null,
                 'dob'             => $d['dob'] ?? null,
                 'gender'          => $d['gender'] ?? null,
@@ -110,9 +113,9 @@ class ProfileController extends Controller
                 'dosham'         => $d['partner_preference']['dosham'] ?? null,
                 'about_partner'  => $d['partner_preference']['about_partner'] ?? null,
             ],
-            'family'             => $d['family'] ?? null,
+            'family'             => $d['family_detail'] ?? $d['family'] ?? null,
             'partner_preference' => $d['partner_preference'] ?? null,
-            'horoscope_boxes'    => $d['horoscope_boxes'] ?? [],
+            'horoscope_boxes'    => $horoscope_boxes,
             'photos'             => $d['photos'] ?? [],
         ];
 
@@ -129,8 +132,8 @@ class ProfileController extends Controller
             Session::put('user', $user);
         }
 
-        $boxResponse = $this->api->authGet('browse-members/me');
-        $horoscope_boxes = $boxResponse['data']['horoscope_boxes'] ?? [];
+        $boxResponse = $this->api->authGet('members/me');
+        $horoscope_boxes = $boxResponse['data']['profile']['horoscope_boxes'] ?? [];
 
         return view('profile.edit', compact('user', 'profile', 'horoscope_boxes'));
     }
@@ -216,6 +219,21 @@ class ProfileController extends Controller
             'message' => $response['message'] ?? 'Failed to change password.',
         ], 422);
     }
+    
+    public function deactivate(Request $request)
+{
+    $response = $this->api->authPost('members/deactivate-self', []);
+
+    if ($response['success'] ?? false) {
+        Session::flush();
+        return response()->json(['success' => true, 'message' => 'Your profile has been deactivated.']);
+    }
+
+    return response()->json([
+        'success' => false,
+        'message' => $response['message'] ?? 'Failed to deactivate profile.',
+    ], 422);
+}
 
     public function uploadPhoto(Request $request)
     {

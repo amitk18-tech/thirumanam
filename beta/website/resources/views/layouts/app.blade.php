@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ config('app.name', 'Thirumanam') }} - @yield('title')</title>
-	<link rel="icon" type="image/png" href="favicon.png">
+	<link rel="icon" type="image/png" href="/favicon.png">
 
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -44,5 +44,14 @@
     @include('layouts.footer')
 
     @stack('scripts')
+<script>
+  document.addEventListener("contextmenu", e => e.preventDefault());
+  document.addEventListener("selectstart", e => e.preventDefault());
+  document.addEventListener("copy", e => e.preventDefault());
+  document.addEventListener("keydown", e => {
+    if ((e.ctrlKey || e.metaKey) && ["c","u","s","a"].includes(e.key.toLowerCase())) e.preventDefault();
+    if (e.key === "F12" || (e.ctrlKey && e.shiftKey && ["i","j"].includes(e.key.toLowerCase()))) e.preventDefault();
+  });
+</script>
 </body>
 </html>

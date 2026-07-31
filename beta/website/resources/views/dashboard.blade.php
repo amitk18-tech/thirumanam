@@ -126,7 +126,7 @@
             <div class="flex-1 space-y-6">
 
                 {{-- Activity Stats --}}
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
                     <a href="{{ url('/interests?tab=sent') }}" class="bg-white rounded-xl shadow-sm border border-gray-100 p-5 text-center hover:shadow-md transition group block">
                         <div class="w-10 h-10 bg-red-50 rounded-full flex items-center justify-center mx-auto mb-2 group-hover:bg-primary transition">
                             <i class="fas fa-paper-plane text-primary group-hover:text-white transition text-sm"></i>
@@ -149,6 +149,21 @@
                         </div>
                         <div class="text-2xl font-bold text-primary">{{ $member['profiles_viewed'] }}</div>
                         <div class="text-gray-500 text-sm mt-1">Profiles Viewed</div>
+                    </div>
+                        <a href="{{ url('/shortlisted') }}" class="bg-white rounded-xl shadow-sm border border-gray-100 p-5 text-center hover:shadow-md transition group block">
+                        <div class="w-10 h-10 bg-red-50 rounded-full flex items-center justify-center mx-auto mb-2 group-hover:bg-primary transition">
+                            <i class="fas fa-bookmark text-primary group-hover:text-white transition text-sm"></i>
+                        </div>
+                        <div class="text-2xl font-bold text-primary">{{ $member['shortlisted_count'] ?? 0 }}</div>
+                        <div class="text-gray-500 text-sm mt-1">Shortlisted</div>
+                        <div class="text-xs text-primary mt-1 opacity-0 group-hover:opacity-100 transition">View all →</div>
+                    </a>
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5 text-center">
+                        <div class="w-10 h-10 bg-red-50 rounded-full flex items-center justify-center mx-auto mb-2">
+                            <i class="fas fa-user-plus text-primary text-sm"></i>
+                        </div>
+                        <div class="text-2xl font-bold text-primary">{{ $member['following_count'] ?? 0 }}</div>
+                        <div class="text-gray-500 text-sm mt-1">Following</div>
                     </div>
                 </div>
 
