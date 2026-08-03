@@ -15,6 +15,9 @@ class NotificationController extends Controller
         // Sort by created_at descending
         usort($notifications, fn($a, $b) => strtotime($b['created_at']) - strtotime($a['created_at']));
 
+        // Store the time user last viewed notifications (persists across logins via cookie)
+        cookie()->queue('notif_last_seen', now()->toIso8601String(), 60 * 24 * 365);
+
         return view('notifications.index', compact('notifications'));
     }
 }

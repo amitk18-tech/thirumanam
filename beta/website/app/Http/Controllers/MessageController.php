@@ -18,8 +18,7 @@ class MessageController extends Controller
     {
         $response = $this->api->getMessages();
         $conversations = $response['data'] ?? [];
-        $baseUrl = rtrim(config('services.api.base_url'), '/api/');
-        $baseUrl = str_replace('/api', '', $baseUrl);
+        $baseUrl = 'https://api.thirumanam.info';
 
         foreach ($conversations as &$conv) {
             $photo = $conv['profile_photo'] ?? '';

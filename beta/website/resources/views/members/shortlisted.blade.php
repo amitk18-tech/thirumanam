@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Shortlisted Members')
+@section('title', __('ui.sl_title'))
 
 @section('content')
 <div class="min-h-screen bg-gray-50 py-8">
@@ -8,10 +8,10 @@
 
         <div class="flex items-center justify-between mb-6">
             <div>
-                <h1 class="text-2xl font-bold text-gray-800">Shortlisted Members</h1>
-                <p class="text-gray-500 text-sm mt-1">Profiles you have shortlisted</p>
+                <h1 class="text-2xl font-bold text-gray-800">{{ __('ui.sl_title') }}</h1>
+                <p class="text-gray-500 text-sm mt-1">{{ __('ui.sl_subtitle') }}</p>
             </div>
-            <a href="{{ url('/dashboard') }}" class="text-sm text-primary hover:underline">← Back to Dashboard</a>
+            <a href="{{ url('/dashboard') }}" class="text-sm text-primary hover:underline">{{ __('ui.sl_back') }}</a>
         </div>
 
         @if(empty($profiles))
@@ -19,9 +19,9 @@
                 <div class="w-16 h-16 bg-red-50 rounded-full flex items-center justify-center mx-auto mb-4">
                     <i class="fas fa-bookmark text-primary text-2xl"></i>
                 </div>
-                <p class="text-gray-500 text-sm">No shortlisted members yet.</p>
+                <p class="text-gray-500 text-sm">{{ __('ui.sl_empty') }}</p>
                 <a href="{{ url('/members') }}" class="mt-4 inline-block bg-primary text-white text-sm font-semibold px-5 py-2 rounded-lg hover:bg-red-900 transition">
-                    Browse Members
+                    {{ __('ui.sl_browse') }}
                 </a>
             </div>
         @else
@@ -41,7 +41,7 @@
                         <p class="font-semibold text-gray-800 truncate">{{ $p['name'] }}</p>
                         <p class="text-xs text-gray-400 mt-0.5">
                             @if($p['member_no']) ID: {{ $p['member_no'] }} @endif
-                            @if($p['age']) &bull; {{ $p['age'] }} yrs @endif
+                            @if($p['age']) &bull; {{ $p['age'] }} {{ __('ui.sl_yrs') }} @endif
                             @if($p['gender']) &bull; {{ ucfirst($p['gender']) }} @endif
                         </p>
                         @if($p['occupation'] || $p['city'])
@@ -56,7 +56,7 @@
                         @if($p['profile_id'])
                         <a href="{{ url('/members/' . $p['profile_id']) }}"
                            class="text-xs bg-primary text-white font-semibold px-3 py-1.5 rounded-lg hover:bg-red-900 transition">
-                            View Profile
+                            {{ __('ui.sl_view_profile') }}
                         </a>
                         @endif
                     </div>

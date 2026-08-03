@@ -32,7 +32,8 @@ class MemberController extends Controller
 
         if ($search) {
             $profiles = array_filter($profiles, fn($p) =>
-                str_contains(strtolower($p['name'] ?? ''), strtolower($search))
+                str_contains(strtolower($p['name'] ?? ''), strtolower($search)) ||
+                str_contains(strtolower($p['member_no'] ?? ''), strtolower($search))
             );
         }
         if ($ageFrom) {
@@ -206,7 +207,7 @@ class MemberController extends Controller
             ],
             'family'             => $d['family'] ?? null,
             'partner_preference' => $d['partner'] ?? null,
-            'horoscope_boxes'    => $d['horoscope_boxes'] ?? [],
+            'horoscope_boxes'    => array_merge(...array_values(array_map(fn($g) => is_array($g) ? $g : [], $d['horoscope_boxes'] ?? []))),
             'photos'             => $d['images'] ?? [],
 
             'quota' => $d['current_user_membership'] ?? [],

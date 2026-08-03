@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Complete Your Profile — Thirumanam')
+@section('title', __('ui.rp_title') . ' — Thirumanam')
 
 @section('content')
 <div class="min-h-screen bg-rose-50 flex items-center justify-center py-12 px-4">
@@ -8,13 +8,13 @@
 
         <div class="text-center mb-8">
             <a href="/" class="text-3xl font-bold text-primary">திருமணம்</a>
-            <p class="text-gray-500 mt-1">Complete your profile</p>
+            <p class="text-gray-500 mt-1">{{ __('ui.rp_complete_profile') }}</p>
         </div>
 
         <div class="bg-white rounded-2xl shadow-lg p-8" x-data="profileForm()">
 
-            <h2 class="text-xl font-bold text-gray-800 mb-1">Profile Details</h2>
-            <p class="text-gray-500 text-sm mb-6">This helps us find the right matches for you.</p>
+            <h2 class="text-xl font-bold text-gray-800 mb-1">{{ __('ui.rp_profile_details') }}</h2>
+            <p class="text-gray-500 text-sm mb-6">{{ __('ui.rp_subtitle') }}</p>
 
             <div x-show="error" x-cloak class="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-red-600 text-sm" x-text="error"></div>
 
@@ -24,8 +24,8 @@
             <div class="mb-4 p-3 bg-red-50 border border-red-100 rounded-lg flex items-center gap-3">
                 <span class="text-2xl">{{ $sessionGender === 'male' ? '👨' : '👩' }}</span>
                 <div>
-                    <p class="text-sm font-semibold text-primary">Registering as {{ $sessionGender === 'male' ? 'Groom' : 'Bride' }}</p>
-                    <p class="text-xs text-gray-500">Selected in previous step</p>
+                    <p class="text-sm font-semibold text-primary">{{ __('ui.rp_registering_as') }} {{ $sessionGender === 'male' ? __('ui.reg_groom') : __('ui.reg_bride') }}</p>
+                    <p class="text-xs text-gray-500">{{ __('ui.rp_selected_previous_step') }}</p>
                 </div>
             </div>
             @endif
@@ -33,51 +33,51 @@
             <div class="space-y-4">
 
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Date of Birth <span class="text-red-500">*</span></label>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">{{ __('ui.ms_label_dob') }} <span class="text-red-500">*</span></label>
                     <input type="date" x-model="dob"
                         class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary">
                 </div>
 
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Marital Status <span class="text-red-500">*</span></label>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">{{ __('ui.ms_label_marital_status') }} <span class="text-red-500">*</span></label>
                     <select x-model="marital_status"
                         class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary">
-                        <option value="">Select status</option>
-                        <option value="never_married">Never Married</option>
-                        <option value="divorced">Divorced</option>
-                        <option value="widowed">Widowed</option>
-                        <option value="separated">Separated</option>
+                        <option value="">{{ __('ui.rp_select_status') }}</option>
+                        <option value="never_married">{{ __('ui.never_married') }}</option>
+                        <option value="divorced">{{ __('ui.divorced') }}</option>
+                        <option value="widowed">{{ __('ui.widowed') }}</option>
+                        <option value="separated">{{ __('ui.separated') }}</option>
                     </select>
                 </div>
 
                 <div class="grid grid-cols-2 gap-4">
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Father's Name</label>
-                        <input type="text" x-model="father_name" placeholder="Father's full name"
+                        <label class="block text-sm font-medium text-gray-700 mb-1">{{ __('ui.rp_fathers_name') }}</label>
+                        <input type="text" x-model="father_name" placeholder="{{ __('ui.rp_ph_fathers_name') }}"
                             class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary">
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Mother's Name</label>
-                        <input type="text" x-model="mother_name" placeholder="Mother's full name"
+                        <label class="block text-sm font-medium text-gray-700 mb-1">{{ __('ui.rp_mothers_name') }}</label>
+                        <input type="text" x-model="mother_name" placeholder="{{ __('ui.rp_ph_mothers_name') }}"
                             class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary">
                     </div>
                 </div>
 
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Education</label>
-                    <input type="text" x-model="education" placeholder="e.g. B.Tech, MBA"
+                    <label class="block text-sm font-medium text-gray-700 mb-1">{{ __('ui.ms_label_education') }}</label>
+                    <input type="text" x-model="education" placeholder="{{ __('ui.rp_ph_education') }}"
                         class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary">
                 </div>
 
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Occupation</label>
-                    <input type="text" x-model="occupation" placeholder="e.g. Software Engineer"
+                    <label class="block text-sm font-medium text-gray-700 mb-1">{{ __('ui.ms_label_occupation') }}</label>
+                    <input type="text" x-model="occupation" placeholder="{{ __('ui.rp_ph_occupation') }}"
                         class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary">
                 </div>
 
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">City</label>
-                    <input type="text" x-model="city" placeholder="e.g. Chennai"
+                    <label class="block text-sm font-medium text-gray-700 mb-1">{{ __('ui.ms_label_city') }}</label>
+                    <input type="text" x-model="city" placeholder="{{ __('ui.rp_ph_city') }}"
                         class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary">
                 </div>
 
@@ -86,8 +86,8 @@
 
             <button @click="saveProfile" :disabled="loading"
                 class="w-full bg-primary text-white py-3 rounded-lg font-semibold hover:bg-red-900 transition disabled:opacity-50 mt-6">
-                <span x-show="!loading">Complete Profile & Go to Dashboard</span>
-                <span x-show="loading">Saving...</span>
+                <span x-show="!loading">{{ __('ui.rp_complete_and_dashboard') }}</span>
+                <span x-show="loading">{{ __('ui.pe_saving') }}</span>
             </button>
 
         </div>
@@ -95,6 +95,15 @@
 </div>
 
 <script>
+const rpI18n = {
+    errDobRequired:            @json(__('ui.rp_err_dob_required')),
+    errMaritalStatusRequired:  @json(__('ui.rp_err_marital_status_required')),
+    errSaveFailed:             @json(__('ui.rp_err_save_failed')),
+    errServer:                 @json(__('ui.rp_err_server')),
+    errCheckConsole:           @json(__('ui.rp_err_check_console')),
+    errPrefix:                 @json(__('ui.reg_err_prefix')),
+};
+
 function profileForm() {
     return {
         gender: '{{ $sessionGender }}',
@@ -111,8 +120,8 @@ function profileForm() {
 
         async saveProfile() {
             this.error = '';
-            if (!this.dob) { this.error = 'Please enter your date of birth.'; return; }
-            if (!this.marital_status) { this.error = 'Please select marital status.'; return; }
+            if (!this.dob) { this.error = rpI18n.errDobRequired; return; }
+            if (!this.marital_status) { this.error = rpI18n.errMaritalStatusRequired; return; }
 
             this.loading = true;
             try {
@@ -138,7 +147,7 @@ function profileForm() {
                 console.log('Raw response:', text);
                 let data;
                 try { data = JSON.parse(text); } catch(je) {
-                    this.error = 'Server error (HTTP ' + res.status + '). Check console.';
+                    this.error = rpI18n.errServer + ' (HTTP ' + res.status + ').';
                     console.error('Non-JSON response:', text.substring(0, 500));
                     this.loading = false;
                     return;
@@ -146,10 +155,10 @@ function profileForm() {
                 if (data.success) {
                     window.location.href = data.redirect;
                 } else {
-                    this.error = data.message || 'Failed to save profile.';
+                    this.error = data.message || rpI18n.errSaveFailed;
                 }
             } catch (e) {
-                this.error = 'Error: ' + e.message + ' — Check browser console for details';
+                this.error = rpI18n.errPrefix + ': ' + e.message + ' — ' + rpI18n.errCheckConsole;
                 console.error('Profile save error:', e);
             }
             this.loading = false;

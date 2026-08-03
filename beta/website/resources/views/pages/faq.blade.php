@@ -1,13 +1,13 @@
 @extends('layouts.app')
-@section('title', 'FAQ')
+@section('title', __('ui.faq_title'))
 
 @section('content')
 
 {{-- Page Header --}}
 <div class="bg-primary text-white py-12">
     <div class="container mx-auto px-4 text-center">
-        <h1 class="text-3xl font-bold">Common Queries</h1>
-        <p class="mt-2 text-red-200">Frequently asked questions about Thirumanam</p>
+        <h1 class="text-3xl font-bold">{{ __('ui.faq_title') }}</h1>
+        <p class="mt-2 text-red-200">{{ __('ui.faq_subtitle') }}</p>
     </div>
 </div>
 
@@ -17,7 +17,7 @@
 
         {{-- General FAQs --}}
         <div class="mb-10">
-            <h2 class="text-xl font-bold text-primary mb-1">General Queries</h2>
+            <h2 class="text-xl font-bold text-primary mb-1">{{ __('ui.faq_general_heading') }}</h2>
             <div class="w-12 h-1 bg-rose rounded mb-6"></div>
             <div class="space-y-3">
                 @foreach($generalFaqs as $faq)
@@ -34,7 +34,7 @@
 
         {{-- Online FAQs --}}
         <div class="mb-10">
-            <h2 class="text-xl font-bold text-primary mb-1">Online Registered User Queries</h2>
+            <h2 class="text-xl font-bold text-primary mb-1">{{ __('ui.faq_online_heading') }}</h2>
             <div class="w-12 h-1 bg-rose rounded mb-6"></div>
             <div class="space-y-3">
                 @foreach($onlineFaqs as $faq)
@@ -51,7 +51,7 @@
 
         {{-- Offline FAQs --}}
         <div class="mb-10">
-            <h2 class="text-xl font-bold text-primary mb-1">Offline Registered User Queries</h2>
+            <h2 class="text-xl font-bold text-primary mb-1">{{ __('ui.faq_offline_heading') }}</h2>
             <div class="w-12 h-1 bg-rose rounded mb-6"></div>
             <div class="space-y-3">
                 @foreach($offlineFaqs as $faq)

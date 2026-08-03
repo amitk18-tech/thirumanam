@@ -1,19 +1,19 @@
 @extends('layouts.app')
 
-@section('title', 'Notifications')
+@section('title', __('ui.notif_title'))
 
 @section('content')
 <div class="min-h-screen bg-gray-50 py-8">
     <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
 
         <h1 class="text-2xl font-bold text-primary mb-6">
-            <i class="fas fa-bell mr-2"></i> Notifications
+            <i class="fas fa-bell mr-2"></i> {{ __('ui.notif_title') }}
         </h1>
 
         @if(empty($notifications))
             <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-10 text-center">
                 <i class="fas fa-bell-slash text-4xl text-gray-300 mb-4"></i>
-                <p class="text-gray-500">No notifications at this time.</p>
+                <p class="text-gray-500">{{ __('ui.notif_empty') }}</p>
             </div>
         @else
             <div class="space-y-3">
@@ -51,12 +51,12 @@
                     @if($notif['type'] === 'interest_received' && !empty($notif['data']['sender_profile_id']))
                         <a href="{{ url('/members/' . $notif['data']['sender_profile_id']) }}"
                            class="text-xs text-primary font-semibold hover:underline flex-shrink-0">
-                            View →
+                            {{ __('ui.notif_view') }}
                         </a>
                     @elseif($notif['type'] === 'expiry_alert')
                         <a href="{{ url('/plans') }}"
                            class="text-xs text-primary font-semibold hover:underline flex-shrink-0">
-                            Renew →
+                            {{ __('ui.notif_renew') }}
                         </a>
                     @endif
 

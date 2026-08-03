@@ -1,13 +1,13 @@
 @extends('layouts.app')
-@section('title', 'Contact Us')
+@section('title', __('ui.contact_title'))
 
 @section('content')
 
 {{-- Page Header --}}
 <div class="bg-primary text-white py-12">
     <div class="container mx-auto px-4 text-center">
-        <h1 class="text-3xl font-bold">Contact Us</h1>
-        <p class="mt-2 text-red-200">We're here to help you find your perfect match</p>
+        <h1 class="text-3xl font-bold">{{ __('ui.contact_title') }}</h1>
+        <p class="mt-2 text-red-200">{{ __('ui.contact_subtitle') }}</p>
     </div>
 </div>
 
@@ -15,7 +15,7 @@
 <div class="bg-gray-50 py-14">
     <div class="container mx-auto px-4">
         <div class="text-center mb-10">
-            <h2 class="text-2xl font-bold text-primary">Contact Information</h2>
+            <h2 class="text-2xl font-bold text-primary">{{ __('ui.contact_info_heading') }}</h2>
             <div class="w-16 h-1 bg-rose mx-auto mt-3 rounded"></div>
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-4xl mx-auto">
@@ -25,7 +25,7 @@
                 <div class="w-14 h-14 bg-red-50 rounded-full flex items-center justify-center mx-auto mb-4">
                     <i class="fas fa-map-marker-alt text-primary text-xl"></i>
                 </div>
-                <h6 class="font-semibold text-gray-800 mb-2">Address</h6>
+                <h6 class="font-semibold text-gray-800 mb-2">{{ __('ui.contact_address_label') }}</h6>
                 <p class="text-gray-500 text-sm leading-relaxed">
                     <span class="font-semibold text-gray-700">Sri Sowdeswari Amman Narpani Mandram</span><br>
                     <span class="text-xs text-gray-400">(Manage by Alagirisamy Vijayalakshmi Charitable Trust)</span><br><br>
@@ -42,7 +42,7 @@
                 <div class="w-14 h-14 bg-red-50 rounded-full flex items-center justify-center mx-auto mb-4">
                     <i class="fas fa-phone-alt text-primary text-xl"></i>
                 </div>
-                <h6 class="font-semibold text-gray-800 mb-3">Phone</h6>
+                <h6 class="font-semibold text-gray-800 mb-3">{{ __('ui.contact_phone_label') }}</h6>
                 <a href="tel:+919487833674" class="block text-primary hover:underline text-sm mb-1">(+91) 94878 33674</a>
                 <a href="https://api.whatsapp.com/send?phone=+919894278185&text=" target="_blank"
                    class="inline-flex items-center gap-1 text-green-600 hover:underline text-sm mt-1">
@@ -55,7 +55,7 @@
                 <div class="w-14 h-14 bg-red-50 rounded-full flex items-center justify-center mx-auto mb-4">
                     <i class="fas fa-envelope text-primary text-xl"></i>
                 </div>
-                <h6 class="font-semibold text-gray-800 mb-2">Email</h6>
+                <h6 class="font-semibold text-gray-800 mb-2">{{ __('ui.contact_email_label') }}</h6>
                 <a href="mailto:service@thirumanam.info" class="text-primary hover:underline text-sm">
                     service@thirumanam.info
                 </a>
@@ -71,7 +71,7 @@
 
         {{-- Form --}}
         <div class="max-w-2xl mx-auto mb-12">
-            <h2 class="text-2xl font-bold text-center text-primary mb-2">Send Us a Message</h2>
+            <h2 class="text-2xl font-bold text-center text-primary mb-2">{{ __('ui.contact_form_heading') }}</h2>
             <div class="w-16 h-1 bg-rose mx-auto mb-8 rounded"></div>
 
             @if(session('contact_success'))
@@ -89,32 +89,32 @@
             <form action="/contact" method="POST" class="space-y-5">
                 @csrf
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Your Name <span class="text-rose">*</span></label>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">{{ __('ui.contact_name_label') }} <span class="text-rose">*</span></label>
                     <input type="text" name="name" required value="{{ old('name') }}"
                         class="w-full border border-gray-300 rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-                        placeholder="Enter your full name">
+                        placeholder="{{ __('ui.contact_name_placeholder') }}">
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Email Address <span class="text-rose">*</span></label>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">{{ __('ui.contact_email_field_label') }} <span class="text-rose">*</span></label>
                     <input type="email" name="email" required value="{{ old('email') }}"
                         class="w-full border border-gray-300 rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-                        placeholder="Enter your email">
+                        placeholder="{{ __('ui.contact_email_placeholder') }}">
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Subject <span class="text-rose">*</span></label>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">{{ __('ui.contact_subject_label') }} <span class="text-rose">*</span></label>
                     <input type="text" name="subject" required value="{{ old('subject') }}"
                         class="w-full border border-gray-300 rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-                        placeholder="What is this about?">
+                        placeholder="{{ __('ui.contact_subject_placeholder') }}">
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Message <span class="text-rose">*</span></label>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">{{ __('ui.contact_message_label') }} <span class="text-rose">*</span></label>
                     <textarea name="message" rows="5" required
                         class="w-full border border-gray-300 rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-                        placeholder="Write your message here...">{{ old('message') }}</textarea>
+                        placeholder="{{ __('ui.contact_message_placeholder') }}">{{ old('message') }}</textarea>
                 </div>
                 <button type="submit"
                     class="w-full bg-primary text-white py-3 rounded-lg font-semibold hover:bg-red-900 transition text-sm">
-                    <i class="fas fa-paper-plane mr-2"></i> Send Message
+                    <i class="fas fa-paper-plane mr-2"></i> {{ __('ui.contact_send_btn') }}
                 </button>
             </form>
         </div>

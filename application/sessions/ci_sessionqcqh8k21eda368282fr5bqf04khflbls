@@ -1,0 +1,4 @@
+__ci_last_regenerate|i:1785755292;THIRUMANAM_ADMIN_SESSION|a:11:{s:8:"admin_id";s:1:"1";s:4:"name";s:12:"Master Admin";s:5:"phone";s:10:"8749062767";s:7:"address";s:2:"NY";s:5:"email";s:21:"admin@thirumanam.info";s:8:"password";s:40:"372bc298f0b0a44e74ab5f84daba3c4062918d22";s:4:"role";s:1:"1";s:9:"timestamp";s:10:"1476397936";s:13:"active_status";s:1:"1";s:13:"delete_status";s:1:"0";s:9:"user_type";i:1;}msg|s:369:"<div id="admin_alert" class="alert alert-success alert-dismissible alert-label-icon label-arrow shadow fade show mb-xl-0" role="alert">
+                <i class="ri-check-double-line label-icon"></i><strong>Logged In Successfully</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>";__ci_vars|a:1:{s:3:"msg";s:3:"old";}

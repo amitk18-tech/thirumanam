@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Register — Thirumanam')
+@section('title', __('ui.reg_title') . ' — Thirumanam')
 
 @section('content')
 <div class="min-h-screen bg-rose-50 flex items-center justify-center py-12 px-4">
@@ -9,7 +9,7 @@
         {{-- Logo --}}
         <div class="text-center mb-8">
             <a href="/" class="text-3xl font-bold text-primary">திருமணம்</a>
-            <p class="text-gray-500 mt-1">Create your profile</p>
+            <p class="text-gray-500 mt-1">{{ __('ui.reg_create_profile') }}</p>
         </div>
 
         {{-- Card --}}
@@ -38,85 +38,85 @@
 
             {{-- Step 1: Mobile Number --}}
             <div x-show="currentStep === 1">
-                <h2 class="text-xl font-bold text-gray-800 mb-1">Enter Mobile Number</h2>
-                <p class="text-gray-500 text-sm mb-6">We'll send an OTP to verify your number.</p>
+                <h2 class="text-xl font-bold text-gray-800 mb-1">{{ __('ui.reg_enter_mobile') }}</h2>
+                <p class="text-gray-500 text-sm mb-6">{{ __('ui.reg_otp_notice') }}</p>
                 <div class="mb-4">
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Mobile Number</label>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">{{ __('ui.login_mobile_number') }}</label>
                     <div class="flex">
                         <span class="inline-flex items-center px-3 bg-gray-100 border border-r-0 border-gray-300 rounded-l-lg text-gray-500 text-sm">+91</span>
-                        <input type="tel" x-model="mobile" maxlength="10" placeholder="10-digit number"
+                        <input type="tel" x-model="mobile" maxlength="10" placeholder="{{ __('ui.reg_10_digit_number') }}"
                             class="flex-1 border border-gray-300 rounded-r-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                             @keyup.enter="sendOtp">
                     </div>
                 </div>
                 <div class="mb-4">
-                    <label class="block text-sm font-medium text-gray-700 mb-2">I am registering as</label>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">{{ __('ui.reg_registering_as') }}</label>
                     <div class="grid grid-cols-2 gap-3">
                         <button type="button" @click="gender = 'male'"
                             :class="gender === 'male' ? 'border-primary bg-red-50 text-primary' : 'border-gray-300 text-gray-600'"
                             class="border-2 rounded-lg py-3 font-medium transition">
-                            👨 Groom
+                            👨 {{ __('ui.reg_groom') }}
                         </button>
                         <button type="button" @click="gender = 'female'"
                             :class="gender === 'female' ? 'border-primary bg-red-50 text-primary' : 'border-gray-300 text-gray-600'"
                             class="border-2 rounded-lg py-3 font-medium transition">
-                            👩 Bride
+                            👩 {{ __('ui.reg_bride') }}
                         </button>
                     </div>
                 </div>
                 <button @click="sendOtp" :disabled="loading"
                     class="w-full bg-primary text-white py-3 rounded-lg font-semibold hover:bg-red-900 transition disabled:opacity-50">
-                    <span x-show="!loading">Send OTP</span>
-                    <span x-show="loading">Sending...</span>
+                    <span x-show="!loading">{{ __('ui.reg_send_otp') }}</span>
+                    <span x-show="loading">{{ __('ui.reg_sending') }}</span>
                 </button>
-                <p class="text-center text-sm text-gray-500 mt-4">Already registered? <a href="/login" class="text-primary font-medium">Login</a></p>
+                <p class="text-center text-sm text-gray-500 mt-4">{{ __('ui.reg_already_registered') }} <a href="/login" class="text-primary font-medium">{{ __('ui.login') }}</a></p>
             </div>
 
             {{-- Step 2: OTP Verification --}}
             <div x-show="currentStep === 2">
-                <h2 class="text-xl font-bold text-gray-800 mb-1">Verify OTP</h2>
-                <p class="text-gray-500 text-sm mb-6">Enter the 6-digit OTP sent to +91 <span x-text="mobile"></span></p>
+                <h2 class="text-xl font-bold text-gray-800 mb-1">{{ __('ui.reg_verify_otp') }}</h2>
+                <p class="text-gray-500 text-sm mb-6">{{ __('ui.reg_otp_sent_to') }} +91 <span x-text="mobile"></span></p>
                 <div class="mb-4">
-                    <label class="block text-sm font-medium text-gray-700 mb-1">OTP</label>
-                    <input type="tel" x-model="otp" maxlength="6" placeholder="6-digit OTP"
+                    <label class="block text-sm font-medium text-gray-700 mb-1">{{ __('ui.reg_otp_label') }}</label>
+                    <input type="tel" x-model="otp" maxlength="6" placeholder="{{ __('ui.reg_6_digit_otp') }}"
                         class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent tracking-widest text-center text-xl"
                         @keyup.enter="verifyOtp">
                 </div>
                 <button @click="verifyOtp" :disabled="loading"
                     class="w-full bg-primary text-white py-3 rounded-lg font-semibold hover:bg-red-900 transition disabled:opacity-50">
-                    <span x-show="!loading">Verify OTP</span>
-                    <span x-show="loading">Verifying...</span>
+                    <span x-show="!loading">{{ __('ui.reg_verify_otp') }}</span>
+                    <span x-show="loading">{{ __('ui.reg_verifying') }}</span>
                 </button>
                 <p class="text-center text-sm text-gray-500 mt-4">
-                    Didn't receive? 
+                    {{ __('ui.reg_didnt_receive') }}
                     <button @click="resendOtp" :disabled="resendCooldown > 0" class="text-primary font-medium disabled:text-gray-400">
-                        <span x-show="resendCooldown === 0">Resend OTP</span>
-                        <span x-show="resendCooldown > 0">Resend in <span x-text="resendCooldown"></span>s</span>
+                        <span x-show="resendCooldown === 0">{{ __('ui.reg_resend_otp') }}</span>
+                        <span x-show="resendCooldown > 0">{{ __('ui.reg_resend_in') }} <span x-text="resendCooldown"></span>s</span>
                     </button>
                 </p>
-                <p class="text-center text-sm text-gray-500 mt-2"><button @click="currentStep = 1; error = ''" class="text-gray-400 hover:text-gray-600">← Change number</button></p>
+                <p class="text-center text-sm text-gray-500 mt-2"><button @click="currentStep = 1; error = ''" class="text-gray-400 hover:text-gray-600">← {{ __('ui.reg_change_number') }}</button></p>
             </div>
 
             {{-- Step 3: Account Details --}}
             <div x-show="currentStep === 3">
-                <h2 class="text-xl font-bold text-gray-800 mb-1">Create Account</h2>
-                <p class="text-gray-500 text-sm mb-6">Fill in your basic details.</p>
+                <h2 class="text-xl font-bold text-gray-800 mb-1">{{ __('ui.reg_create_account') }}</h2>
+                <p class="text-gray-500 text-sm mb-6">{{ __('ui.reg_fill_basic_details') }}</p>
 
                 <div class="space-y-4">
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
-                        <input type="text" x-model="name" placeholder="Enter your full name"
+                        <label class="block text-sm font-medium text-gray-700 mb-1">{{ __('ui.reg_full_name') }}</label>
+                        <input type="text" x-model="name" placeholder="{{ __('ui.reg_enter_full_name') }}"
                             class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary">
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
-                        <input type="email" x-model="email" placeholder="Enter your email"
+                        <label class="block text-sm font-medium text-gray-700 mb-1">{{ __('ui.reg_email_address') }}</label>
+                        <input type="email" x-model="email" placeholder="{{ __('ui.reg_enter_email') }}"
                             class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary">
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">{{ __('ui.login_password') }}</label>
                         <div class="relative">
-                            <input :type="showPassword ? 'text' : 'password'" x-model="password" placeholder="Minimum 6 characters"
+                            <input :type="showPassword ? 'text' : 'password'" x-model="password" placeholder="{{ __('ui.reg_min_6_chars') }}"
                                 class="w-full border border-gray-300 rounded-lg px-4 py-3 pr-12 focus:outline-none focus:ring-2 focus:ring-primary">
                             <button type="button" @click="showPassword = !showPassword" class="absolute right-3 top-3.5 text-gray-400">
                                 <i :class="showPassword ? 'fa fa-eye-slash' : 'fa fa-eye'"></i>
@@ -128,8 +128,8 @@
 
                 <button @click="completeSetup" :disabled="loading"
                     class="w-full bg-primary text-white py-3 rounded-lg font-semibold hover:bg-red-900 transition disabled:opacity-50 mt-6">
-                    <span x-show="!loading">Create Account</span>
-                    <span x-show="loading">Creating Account...</span>
+                    <span x-show="!loading">{{ __('ui.reg_create_account') }}</span>
+                    <span x-show="loading">{{ __('ui.reg_creating_account') }}</span>
                 </button>
             </div>
 
@@ -138,10 +138,27 @@
 </div>
 
 <script>
+const regI18n = {
+    stepMobile:            @json(__('ui.reg_step_mobile')),
+    stepVerify:             @json(__('ui.reg_step_verify')),
+    stepDetails:            @json(__('ui.reg_step_details')),
+    errInvalidMobile:       @json(__('ui.reg_err_invalid_mobile')),
+    errSelectGender:        @json(__('ui.reg_err_select_gender')),
+    errBothGendersExist:    @json(__('ui.reg_err_both_genders_exist')),
+    errSendOtpFailed:       @json(__('ui.reg_err_send_otp_failed')),
+    errInvalidOtp6:         @json(__('ui.reg_err_invalid_otp6')),
+    errInvalidOtp:          @json(__('ui.reg_err_invalid_otp')),
+    errNameRequired:        @json(__('ui.reg_err_name_required')),
+    errEmailRequired:       @json(__('ui.reg_err_email_required')),
+    errPasswordMin:         @json(__('ui.reg_err_password_min')),
+    errRegistrationFailed:  @json(__('ui.reg_err_registration_failed')),
+    errPrefix:              @json(__('ui.reg_err_prefix')),
+};
+
 function registerForm() {
     return {
         currentStep: 1,
-        steps: ['Mobile', 'Verify', 'Details'],
+        steps: [regI18n.stepMobile, regI18n.stepVerify, regI18n.stepDetails],
         mobile: '',
         otp: '',
         setupToken: '',
@@ -157,11 +174,11 @@ function registerForm() {
         async sendOtp() {
             this.error = '';
             if (this.mobile.length !== 10) {
-                this.error = 'Please enter a valid 10-digit mobile number.';
+                this.error = regI18n.errInvalidMobile;
                 return;
             }
             if (!this.gender) {
-                this.error = 'Please select Groom or Bride.';
+                this.error = regI18n.errSelectGender;
                 return;
             }
             this.loading = true;
@@ -178,16 +195,16 @@ function registerForm() {
                 if (data.success) {
                     // Check if both genders already exist
                     if (data.existing_genders && data.existing_genders.includes('male') && data.existing_genders.includes('female')) {
-                        this.error = 'Both male and female profiles already exist for this number. Please login instead.';
+                        this.error = regI18n.errBothGendersExist;
                     } else {
                         this.currentStep = 2;
                         this.startResendTimer();
                     }
                 } else {
-                    this.error = data.message || 'Failed to send OTP.';
+                    this.error = data.message || regI18n.errSendOtpFailed;
                 }
             } catch (e) {
-                this.error = 'Error: ' + e.message;
+                this.error = regI18n.errPrefix + ': ' + e.message;
             }
             this.loading = false;
         },
@@ -195,7 +212,7 @@ function registerForm() {
         async verifyOtp() {
             this.error = '';
             if (this.otp.length !== 6) {
-                this.error = 'Please enter the 6-digit OTP.';
+                this.error = regI18n.errInvalidOtp6;
                 return;
             }
             this.loading = true;
@@ -213,19 +230,19 @@ function registerForm() {
                     this.setupToken = data.setup_token;
                     this.currentStep = 3;
                 } else {
-                    this.error = data.message || 'Invalid OTP.';
+                    this.error = data.message || regI18n.errInvalidOtp;
                 }
             } catch (e) {
-                this.error = 'Error: ' + e.message;
+                this.error = regI18n.errPrefix + ': ' + e.message;
             }
             this.loading = false;
         },
 
         async completeSetup() {
             this.error = '';
-            if (!this.name) { this.error = 'Please enter your name.'; return; }
-            if (!this.email) { this.error = 'Please enter your email.'; return; }
-            if (this.password.length < 6) { this.error = 'Password must be at least 6 characters.'; return; }
+            if (!this.name) { this.error = regI18n.errNameRequired; return; }
+            if (!this.email) { this.error = regI18n.errEmailRequired; return; }
+            if (this.password.length < 6) { this.error = regI18n.errPasswordMin; return; }
             this.loading = true;
             try {
                 const res = await fetch('/register/complete', {
@@ -247,10 +264,10 @@ function registerForm() {
                 if (data.success) {
                     window.location.href = data.redirect;
                 } else {
-                    this.error = data.message || 'Registration failed.';
+                    this.error = data.message || regI18n.errRegistrationFailed;
                 }
             } catch (e) {
-                this.error = 'Error: ' + e.message;
+                this.error = regI18n.errPrefix + ': ' + e.message;
             }
             this.loading = false;
         },

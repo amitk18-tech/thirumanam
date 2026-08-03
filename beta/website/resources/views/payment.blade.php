@@ -1,37 +1,37 @@
 @extends('layouts.app')
 
-@section('title', 'Payment — Thirumanam')
+@section('title', __('ui.pay_title'))
 
 @section('content')
 <div class="min-h-screen bg-rose-50 py-12 px-4">
     <div class="max-w-lg mx-auto">
 
         <div class="text-center mb-8">
-            <h1 class="text-2xl font-bold text-primary">Complete Your Payment</h1>
-            <p class="text-gray-500 text-sm mt-1">Secure payment via Razorpay</p>
+            <h1 class="text-2xl font-bold text-primary">{{ __('ui.pay_heading') }}</h1>
+            <p class="text-gray-500 text-sm mt-1">{{ __('ui.pay_subtitle') }}</p>
         </div>
 
         {{-- Order Summary --}}
         <div class="bg-white rounded-2xl shadow-md p-6 mb-6">
-            <h2 class="font-semibold text-gray-700 mb-4 text-lg">Order Summary</h2>
+            <h2 class="font-semibold text-gray-700 mb-4 text-lg">{{ __('ui.pay_order_summary') }}</h2>
             <div class="flex justify-between items-center py-2 border-b border-gray-100">
-                <span class="text-gray-500">Plan</span>
+                <span class="text-gray-500">{{ __('ui.pay_plan_label') }}</span>
                 <span class="font-semibold text-primary">{{ $plan['name'] }}</span>
             </div>
             <div class="flex justify-between items-center py-2 border-b border-gray-100">
-                <span class="text-gray-500">Validity</span>
-                <span class="font-semibold">6 Months</span>
+                <span class="text-gray-500">{{ __('ui.pay_validity_label') }}</span>
+                <span class="font-semibold">{{ __('ui.pay_validity_value') }}</span>
             </div>
             <div class="flex justify-between items-center py-2 border-b border-gray-100">
-                <span class="text-gray-500">Profile Views</span>
+                <span class="text-gray-500">{{ __('ui.pay_views_label') }}</span>
                 <span class="font-semibold">{{ $plan['profiles_view_allowed'] }}</span>
             </div>
             <div class="flex justify-between items-center py-2 border-b border-gray-100">
-                <span class="text-gray-500">Interests</span>
+                <span class="text-gray-500">{{ __('ui.pay_interests_label') }}</span>
                 <span class="font-semibold">{{ $plan['sent_interest_allowed'] }}</span>
             </div>
             <div class="flex justify-between items-center py-3 mt-2">
-                <span class="font-bold text-gray-700 text-lg">Total</span>
+                <span class="font-bold text-gray-700 text-lg">{{ __('ui.pay_total_label') }}</span>
                 <span class="font-extrabold text-primary text-2xl">₹{{ number_format($plan['price']) }}</span>
             </div>
         </div>
@@ -39,11 +39,11 @@
         {{-- Pay Button --}}
         <button id="rzp-button" style="background-color:#8B1A1A;color:white;width:100%;padding:1rem;border-radius:0.75rem;font-size:1.125rem;font-weight:700;border:none;cursor:pointer;"
             class="w-full bg-rose-500 hover:bg-rose-600 text-white font-bold py-4 rounded-xl text-lg transition shadow-md">
-            Pay ₹{{ number_format($plan['price']) }} Securely
+            {{ __('ui.pay_total_label') }} ₹{{ number_format($plan['price']) }}
         </button>
 
         <p class="text-center text-gray-400 text-xs mt-4">
-            🔒 Powered by Razorpay. Your payment info is never stored on our servers.
+            {{ __('ui.pay_secure_note') }}
         </p>
 
         {{-- Hidden verify form --}}
@@ -81,9 +81,7 @@
             document.getElementById('verify-form').submit();
         },
         modal: {
-            ondismiss: function() {
-                // User closed modal — stay on page
-            }
+            ondismiss: function() {}
         }
     };
 

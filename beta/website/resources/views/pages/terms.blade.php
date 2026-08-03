@@ -1,13 +1,13 @@
 @extends('layouts.app')
-@section('title', 'Terms & Conditions')
+@section('title', __('ui.terms_title'))
 
 @section('content')
 
 {{-- Page Header --}}
 <div class="bg-primary text-white py-12">
     <div class="container mx-auto px-4 text-center">
-        <h1 class="text-3xl font-bold">Terms &amp; Conditions</h1>
-        <p class="mt-2 text-red-200">Please read these terms carefully before using our services</p>
+        <h1 class="text-3xl font-bold">{{ __('ui.terms_title') }}</h1>
+        <p class="mt-2 text-red-200">{{ __('ui.terms_subtitle') }}</p>
     </div>
 </div>
 

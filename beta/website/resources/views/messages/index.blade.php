@@ -1,18 +1,18 @@
 @extends('layouts.app')
 
-@section('title', 'Messages')
+@section('title', __('ui.msg_title'))
 
 @section('content')
 <div class="min-h-screen bg-gray-50" x-data="messagingApp()" x-init="init()">
     <div class="max-w-6xl mx-auto px-4 py-6">
-        <h1 class="text-2xl font-bold text-primary mb-6">Messages</h1>
+        <h1 class="text-2xl font-bold text-primary mb-6">{{ __('ui.msg_title') }}</h1>
 
         <div class="bg-white rounded-xl shadow overflow-hidden flex" style="height: 75vh;">
 
             {{-- LEFT: Conversation List --}}
             <div class="w-full md:w-1/3 border-r border-gray-200 flex flex-col">
                 <div class="p-4 border-b border-gray-100 bg-gray-50">
-                    <p class="text-sm font-semibold text-gray-600 uppercase tracking-wide">Conversations</p>
+                    <p class="text-sm font-semibold text-gray-600 uppercase tracking-wide">{{ __('ui.msg_conversations') }}</p>
                 </div>
 
                 <div class="overflow-y-auto flex-1">
@@ -33,7 +33,7 @@
                             @endif
                         </div>
                         <div class="flex-1 min-w-0">
-                            <p class="font-semibold text-gray-800 text-sm truncate">{{ $conv['name'] ?? 'Unknown' }}</p>
+                            <p class="font-semibold text-gray-800 text-sm truncate">{{ $conv['name'] ?? __('ui.ms_unknown') }}</p>
                             <p class="text-xs text-gray-500 truncate">{{ $conv['last_message'] ?? '' }}</p>
                         </div>
                         <div class="text-xs text-gray-400 flex-shrink-0">
@@ -45,7 +45,7 @@
                         <svg class="w-12 h-12 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
                         </svg>
-                        <p class="text-sm">No conversations yet</p>
+                        <p class="text-sm">{{ __('ui.msg_no_conversations') }}</p>
                     </div>
                     @endforelse
                 </div>
@@ -60,8 +60,8 @@
                         <svg class="w-16 h-16 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
                         </svg>
-                        <p class="text-lg font-medium">Select a conversation</p>
-                        <p class="text-sm mt-1">Choose from your conversations on the left</p>
+                        <p class="text-lg font-medium">{{ __('ui.msg_select_conversation') }}</p>
+                        <p class="text-sm mt-1">{{ __('ui.msg_select_hint') }}</p>
                     </div>
                 </template>
 
@@ -76,7 +76,7 @@
                                  onerror="this.src='{{ asset('images/default_male.jpg') }}'">
                             <div>
                                 <p class="font-semibold text-gray-800" x-text="selectedName"></p>
-                                <p class="text-xs text-green-500">Active</p>
+                                <p class="text-xs text-green-500">{{ __('ui.msg_active') }}</p>
                             </div>
                         </div>
 
@@ -106,7 +106,7 @@
                             </template>
 
                             <template x-if="!loadingMessages && messages.length === 0">
-                                <div class="text-center text-gray-400 text-sm py-8">No messages yet. Say hello!</div>
+                                <div class="text-center text-gray-400 text-sm py-8">{{ __('ui.msg_no_messages') }}</div>
                             </template>
                         </div>
 
@@ -117,7 +117,7 @@
                                     type="text"
                                     x-model="newMessage"
                                     @keydown.enter="sendMessage()"
-                                    placeholder="Type a message..."
+                                    placeholder="{{ __('ui.msg_type_placeholder') }}"
                                     class="flex-1 border border-gray-300 rounded-full px-4 py-2 text-sm focus:outline-none focus:border-primary"
                                     :disabled="sending"
                                 >
@@ -155,7 +155,13 @@ function messagingApp() {
         errorMsg: '',
         pollTimer: null,
 
-        init() {},
+        init() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const toProfileId = urlParams.get('to');
+            if (toProfileId) {
+                this.openChat(parseInt(toProfileId), 'Member', '');
+            }
+        },
 
         openChat(profileId, name, photo) {
             this.selectedProfileId = profileId;
@@ -212,13 +218,13 @@ function messagingApp() {
                 if (data.success) {
                     this.loadChat();
                 } else {
-                    this.errorMsg = data.message || 'Failed to send message.';
+                    this.errorMsg = data.message || '{{ __('ui.msg_send_failed') }}';
                     this.newMessage = text;
                 }
             })
             .catch(() => {
                 this.sending = false;
-                this.errorMsg = 'Network error. Please try again.';
+                this.errorMsg = '{{ __('ui.msg_network_error') }}';
                 this.newMessage = text;
             });
         },
@@ -235,5 +241,11 @@ function messagingApp() {
         }
     }
 }
+</script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const badge = document.getElementById("msg-badge");
+    if (badge) badge.style.display = "none";
+});
 </script>
 @endsection

@@ -9,12 +9,12 @@
   <div style="background: linear-gradient(135deg, #7a1010 0%, #a31c1c 60%, #c0392b 100%);" class="text-white py-10">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-end justify-between">
       <div>
-        <h1 class="text-3xl font-bold tracking-tight">Browse Members</h1>
-        <p class="text-red-200 mt-1 text-sm">{{ number_format($total) }} profiles found</p>
+        <h1 class="text-3xl font-bold tracking-tight">{{ __('ui.browse_members_title') }}</h1>
+        <p class="text-red-200 mt-1 text-sm">{{ number_format($total) }} {{ __('ui.profiles_found') }}</p>
       </div>
       <div class="hidden sm:flex items-center gap-2 text-red-200 text-sm">
         <i class="fas fa-heart text-pink-400"></i>
-        Find your perfect match
+        {{ __('ui.find_perfect_match') }}
       </div>
     </div>
   </div>
@@ -27,7 +27,7 @@
 
         <button @click="open = !open"
                 class="lg:hidden w-full flex items-center justify-between bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm font-medium text-gray-700 mb-4 shadow-sm">
-          <span><i class="fas fa-sliders-h mr-2 text-red-700"></i>Filters</span>
+          <span><i class="fas fa-sliders-h mr-2 text-red-700"></i>{{ __('ui.filters') }}</span>
           <i class="fas fa-chevron-down transition-transform duration-200" :class="open ? 'rotate-180' : ''"></i>
         </button>
 
@@ -35,24 +35,24 @@
              :class="open ? 'block' : 'hidden lg:block'">
           <div class="px-4 py-3 text-white" style="background: linear-gradient(135deg, #7a1010, #a31c1c);">
             <h2 class="text-sm font-semibold uppercase tracking-widest flex items-center gap-2">
-              <i class="fas fa-sliders-h text-xs"></i> Filter Profiles
+              <i class="fas fa-sliders-h text-xs"></i> {{ __('ui.filter_profiles') }}
             </h2>
           </div>
 
           <form method="GET" action="{{ route('members.index') }}" class="p-4 space-y-4">
 
             <div>
-              <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wide mb-1">Search</label>
+              <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wide mb-1">{{ __('ui.search') }}</label>
               <div class="relative">
                 <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-300 text-xs"></i>
                 <input type="text" name="search" value="{{ request('search') }}"
-                       placeholder="Name or Member ID"
+                       placeholder="{{ __('ui.name_or_member_id') }}"
                        class="w-full border border-gray-200 rounded-lg pl-8 pr-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-red-400 focus:border-transparent">
               </div>
             </div>
 
             <div>
-              <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wide mb-1">Age Range</label>
+              <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wide mb-1">{{ __('ui.age_range') }}</label>
               <div class="flex items-center gap-2">
                 <input type="number" name="age_from" value="{{ request('age_from') }}"
                        placeholder="Min" min="18" max="70"
@@ -65,22 +65,22 @@
             </div>
 
             <div>
-              <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wide mb-1">Marital Status</label>
+              <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wide mb-1">{{ __('ui.marital_status') }}</label>
               <select name="marital_status"
                       class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-red-400 bg-white">
-                <option value="">Any</option>
-                <option value="never_married" {{ request('marital_status') === 'never_married' ? 'selected' : '' }}>Never Married</option>
-                <option value="divorced"       {{ request('marital_status') === 'divorced'       ? 'selected' : '' }}>Divorced</option>
-                <option value="widowed"        {{ request('marital_status') === 'widowed'        ? 'selected' : '' }}>Widowed</option>
-                <option value="separated"      {{ request('marital_status') === 'separated'      ? 'selected' : '' }}>Separated</option>
+                <option value="">{{ __('ui.any') }}</option>
+                <option value="never_married" {{ request('marital_status') === 'never_married' ? 'selected' : '' }}>{{ __('ui.never_married') }}</option>
+                <option value="divorced"       {{ request('marital_status') === 'divorced'       ? 'selected' : '' }}>{{ __('ui.divorced') }}</option>
+                <option value="widowed"        {{ request('marital_status') === 'widowed'        ? 'selected' : '' }}>{{ __('ui.widowed') }}</option>
+                <option value="separated"      {{ request('marital_status') === 'separated'      ? 'selected' : '' }}>{{ __('ui.separated') }}</option>
               </select>
             </div>
 
             <div>
-              <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wide mb-1">Education</label>
+              <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wide mb-1">{{ __('ui.education') }}</label>
               <select name="education"
                       class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-red-400 bg-white">
-                <option value="">Any</option>
+                <option value="">{{ __('ui.any') }}</option>
                 <option value="10th"    {{ request('education') === '10th'    ? 'selected' : '' }}>10th</option>
                 <option value="12th"    {{ request('education') === '12th'    ? 'selected' : '' }}>12th</option>
                 <option value="diploma" {{ request('education') === 'diploma' ? 'selected' : '' }}>Diploma</option>
@@ -91,20 +91,20 @@
             </div>
 
             <div>
-              <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wide mb-1">City</label>
+              <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wide mb-1">{{ __('ui.city') }}</label>
               <div class="relative">
                 <i class="fas fa-map-marker-alt absolute left-3 top-1/2 -translate-y-1/2 text-gray-300 text-xs"></i>
                 <input type="text" name="city" value="{{ request('city') }}"
-                       placeholder="e.g. Chennai"
+                       placeholder="{{ __('ui.city_placeholder') }}"
                        class="w-full border border-gray-200 rounded-lg pl-8 pr-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-red-400">
               </div>
             </div>
 
             <div>
-              <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wide mb-1">Star (Natchathiram)</label>
+              <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wide mb-1">{{ __('ui.star_natchathiram') }}</label>
               <select name="star"
                       class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-red-400 bg-white">
-                <option value="">Any</option>
+                <option value="">{{ __('ui.any') }}</option>
                 @foreach(['Ashwini','Bharani','Krittika','Rohini','Mrigashira','Ardra','Punarvasu','Pushya','Ashlesha','Magha','Purva Phalguni','Uttara Phalguni','Hasta','Chitra','Swati','Vishakha','Anuradha','Jyeshtha','Mula','Purva Ashadha','Uttara Ashadha','Shravana','Dhanishtha','Shatabhisha','Purva Bhadrapada','Uttara Bhadrapada','Revati'] as $star)
                   <option value="{{ $star }}" {{ request('star') === $star ? 'selected' : '' }}>{{ $star }}</option>
                 @endforeach
@@ -112,10 +112,10 @@
             </div>
 
             <div>
-              <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wide mb-1">Rasi</label>
+              <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wide mb-1">{{ __('ui.rasi') }}</label>
               <select name="rasi"
                       class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-red-400 bg-white">
-                <option value="">Any</option>
+                <option value="">{{ __('ui.any') }}</option>
                 @foreach(['Mesha','Rishabha','Mithuna','Kataka','Simha','Kanya','Tula','Vrischika','Dhanus','Makara','Kumbha','Meena'] as $rasi)
                   <option value="{{ $rasi }}" {{ request('rasi') === $rasi ? 'selected' : '' }}>{{ $rasi }}</option>
                 @endforeach
@@ -126,11 +126,11 @@
               <button type="submit"
                       class="flex-1 text-white text-sm font-semibold py-2.5 rounded-lg transition hover:opacity-90"
                       style="background: linear-gradient(135deg, #7a1010, #a31c1c);">
-                <i class="fas fa-search mr-1 text-xs"></i> Apply
+                <i class="fas fa-search mr-1 text-xs"></i> {{ __('ui.apply') }}
               </button>
               <a href="{{ route('members.index') }}"
                  class="flex-1 text-center bg-gray-100 hover:bg-gray-200 text-gray-600 text-sm font-medium py-2.5 rounded-lg transition">
-                Reset
+                {{ __('ui.reset') }}
               </a>
             </div>
 
@@ -146,9 +146,9 @@
             <div class="w-16 h-16 bg-red-50 rounded-full flex items-center justify-center mx-auto mb-4">
               <i class="fas fa-users text-2xl text-red-300"></i>
             </div>
-            <p class="text-gray-600 font-semibold text-lg">No profiles found</p>
-            <p class="text-gray-400 text-sm mt-1">Try adjusting your filters</p>
-            <a href="{{ route('members.index') }}" class="inline-block mt-4 text-sm text-red-700 hover:underline">Clear all filters</a>
+            <p class="text-gray-600 font-semibold text-lg">{{ __('ui.no_profiles_found') }}</p>
+            <p class="text-gray-400 text-sm mt-1">{{ __('ui.adjust_filters') }}</p>
+            <a href="{{ route('members.index') }}" class="inline-block mt-4 text-sm text-red-700 hover:underline">{{ __('ui.clear_all_filters') }}</a>
           </div>
         @else
 
@@ -189,7 +189,7 @@
     <img src="{{ $photoUrl }}"
          alt="{{ $name }}"
          loading="lazy"
-         class="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-300"
+         class="w-full h-full object-contain object-center group-hover:scale-105 transition-transform duration-300"
          onerror="this.parentElement.innerHTML=this.parentElement.innerHTML.replace(this.outerHTML,'<img src=\'{{ $defaultAvatar }}\' class=\'mx-auto h-24 w-24 mt-4 object-contain\'>')">
   @else
     <div class="flex items-center justify-center h-full">
@@ -220,15 +220,15 @@
                     <div class="flex items-start gap-2">
                       <i class="fas fa-birthday-cake text-red-400 text-xs mt-1 flex-shrink-0"></i>
                       <div>
-                        <p class="text-xs text-gray-400 leading-none mb-0.5">Age</p>
-                        <p class="text-sm font-semibold text-gray-800">{{ $age ? $age . ' yrs' : '—' }}</p>
+                        <p class="text-xs text-gray-400 leading-none mb-0.5">{{ __('ui.age') }}</p>
+                        <p class="text-sm font-semibold text-gray-800">{{ $age ? $age . ' ' . __('ui.yrs') : '—' }}</p>
                       </div>
                     </div>
 
                     <div class="flex items-start gap-2">
                       <i class="fas fa-briefcase text-red-400 text-xs mt-1 flex-shrink-0"></i>
                       <div>
-                        <p class="text-xs text-gray-400 leading-none mb-0.5">Occupation</p>
+                        <p class="text-xs text-gray-400 leading-none mb-0.5">{{ __('ui.occupation') }}</p>
                         <p class="text-sm font-semibold text-gray-800">{{ $occupation ? ucwords(str_replace('_', ' ', $occupation)) : '—' }}</p>
                       </div>
                     </div>
@@ -236,7 +236,7 @@
                     <div class="flex items-start gap-2 col-span-2">
                       <i class="fas fa-graduation-cap text-red-400 text-xs mt-1 flex-shrink-0"></i>
                       <div>
-                        <p class="text-xs text-gray-400 leading-none mb-0.5">Study Details</p>
+                        <p class="text-xs text-gray-400 leading-none mb-0.5">{{ __('ui.study_details') }}</p>
                         <p class="text-sm font-semibold text-gray-800">{{ $education ? ucwords(str_replace('_', ' ', $education)) : '—' }}</p>
                       </div>
                     </div>
@@ -244,12 +244,10 @@
                     <div class="flex items-start gap-2">
                       <i class="fas fa-ring text-red-400 text-xs mt-1 flex-shrink-0"></i>
                       <div>
-                        <p class="text-xs text-gray-400 leading-none mb-0.5">Marital Status</p>
+                        <p class="text-xs text-gray-400 leading-none mb-0.5">{{ __('ui.marital_status') }}</p>
                         <p class="text-sm font-semibold text-gray-800">{{ $marital ? ucwords(str_replace('_', ' ', $marital)) : '—' }}</p>
                       </div>
                     </div>
-
-                    
 
                   </div>
 
@@ -259,11 +257,11 @@
                     <a href="/members/{{ $profileId }}"
                        class="flex-1 text-center text-sm font-semibold text-white py-2.5 rounded-xl transition hover:opacity-90"
                        style="background: linear-gradient(135deg, #7a1010, #a31c1c);">
-                      <i class="fas fa-user mr-1 text-xs"></i> View Profile
+                      <i class="fas fa-user mr-1 text-xs"></i> {{ __('ui.view_profile') }}
                     </a>
                     <button onclick="sendInterest({{ $profileId }}, {{ $profileId }})"
                             class="flex-1 text-sm font-semibold border-2 border-pink-400 text-pink-500 hover:bg-pink-50 py-2.5 rounded-xl transition">
-                      <i class="fas fa-heart mr-1 text-xs"></i> Interest
+                      <i class="fas fa-heart mr-1 text-xs"></i> {{ __('ui.interest') }}
                     </button>
                   </div>
                 </div>
@@ -295,7 +293,7 @@
               @endif
             </div>
             <p class="text-center text-xs text-gray-400 mt-3">
-              Page {{ $currentPage }} of {{ $lastPage }} &middot; {{ number_format($total) }} profiles
+              {{ __('ui.page_of') }} {{ $currentPage }} {{ __('ui.of') }} {{ $lastPage }} &middot; {{ number_format($total) }} {{ __('ui.profiles_found') }}
             </p>
           @endif
 

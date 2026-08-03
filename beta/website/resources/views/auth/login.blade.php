@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Login')
+@section('title', __('ui.login_title'))
 
 @section('content')
 
@@ -10,7 +10,7 @@
         {{-- Logo --}}
         <div class="text-center mb-8">
             <a href="{{ url('/') }}" class="text-3xl font-bold text-primary">திருமணம்</a>
-            <p class="text-gray-500 mt-2">Login to your account</p>
+            <p class="text-gray-500 mt-2">{{ __('ui.login_subtitle') }}</p>
         </div>
 
         {{-- Card --}}
@@ -35,7 +35,7 @@
 
                 {{-- Phone --}}
                 <div class="mb-5">
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Mobile Number</label>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">{{ __('ui.login_mobile_number') }}</label>
                     <div class="relative">
                         <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
                             <i class="fas fa-phone-alt"></i>
@@ -44,7 +44,7 @@
                             type="text"
                             name="phone"
                             value="{{ old('phone') }}"
-                            placeholder="Enter your mobile number"
+                            placeholder="{{ __('ui.login_mobile_placeholder') }}"
                             class="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary text-sm"
                             required>
                     </div>
@@ -52,7 +52,7 @@
 
                 {{-- Password --}}
                 <div class="mb-6">
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">{{ __('ui.login_password') }}</label>
                     <div class="relative">
                         <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
                             <i class="fas fa-lock"></i>
@@ -60,7 +60,7 @@
                         <input
                             :type="showPassword ? 'text' : 'password'"
                             name="password"
-                            placeholder="Enter your password"
+                            placeholder="{{ __('ui.login_password_placeholder') }}"
                             class="w-full pl-10 pr-10 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary text-sm"
                             required>
                         <button type="button" @click="showPassword = !showPassword"
@@ -73,17 +73,17 @@
                 {{-- Submit --}}
                 <button type="submit"
                     class="w-full bg-primary text-white py-3 rounded-lg font-semibold hover:bg-red-900 transition text-sm">
-                    Login
+                    {{ __('ui.login') }}
                 </button>
 
                 {{-- Links --}}
                 <div class="mt-4 text-center text-sm text-gray-500">
-                    <a href="{{ url('/forgot-password') }}" class="text-primary hover:underline">Forgot Password?</a>
+                    <a href="{{ url('/forgot-password') }}" class="text-primary hover:underline">{{ __('ui.login_forgot_password') }}</a>
                 </div>
 
                 <div class="mt-4 text-center text-sm text-gray-500">
-                    Don't have an account?
-                    <a href="{{ url('/register') }}" class="text-primary font-semibold hover:underline">Register Free</a>
+                    {{ __('ui.login_no_account') }}
+                    <a href="{{ url('/register') }}" class="text-primary font-semibold hover:underline">{{ __('ui.register_free') }}</a>
                 </div>
 
             </form>

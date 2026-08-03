@@ -134,8 +134,13 @@ class ProfileController extends Controller
 
         $boxResponse = $this->api->authGet('members/me');
         $horoscope_boxes = $boxResponse['data']['profile']['horoscope_boxes'] ?? [];
+        $partner_preference = $profile['partner_preference'] ?? [];
 
-        return view('profile.edit', compact('user', 'profile', 'horoscope_boxes'));
+        $startDate = $me['data']['start_date'] ?? null;
+        $daysSincePayment = $startDate ? abs(\Carbon\Carbon::parse($startDate)->diffInDays(\Carbon\Carbon::now())) : 0;
+        $isLocked = $daysSincePayment > 5;
+
+        return view('profile.edit', compact('user', 'profile', 'horoscope_boxes', 'partner_preference', 'isLocked'));
     }
 
     public function update(Request $request)
@@ -143,6 +148,18 @@ class ProfileController extends Controller
         $me        = $this->api->authGet('/members/me');
         $user      = $me['data'] ?? Session::get('user');
         $profileId = $user['profile']['id'] ?? null;
+
+        $startDate = $me['data']['start_date'] ?? null;
+        $daysSincePayment = $startDate ? abs(\Carbon\Carbon::parse($startDate)->diffInDays(\Carbon\Carbon::now())) : 0;
+        $isLocked = $daysSincePayment > 5;
+
+        if ($isLocked) {
+            $lockedFields = ['occupation', 'work_location', 'income', 'income_amount', 'earnings', 'career_profile',
+                             'city', 'state', 'country', 'native_place', 'postal_code', 'alternate_number', 'landline', 'address', 'current_city'];
+            foreach ($lockedFields as $field) {
+                $request->request->remove($field);
+            }
+        }
 
         if (!$profileId) {
             return response()->json(['success' => false, 'message' => 'Profile not found.'], 422);
@@ -220,6 +237,51 @@ class ProfileController extends Controller
         ], 422);
     }
     
+
+    public function loadFamily(Request $request)
+    {
+        $profileId = $request->query('profile_id');
+        if (!$profileId) {
+            return response()->json(['success' => false, 'message' => 'Profile ID required.'], 422);
+        }
+        $response = $this->api->authGet("family-detail", ['profile_id' => $profileId]);
+        $items = $response['data']['data'] ?? $response['data'] ?? [];
+        $family = is_array($items) && isset($items[0]) ? $items[0] : (isset($items['id']) ? $items : null);
+        return response()->json(['success' => true, 'data' => $family]);
+    }
+
+    public function updateFamily(Request $request)
+    {
+        $me        = $this->api->authGet('/members/me');
+        $user      = $me['data'] ?? Session::get('user');
+        $profileId = $user['profile']['id'] ?? null;
+
+        $startDate = $me['data']['start_date'] ?? null;
+        $daysSincePayment = $startDate ? abs(\Carbon\Carbon::parse($startDate)->diffInDays(\Carbon\Carbon::now())) : 0;
+        if ($daysSincePayment > 5) {
+            return response()->json(['success' => false, 'message' => 'Cannot edit these fields after 7 days. Contact Admin for any changes.'], 403);
+        }
+
+        if (!$profileId) {
+            return response()->json(['success' => false, 'message' => 'Profile not found.'], 422);
+        }
+
+        $data = $request->all();
+        foreach (['brothers_count','brothers_married','sisters_count','sisters_married','soveran_details'] as $field) {
+            if (is_null($data[$field] ?? null) || $data[$field] === '') $data[$field] = 0;
+        }
+        $response = $this->api->authPost("family-detail/{$profileId}", $data);
+
+        if ($response['success'] ?? false) {
+            return response()->json(['success' => true, 'message' => 'Family details updated successfully!']);
+        }
+
+        return response()->json([
+            'success' => false,
+            'message' => $response['message'] ?? 'Failed to update family details.',
+        ], 422);
+    }
+
     public function deactivate(Request $request)
 {
     $response = $this->api->authPost('members/deactivate-self', []);
@@ -248,5 +310,47 @@ class ProfileController extends Controller
         $response = $this->api->uploadProfilePhoto($profileId, $file);
 
         return response()->json($response);
+    }
+
+    public function loadPartner(Request $request)
+    {
+        $profileId = $request->query('profile_id');
+        if (!$profileId) {
+            return response()->json(['success' => false, 'message' => 'Profile ID required.'], 422);
+        }
+        // Partner preference is now loaded server-side via edit() — this endpoint kept for compatibility
+        return response()->json(['success' => true, 'data' => null]);
+    }
+
+    public function updatePartner(Request $request)
+    {
+        $me        = $this->api->authGet('/members/me');
+        $user      = $me['data'] ?? Session::get('user');
+        $profileId = $user['profile']['id'] ?? null;
+
+        if (!$profileId) {
+            return response()->json(['success' => false, 'message' => 'Profile not found.'], 422);
+        }
+
+        $data = $request->all();
+
+        // Try update first (POST /partner-preference/{profile_id})
+        // API update() does where('profile_id', $id) so profile_id is the correct key
+        $response = $this->api->authPost("partner-preference/{$profileId}", $data);
+
+        // If update fails (no existing record), fall back to create
+        if (!($response['success'] ?? false)) {
+            $data['profile_id'] = $profileId;
+            $response = $this->api->authPost('partner-preference', $data);
+        }
+
+        if ($response['success'] ?? false) {
+            return response()->json(['success' => true, 'message' => 'Partner preferences saved successfully!']);
+        }
+
+        return response()->json([
+            'success' => false,
+            'message' => $response['message'] ?? 'Failed to save partner preferences.',
+        ], 422);
     }
 }

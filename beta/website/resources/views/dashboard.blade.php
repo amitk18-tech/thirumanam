@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'My Dashboard')
+@section('title', __('ui.dash_title'))
 
 @section('content')
 
@@ -21,12 +21,12 @@
             <div class="flex items-center space-x-3">
                 <i class="fas fa-exclamation-circle text-amber-500 text-lg"></i>
                 <div>
-                    <p class="text-amber-800 font-semibold text-sm">Your profile is incomplete</p>
-                    <p class="text-amber-600 text-xs">Complete your profile to get better matches</p>
+                    <p class="text-amber-800 font-semibold text-sm">{{ __('ui.dash_incomplete_title') }}</p>
+                    <p class="text-amber-600 text-xs">{{ __('ui.dash_incomplete_body') }}</p>
                 </div>
             </div>
             <a href="{{ url('/profile/edit') }}" class="bg-amber-500 text-white text-xs font-semibold px-4 py-2 rounded-lg hover:bg-amber-600 transition">
-                Complete Now
+                {{ __('ui.dash_complete_now') }}
             </a>
         </div>
         @endif
@@ -37,12 +37,12 @@
             <div class="flex items-center space-x-3">
                 <i class="fas fa-clock text-red-500 text-lg"></i>
                 <div>
-                    <p class="text-red-800 font-semibold text-sm">Your membership has expired</p>
-                    <p class="text-red-600 text-xs">Renew now to continue browsing members</p>
+                    <p class="text-red-800 font-semibold text-sm">{{ __('ui.dash_expired_title') }}</p>
+                    <p class="text-red-600 text-xs">{{ __('ui.dash_expired_body') }}</p>
                 </div>
             </div>
             <a href="{{ url('/plans') }}" class="bg-primary text-white text-xs font-semibold px-4 py-2 rounded-lg hover:bg-red-900 transition">
-                Renew Now
+                {{ __('ui.dash_renew_now') }}
             </a>
         </div>
         @endif
@@ -64,17 +64,17 @@
                         @endif
                     </div>
                     <h2 class="text-xl font-bold">{{ $member['name'] }}</h2>
-                    <p class="text-red-200 text-sm mt-1">{{ $membershipType }} Member</p>
-                    <p class="text-red-200 text-xs mt-0.5">ID: {{ $member['member_no'] ?? 'Pending' }}</p>
+                    <p class="text-red-200 text-sm mt-1">{{ $membershipType }} {{ __('ui.dash_member_suffix') }}</p>
+                    <p class="text-red-200 text-xs mt-0.5">{{ __('ui.dash_id_prefix') }}: {{ $member['member_no'] ?? __('ui.dash_pending') }}</p>
                     @if(!empty($member['end_date']))
-                    <p class="text-red-200 text-xs mt-1">Valid until {{ \Carbon\Carbon::parse($member['end_date'])->format('d M Y') }}</p>
+                    <p class="text-red-200 text-xs mt-1">{{ __('ui.dash_valid_until') }} {{ \Carbon\Carbon::parse($member['end_date'])->format('d M Y') }}</p>
                     @endif
                     <div class="mt-4 flex justify-center gap-2">
                         <a href="{{ url('/profile/me') }}" class="bg-white/20 hover:bg-white/30 text-white text-xs font-semibold px-3 py-1.5 rounded-lg transition">
-                            View Profile
+                            {{ __('ui.view_profile') }}
                         </a>
                         <a href="{{ url('/profile/edit') }}" class="bg-white text-primary text-xs font-semibold px-3 py-1.5 rounded-lg hover:bg-red-50 transition">
-                            Edit Profile
+                            {{ __('ui.edit_profile') }}
                         </a>
                     </div>
                 </div>
@@ -82,41 +82,41 @@
                 {{-- Package / Quota Card --}}
                 <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5">
                     <div class="flex items-center justify-between mb-1">
-                        <h3 class="text-sm font-bold text-gray-700 uppercase tracking-wide">Package Information</h3>
+                        <h3 class="text-sm font-bold text-gray-700 uppercase tracking-wide">{{ __('ui.dash_package_info') }}</h3>
                     </div>
                     <div class="mb-4 flex items-center justify-between">
-                        <span class="text-xs text-gray-500">Current Plan</span>
+                        <span class="text-xs text-gray-500">{{ __('ui.dash_current_plan') }}</span>
                         <span class="text-xs font-bold text-primary bg-red-50 px-2 py-0.5 rounded-full">{{ $membershipType }}</span>
                     </div>
                     <div class="grid grid-cols-2 gap-3">
                         <div class="bg-primary/5 rounded-xl p-3 text-center">
                             <div class="text-2xl font-bold text-primary">{{ $member['profiles_view_remaining'] ?? '—' }}</div>
-                            <div class="text-gray-500 text-xs mt-1 leading-tight">Profile Views Left</div>
+                            <div class="text-gray-500 text-xs mt-1 leading-tight">{{ __('ui.dash_profile_views_left') }}</div>
                             @if(!is_null($member['profiles_view_allowed'] ?? null))
-                            <div class="text-gray-400 text-xs">of {{ $member['profiles_view_allowed'] }}</div>
+                            <div class="text-gray-400 text-xs">{{ __('ui.of') }} {{ $member['profiles_view_allowed'] }}</div>
                             @endif
                         </div>
                         <div class="bg-primary/5 rounded-xl p-3 text-center">
                             <div class="text-2xl font-bold text-primary">{{ $member['sent_interest_remaining'] ?? '—' }}</div>
-                            <div class="text-gray-500 text-xs mt-1 leading-tight">Interests Left</div>
+                            <div class="text-gray-500 text-xs mt-1 leading-tight">{{ __('ui.dash_interests_left') }}</div>
                             @if(!is_null($member['sent_interest_allowed'] ?? null))
-                            <div class="text-gray-400 text-xs">of {{ $member['sent_interest_allowed'] }}</div>
+                            <div class="text-gray-400 text-xs">{{ __('ui.of') }} {{ $member['sent_interest_allowed'] }}</div>
                             @endif
                         </div>
                         <div class="bg-primary/5 rounded-xl p-3 text-center">
                             <div class="text-2xl font-bold text-primary">{{ $member['messages_sent_remaining'] ?? '—' }}</div>
-                            <div class="text-gray-500 text-xs mt-1 leading-tight">Messages Left</div>
+                            <div class="text-gray-500 text-xs mt-1 leading-tight">{{ __('ui.dash_messages_left') }}</div>
                             @if(!is_null($member['messages_sent_allowed'] ?? null))
-                            <div class="text-gray-400 text-xs">of {{ $member['messages_sent_allowed'] }}</div>
+                            <div class="text-gray-400 text-xs">{{ __('ui.of') }} {{ $member['messages_sent_allowed'] }}</div>
                             @endif
                         </div>
                         <div class="bg-primary/5 rounded-xl p-3 text-center">
                             <div class="text-2xl font-bold text-primary">{{ $notifCount }}</div>
-                            <div class="text-gray-500 text-xs mt-1 leading-tight">Notifications</div>
+                            <div class="text-gray-500 text-xs mt-1 leading-tight">{{ __('ui.notifications') }}</div>
                         </div>
                     </div>
                     <a href="{{ url('/plans') }}" class="mt-4 block w-full bg-primary text-white text-xs font-semibold text-center py-2 rounded-lg hover:bg-red-900 transition">
-                        Upgrade Plan
+                        {{ __('ui.dash_upgrade_plan') }}
                     </a>
                 </div>
 
@@ -132,52 +132,52 @@
                             <i class="fas fa-paper-plane text-primary group-hover:text-white transition text-sm"></i>
                         </div>
                         <div class="text-2xl font-bold text-primary">{{ $member['interests_sent'] }}</div>
-                        <div class="text-gray-500 text-sm mt-1">Interests Sent</div>
-                        <div class="text-xs text-primary mt-1 opacity-0 group-hover:opacity-100 transition">View all →</div>
+                        <div class="text-gray-500 text-sm mt-1">{{ __('ui.dash_interests_sent') }}</div>
+                        <div class="text-xs text-primary mt-1 opacity-0 group-hover:opacity-100 transition">{{ __('ui.dash_view_all') }} →</div>
                     </a>
                     <a href="{{ url('/interests?tab=received') }}" class="bg-white rounded-xl shadow-sm border border-gray-100 p-5 text-center hover:shadow-md transition group block">
                         <div class="w-10 h-10 bg-red-50 rounded-full flex items-center justify-center mx-auto mb-2 group-hover:bg-primary transition">
                             <i class="fas fa-heart text-primary group-hover:text-white transition text-sm"></i>
                         </div>
                         <div class="text-2xl font-bold text-primary">{{ $member['interests_received'] }}</div>
-                        <div class="text-gray-500 text-sm mt-1">Interests Received</div>
-                        <div class="text-xs text-primary mt-1 opacity-0 group-hover:opacity-100 transition">View all →</div>
+                        <div class="text-gray-500 text-sm mt-1">{{ __('ui.dash_interests_received') }}</div>
+                        <div class="text-xs text-primary mt-1 opacity-0 group-hover:opacity-100 transition">{{ __('ui.dash_view_all') }} →</div>
                     </a>
                     <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5 text-center">
                         <div class="w-10 h-10 bg-red-50 rounded-full flex items-center justify-center mx-auto mb-2">
                             <i class="fas fa-eye text-primary text-sm"></i>
                         </div>
                         <div class="text-2xl font-bold text-primary">{{ $member['profiles_viewed'] }}</div>
-                        <div class="text-gray-500 text-sm mt-1">Profiles Viewed</div>
+                        <div class="text-gray-500 text-sm mt-1">{{ __('ui.dash_profiles_viewed') }}</div>
                     </div>
                         <a href="{{ url('/shortlisted') }}" class="bg-white rounded-xl shadow-sm border border-gray-100 p-5 text-center hover:shadow-md transition group block">
                         <div class="w-10 h-10 bg-red-50 rounded-full flex items-center justify-center mx-auto mb-2 group-hover:bg-primary transition">
                             <i class="fas fa-bookmark text-primary group-hover:text-white transition text-sm"></i>
                         </div>
                         <div class="text-2xl font-bold text-primary">{{ $member['shortlisted_count'] ?? 0 }}</div>
-                        <div class="text-gray-500 text-sm mt-1">Shortlisted</div>
-                        <div class="text-xs text-primary mt-1 opacity-0 group-hover:opacity-100 transition">View all →</div>
+                        <div class="text-gray-500 text-sm mt-1">{{ __('ui.shortlist') }}</div>
+                        <div class="text-xs text-primary mt-1 opacity-0 group-hover:opacity-100 transition">{{ __('ui.dash_view_all') }} →</div>
                     </a>
                     <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5 text-center">
                         <div class="w-10 h-10 bg-red-50 rounded-full flex items-center justify-center mx-auto mb-2">
                             <i class="fas fa-user-plus text-primary text-sm"></i>
                         </div>
                         <div class="text-2xl font-bold text-primary">{{ $member['following_count'] ?? 0 }}</div>
-                        <div class="text-gray-500 text-sm mt-1">Following</div>
+                        <div class="text-gray-500 text-sm mt-1">{{ __('ui.dash_following') }}</div>
                     </div>
                 </div>
 
                 {{-- Quick Links --}}
                 <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
-                    <h3 class="text-sm font-bold text-gray-700 mb-4 uppercase tracking-wide">Quick Links</h3>
+                    <h3 class="text-sm font-bold text-gray-700 mb-4 uppercase tracking-wide">{{ __('ui.quick_links') }}</h3>
                     <div class="grid grid-cols-2 gap-4">
                         <a href="{{ url('/members') }}" class="flex items-center space-x-3 bg-gray-50 rounded-xl p-4 hover:shadow-md transition group">
                             <div class="w-10 h-10 bg-red-50 rounded-full flex items-center justify-center flex-shrink-0 group-hover:bg-primary transition">
                                 <i class="fas fa-users text-primary group-hover:text-white transition text-sm"></i>
                             </div>
                             <div>
-                                <div class="text-sm font-semibold text-gray-700">Browse Members</div>
-                                <div class="text-xs text-gray-400">Find your match</div>
+                                <div class="text-sm font-semibold text-gray-700">{{ __('ui.browse_members') }}</div>
+                                <div class="text-xs text-gray-400">{{ __('ui.dash_find_your_match') }}</div>
                             </div>
                         </a>
                         <a href="{{ url('/plans') }}" class="flex items-center space-x-3 bg-gray-50 rounded-xl p-4 hover:shadow-md transition group">
@@ -185,8 +185,8 @@
                                 <i class="fas fa-crown text-primary group-hover:text-white transition text-sm"></i>
                             </div>
                             <div>
-                                <div class="text-sm font-semibold text-gray-700">Upgrade Plan</div>
-                                <div class="text-xs text-gray-400">Get more features</div>
+                                <div class="text-sm font-semibold text-gray-700">{{ __('ui.dash_upgrade_plan') }}</div>
+                                <div class="text-xs text-gray-400">{{ __('ui.dash_get_more_features') }}</div>
                             </div>
                         </a>
 

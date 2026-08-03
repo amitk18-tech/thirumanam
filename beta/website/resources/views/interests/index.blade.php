@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', $tab === 'sent' ? 'Interests Sent' : 'Interests Received')
+@section('title', $tab === 'sent' ? __('ui.int_sent_tab') : __('ui.int_received_tab'))
 
 @section('content')
 
@@ -10,21 +10,21 @@
         {{-- Header --}}
         <div class="flex items-center justify-between mb-6">
             <div>
-                <h1 class="text-2xl font-bold text-gray-800">Interests</h1>
-                <p class="text-gray-500 text-sm mt-1">Members you expressed interest in, and those who expressed interest in you</p>
+                <h1 class="text-2xl font-bold text-gray-800">{{ __('ui.int_title') }}</h1>
+                <p class="text-gray-500 text-sm mt-1">{{ __('ui.int_subtitle') }}</p>
             </div>
-            <a href="{{ url('/dashboard') }}" class="text-sm text-primary hover:underline">← Back to Dashboard</a>
+            <a href="{{ url('/dashboard') }}" class="text-sm text-primary hover:underline">{{ __('ui.int_back') }}</a>
         </div>
 
         {{-- Tabs --}}
         <div class="flex space-x-1 bg-white rounded-xl shadow-sm border border-gray-100 p-1 mb-6 w-fit">
             <a href="{{ url('/interests?tab=sent') }}"
                class="px-5 py-2 rounded-lg text-sm font-semibold transition {{ $tab === 'sent' ? 'bg-primary text-white' : 'text-gray-500 hover:text-gray-700' }}">
-                <i class="fas fa-paper-plane mr-1"></i> Interests Sent
+                <i class="fas fa-paper-plane mr-1"></i> {{ __('ui.int_sent_tab') }}
             </a>
             <a href="{{ url('/interests?tab=received') }}"
                class="px-5 py-2 rounded-lg text-sm font-semibold transition {{ $tab === 'received' ? 'bg-primary text-white' : 'text-gray-500 hover:text-gray-700' }}">
-                <i class="fas fa-heart mr-1"></i> Interests Received
+                <i class="fas fa-heart mr-1"></i> {{ __('ui.int_received_tab') }}
             </a>
         </div>
 
@@ -34,10 +34,10 @@
                 <div class="w-16 h-16 bg-red-50 rounded-full flex items-center justify-center mx-auto mb-4">
                     <i class="fas {{ $tab === 'sent' ? 'fa-paper-plane' : 'fa-heart' }} text-primary text-2xl"></i>
                 </div>
-                <p class="text-gray-500 text-sm">No {{ $tab === 'sent' ? 'interests sent' : 'interests received' }} yet.</p>
+                <p class="text-gray-500 text-sm">{{ $tab === 'sent' ? __('ui.int_empty_sent') : __('ui.int_empty_received') }}</p>
                 @if($tab === 'sent')
                 <a href="{{ url('/members') }}" class="mt-4 inline-block bg-primary text-white text-sm font-semibold px-5 py-2 rounded-lg hover:bg-red-900 transition">
-                    Browse Members
+                    {{ __('ui.int_browse') }}
                 </a>
                 @endif
             </div>
@@ -54,14 +54,19 @@
                     $photoUrl = $photo
                         ? (str_starts_with($photo, 'http') ? $photo : 'https://api.thirumanam.info/' . $photo)
                         : null;
-                    $name     = $user['name'] ?? 'Unknown';
-                    $memberId = $member['id'] ?? null;
+                    $name     = $user['name'] ?? __('ui.ms_unknown');
+                    $profileId = $profile['id'] ?? null;
                     $memberNo = $member['member_no'] ?? null;
                     $status   = $interest['status'] ?? 'pending';
                     $statusColor = match($status) {
                         'accepted' => 'text-green-600 bg-green-50',
                         'rejected' => 'text-red-600 bg-red-50',
                         default    => 'text-amber-600 bg-amber-50',
+                    };
+                    $statusLabel = match($status) {
+                        'accepted' => __('ui.int_status_accepted'),
+                        'rejected' => __('ui.int_status_rejected'),
+                        default    => __('ui.int_status_pending'),
                     };
                 @endphp
                 <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-4 flex items-center space-x-4">
@@ -88,12 +93,12 @@
                     {{-- Status --}}
                     <div class="flex items-center space-x-3 flex-shrink-0">
                         <span class="text-xs font-semibold px-2 py-1 rounded-full {{ $statusColor }}">
-                            {{ ucfirst($status) }}
+                            {{ $statusLabel }}
                         </span>
-                        @if($memberId)
-                        <a href="{{ url('/members/' . $memberId) }}"
+                        @if($profileId)
+                        <a href="{{ url('/members/' . $profileId) }}"
                            class="text-xs bg-primary text-white font-semibold px-3 py-1.5 rounded-lg hover:bg-red-900 transition">
-                            View Profile
+                            {{ __('ui.int_view_profile') }}
                         </a>
                         @endif
                     </div>

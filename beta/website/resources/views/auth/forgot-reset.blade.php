@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Reset Password')
+@section('title', __('ui.fp_reset_title'))
 
 @section('content')
 <div class="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4">
@@ -8,7 +8,7 @@
 
         <div class="text-center mb-8">
             <a href="{{ url('/') }}" class="text-3xl font-bold text-primary">திருமணம்</a>
-            <p class="text-gray-500 mt-2">Set your new password</p>
+            <p class="text-gray-500 mt-2">{{ __('ui.fp_reset_subtitle') }}</p>
         </div>
 
         <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
@@ -23,19 +23,19 @@
                 @csrf
 
                 <div class="mb-5">
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Gender</label>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">{{ __('ui.fp_gender_label') }}</label>
                     <select name="gender" class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary text-sm" required>
-                        <option value="">Select your gender</option>
-                        <option value="male">Male</option>
-                        <option value="female">Female</option>
+                        <option value="">{{ __('ui.fp_gender_placeholder') }}</option>
+                        <option value="male">{{ __('ui.fp_gender_male') }}</option>
+                        <option value="female">{{ __('ui.fp_gender_female') }}</option>
                     </select>
                 </div>
 
                 <div class="mb-5">
-                    <label class="block text-sm font-medium text-gray-700 mb-1">New Password</label>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">{{ __('ui.fp_new_password') }}</label>
                     <div class="relative">
                         <input :type="showPw ? 'text' : 'password'" name="password"
-                            placeholder="Enter new password"
+                            placeholder="{{ __('ui.fp_new_password_ph') }}"
                             class="w-full px-4 pr-10 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary text-sm"
                             required>
                         <button type="button" @click="showPw = !showPw"
@@ -46,10 +46,10 @@
                 </div>
 
                 <div class="mb-6">
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Confirm New Password</label>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">{{ __('ui.fp_confirm_password') }}</label>
                     <div class="relative">
                         <input :type="showConfirm ? 'text' : 'password'" name="password_confirmation"
-                            placeholder="Confirm new password"
+                            placeholder="{{ __('ui.fp_confirm_password_ph') }}"
                             class="w-full px-4 pr-10 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary text-sm"
                             required>
                         <button type="button" @click="showConfirm = !showConfirm"
@@ -61,11 +61,11 @@
 
                 <button type="submit"
                     class="w-full bg-primary text-white py-3 rounded-lg font-semibold hover:bg-red-900 transition text-sm">
-                    Reset Password
+                    {{ __('ui.fp_reset_btn') }}
                 </button>
 
                 <div class="mt-4 text-center text-sm text-gray-500">
-                    <a href="{{ url('/login') }}" class="text-primary hover:underline">Back to Login</a>
+                    <a href="{{ url('/login') }}" class="text-primary hover:underline">{{ __('ui.fp_back_to_login') }}</a>
                 </div>
             </form>
         </div>

@@ -11,6 +11,12 @@ use App\Http\Controllers\InterestController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\PlansController;
 
+Route::get("/locale/{lang}", function($lang) {
+    if (in_array($lang, ["en", "ta"])) {
+        session(["locale" => $lang]);
+    }
+    return redirect()->back();
+})->name("locale.switch");
 Route::get('/', [HomeController::class, 'index']);
 
 // Auth routes
@@ -58,6 +64,10 @@ Route::middleware('auth.session')->group(function () {
     Route::post('/horoscope/save-batch', [ProfileController::class, 'saveHoroscopeBatch'])->name('horoscope.batch');
     Route::post('/photo/upload', [ProfileController::class, 'uploadPhoto'])->name('photo.upload');
     Route::post('/profile/change-password', [ProfileController::class, 'changePassword'])->name('profile.change-password');
+    Route::post('/profile/family', [ProfileController::class, 'updateFamily'])->name('profile.family');
+    Route::get('/profile/partner/load', [ProfileController::class, 'loadPartner'])->name('profile.partner.load');
+    Route::post('/profile/partner', [ProfileController::class, 'updatePartner'])->name('profile.partner.update');
+    Route::get('/profile/family/load', [ProfileController::class, 'loadFamily'])->name('profile.family.load');
     Route::get('/messages', [MessageController::class, 'index'])->name('messages.index');
     Route::post('/messages/chat', [MessageController::class, 'chatWindow'])->name('messages.chat');
     Route::post('/messages/send', [MessageController::class, 'send'])->name('messages.send');
@@ -116,3 +126,4 @@ Route::post('/forgot-password/reset', [App\Http\Controllers\Auth\ForgotPasswordC
 
 // Contact form POST
 Route::post('/contact', [App\Http\Controllers\ContactController::class, 'submit'])->name('contact.submit');
+

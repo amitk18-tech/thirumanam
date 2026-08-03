@@ -1,14 +1,14 @@
 @extends('layouts.app')
 
-@section('title', 'Edit Profile — Thirumanam')
+@section('title', __('ui.pe_title') . ' — Thirumanam')
 
 @section('content')
 <div class="min-h-screen bg-gray-50" x-data="profileEdit()">
 
   <div class="bg-red-900 text-white py-8">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-      <h1 class="text-2xl font-bold">Edit Profile</h1>
-      <p class="text-red-200 text-sm mt-1">Keep your profile updated to get better matches</p>
+      <h1 class="text-2xl font-bold">{{ __('ui.pe_title') }}</h1>
+      <p class="text-red-200 text-sm mt-1">{{ __('ui.pe_subtitle') }}</p>
     </div>
   </div>
 
@@ -20,7 +20,16 @@
     <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
 
       <div class="flex overflow-x-auto border-b border-gray-100">
-        @foreach(['basic' => 'Basic', 'horoscope' => 'Horoscope', 'physical' => 'Physical', 'career' => 'Career', 'contact' => 'Contact', 'security' => 'Security'] as $key => $label)
+        @foreach([
+            'basic' => __('ui.pe_tab_basic'),
+            'horoscope' => __('ui.pe_tab_horoscope'),
+            'physical' => __('ui.pe_tab_physical'),
+            'career' => __('ui.pe_tab_career'),
+            'contact' => __('ui.pe_tab_contact'),
+            'security' => __('ui.pe_tab_security'),
+            'family'   => __('ui.pe_tab_family'),
+            'partner'  => __('ui.pe_tab_partner'),
+        ] as $key => $label)
           <button type="button" @click="tab = '{{ $key }}'"
                   :class="tab === '{{ $key }}' ? 'border-b-2 border-red-800 text-red-800 font-semibold' : 'text-gray-500 hover:text-gray-700'"
                   class="px-5 py-4 text-sm whitespace-nowrap transition">
@@ -42,12 +51,12 @@
                 class="w-full h-full object-cover">
             </div>
             <div>
-              <label class="label">Profile Photo</label>
+              <label class="label">{{ __('ui.pe_label_profile_photo') }}</label>
               <input type="file" id="photoInput" accept="image/*" class="text-sm text-gray-600"
                 onchange="previewPhoto(this)">
               <button type="button" onclick="uploadPhoto()"
                 class="mt-2 px-4 py-1.5 bg-[#8B1A1A] text-white text-sm rounded hover:bg-[#6e1414]">
-                Upload Photo
+                {{ __('ui.pe_upload_photo') }}
               </button>
               <p id="photoStatus" class="text-xs mt-1 text-gray-500"></p>
             </div>
@@ -55,43 +64,43 @@
           
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label class="label">Gender</label>
+              <label class="label">{{ __('ui.ms_label_gender') }}</label>
               <select x-model="form.gender" class="input">
-                <option value="">Select</option>
-                <option value="male">Male</option>
-                <option value="female">Female</option>
+                <option value="">{{ __('ui.pe_opt_select') }}</option>
+                <option value="male">{{ __('ui.pe_opt_male') }}</option>
+                <option value="female">{{ __('ui.pe_opt_female') }}</option>
               </select>
             </div>
             <div>
-              <label class="label">Date of Birth</label>
+              <label class="label">{{ __('ui.ms_label_dob') }}</label>
               <input type="date" x-model="form.dob" class="input">
             </div>
             <div>
-              <label class="label">Marital Status</label>
+              <label class="label">{{ __('ui.ms_label_marital_status') }}</label>
               <select x-model="form.marital_status" class="input">
-                <option value="">Select</option>
-                <option value="never_married">Never Married</option>
-                <option value="divorced">Divorced</option>
-                <option value="widowed">Widowed</option>
-                <option value="separated">Separated</option>
+                <option value="">{{ __('ui.pe_opt_select') }}</option>
+                <option value="never_married">{{ __('ui.never_married') }}</option>
+                <option value="divorced">{{ __('ui.divorced') }}</option>
+                <option value="widowed">{{ __('ui.widowed') }}</option>
+                <option value="separated">{{ __('ui.separated') }}</option>
               </select>
             </div>
             <div x-show="form.marital_status !== 'never_married'">
-              <label class="label">Number of Children</label>
+              <label class="label">{{ __('ui.pe_label_number_of_children') }}</label>
               <input type="number" x-model="form.number_of_children" class="input" min="0" placeholder="0">
             </div>
             <div x-show="form.marital_status !== 'never_married'">
-              <label class="label">Children Living Place</label>
+              <label class="label">{{ __('ui.pe_label_children_living_place') }}</label>
               <select x-model="form.children_living_place" class="input">
-                <option value="">Select</option>
-                <option value="living_with_me">Living with me</option>
-                <option value="not_living_with_me">Not living with me</option>
+                <option value="">{{ __('ui.pe_opt_select') }}</option>
+                <option value="living_with_me">{{ __('ui.pe_opt_living_with_me') }}</option>
+                <option value="not_living_with_me">{{ __('ui.pe_opt_not_living_with_me') }}</option>
               </select>
             </div>
           </div>
           <div>
-            <label class="label">Introduction</label>
-            <textarea x-model="form.introduction" rows="4" class="input" placeholder="Write a short introduction about yourself..."></textarea>
+            <label class="label">{{ __('ui.pe_label_introduction') }}</label>
+            <textarea x-model="form.introduction" rows="4" class="input" placeholder="{{ __('ui.pe_ph_introduction') }}"></textarea>
           </div>
         </div>
 
@@ -99,101 +108,101 @@
         <div x-show="tab === 'horoscope'" class="space-y-4">
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label class="label">Star (Natchathiram)</label>
+              <label class="label">{{ __('ui.ms_label_star') }}</label>
               <select x-model="form.star" class="input">
-                <option value="">Select</option>
+                <option value="">{{ __('ui.pe_opt_select') }}</option>
                 @foreach(['Ashwini','Bharani','Krittika','Rohini','Mrigashira','Ardra','Punarvasu','Pushya','Ashlesha','Magha','Purva Phalguni','Uttara Phalguni','Hasta','Chitra','Swati','Vishakha','Anuradha','Jyeshtha','Mula','Purva Ashadha','Uttara Ashadha','Shravana','Dhanishtha','Shatabhisha','Purva Bhadrapada','Uttara Bhadrapada','Revati'] as $s)
-                  <option value="{{ $s }}">{{ $s }}</option>
+                  <option value="{{ $s }}">{{ tv('star', $s) }}</option>
                 @endforeach
               </select>
             </div>
             <div>
-              <label class="label">Rasi</label>
+              <label class="label">{{ __('ui.ms_label_rasi') }}</label>
               <select x-model="form.rasi" class="input">
-                <option value="">Select</option>
+                <option value="">{{ __('ui.pe_opt_select') }}</option>
                 @foreach(['Mesha','Rishabha','Mithuna','Kataka','Simha','Kanya','Tula','Vrischika','Dhanus','Makara','Kumbha','Meena'] as $r)
-                  <option value="{{ $r }}">{{ $r }}</option>
+                  <option value="{{ $r }}">{{ tv('rasi', $r) }}</option>
                 @endforeach
               </select>
             </div>
             <div>
-              <label class="label">Paksha</label>
+              <label class="label">{{ __('ui.ms_label_paksha') }}</label>
               <select x-model="form.paksha" class="input">
-                <option value="">Select</option>
-                <option value="shukla">Shukla</option>
-                <option value="krishna">Krishna</option>
+                <option value="">{{ __('ui.pe_opt_select') }}</option>
+                <option value="shukla">{{ __('ui.pe_opt_shukla') }}</option>
+                <option value="krishna">{{ __('ui.pe_opt_krishna') }}</option>
               </select>
             </div>
             <div>
-              <label class="label">Tithi</label>
-              <input type="text" x-model="form.tithi" class="input" placeholder="e.g. Panchami">
+              <label class="label">{{ __('ui.ms_label_tithi') }}</label>
+              <input type="text" x-model="form.tithi" class="input" placeholder="{{ __('ui.pe_ph_tithi') }}">
             </div>
             <div>
-              <label class="label">Ganam</label>
+              <label class="label">{{ __('ui.ms_label_ganam') }}</label>
               <select x-model="form.ganam" class="input">
-                <option value="">Select</option>
-                <option value="dev">Dev</option>
-                <option value="manush">Manush</option>
-                <option value="rakshas">Rakshas</option>
+                <option value="">{{ __('ui.pe_opt_select') }}</option>
+                <option value="dev">{{ __('ui.pe_opt_dev') }}</option>
+                <option value="manush">{{ __('ui.pe_opt_manush') }}</option>
+                <option value="rakshas">{{ __('ui.pe_opt_rakshas') }}</option>
               </select>
             </div>
             <div>
-              <label class="label">Nadi</label>
+              <label class="label">{{ __('ui.ms_label_nadi') }}</label>
               <select x-model="form.nadi" class="input">
-                <option value="">Select</option>
-                <option value="adi">Adi</option>
-                <option value="madhya">Madhya</option>
-                <option value="antya">Antya</option>
+                <option value="">{{ __('ui.pe_opt_select') }}</option>
+                <option value="adi">{{ __('ui.pe_opt_adi') }}</option>
+                <option value="madhya">{{ __('ui.pe_opt_madhya') }}</option>
+                <option value="antya">{{ __('ui.pe_opt_antya') }}</option>
               </select>
             </div>
             <div>
-              <label class="label">Dosham</label>
+              <label class="label">{{ __('ui.ms_label_dosham') }}</label>
               <select x-model="form.dosham" class="input">
-                <option value="">Select</option>
-                <option value="no">No</option>
-                <option value="yes">Yes</option>
-                <option value="partial">Partial</option>
+                <option value="">{{ __('ui.pe_opt_select') }}</option>
+                <option value="no">{{ __('ui.pe_opt_no') }}</option>
+                <option value="yes">{{ __('ui.pe_opt_yes') }}</option>
+                <option value="partial">{{ __('ui.pe_opt_partial') }}</option>
               </select>
             </div>
             <div>
-              <label class="label">Type of Dosham</label>
-              <input type="text" x-model="form.type_of_dosham" class="input" placeholder="e.g. 12-mars">
+              <label class="label">{{ __('ui.ms_label_type_of_dosham') }}</label>
+              <input type="text" x-model="form.type_of_dosham" class="input" placeholder="{{ __('ui.pe_ph_type_of_dosham') }}">
             </div>
             <div>
-              <label class="label">Horoscope Matching</label>
+              <label class="label">{{ __('ui.ms_label_horoscope_matching') }}</label>
               <select x-model="form.horoscope_matching" class="input">
-                <option value="">Select</option>
-                <option value="yes">Yes</option>
-                <option value="no">No</option>
+                <option value="">{{ __('ui.pe_opt_select') }}</option>
+                <option value="yes">{{ __('ui.pe_opt_yes') }}</option>
+                <option value="no">{{ __('ui.pe_opt_no') }}</option>
               </select>
             </div>
             <div>
-              <label class="label">Birth Time</label>
+              <label class="label">{{ __('ui.ms_label_birth_time') }}</label>
               <input type="time" x-model="form.birth_time" class="input">
             </div>
             <div>
-              <label class="label">Birth City</label>
-              <input type="text" x-model="form.birth_city" class="input" placeholder="e.g. Chennai">
+              <label class="label">{{ __('ui.ms_label_birth_city') }}</label>
+              <input type="text" x-model="form.birth_city" class="input" placeholder="{{ __('ui.pe_ph_birth_city') }}">
             </div>
             <div>
-              <label class="label">Birth Place</label>
-              <input type="text" x-model="form.birth_place" class="input" placeholder="e.g. Tamil Nadu">
+              <label class="label">{{ __('ui.ms_label_birth_place') }}</label>
+              <input type="text" x-model="form.birth_place" class="input" placeholder="{{ __('ui.pe_ph_birth_place') }}">
             </div>
             <div>
-              <label class="label">Birth Country</label>
-              <input type="text" x-model="form.birth_country" class="input" placeholder="e.g. India">
+              <label class="label">{{ __('ui.pe_label_birth_country') }}</label>
+              <input type="text" x-model="form.birth_country" class="input" placeholder="{{ __('ui.pe_ph_birth_country') }}">
             </div>
             <div>
-              <label class="label">Birth State</label>
-              <input type="text" x-model="form.birth_state" class="input" placeholder="e.g. Tamil Nadu">
+              <label class="label">{{ __('ui.pe_label_birth_state') }}</label>
+              <input type="text" x-model="form.birth_state" class="input" placeholder="{{ __('ui.pe_ph_birth_state') }}">
             </div>
             <div>
-              <label class="label">Lakknam</label>
-              <input type="text" x-model="form.lakknam" class="input" placeholder="e.g. Taurus">
+              <label class="label">{{ __('ui.ms_label_lakknam') }}</label>
+              <input type="text" x-model="form.lakknam" class="input" placeholder="{{ __('ui.pe_ph_lakknam') }}">
             </div>
             <div>
-              <label class="label">Directional Balance</label>
-              <input type="text" x-model="form.directional_balance" class="input" placeholder="e.g. East">
+              <label class="label">{{ __('ui.ms_label_directional_balance') }}</label>
+              <input type="text" x-model="form.directional_balance" class="input" placeholder="{{ __('ui.pe_ph_directional_balance') }}">
             </div>
           </div>
 
@@ -206,7 +215,8 @@
                 $bn = $hb['box_number'] ?? 0;
                 $bGrid[$t][$bn][] = ['id' => $hb['id'] ?? null, 'value' => $hb['value'] ?? ''];
             }
-            $chartTypes = ['ZODIAC' => 'Rasi Chart', 'FEATURE' => 'Feature Chart'];
+            $chartTypes = ['ZODIAC' => __('ui.pe_chart_rasi'), 'FEATURE' => __('ui.pe_chart_feature')];
+            $chartTypeLabels = ['ZODIAC' => __('ui.ms_zodiac'), 'FEATURE' => __('ui.ms_feature')];
           @endphp
           @foreach($chartTypes as $chartType => $chartLabel)
           <div class="mt-6">
@@ -218,7 +228,7 @@
                   <tr>
                     @foreach($row as $colIdx => $bn)
                       @if($rowIdx==1 && $colIdx==1)
-                        <td class="border-2 border-green-300 bg-yellow-50 text-center font-semibold text-gray-500 align-middle" colspan="2" rowspan="2" style="height:5.5em">{{ $chartType }}</td>
+                        <td class="border-2 border-green-300 bg-yellow-50 text-center font-semibold text-gray-500 align-middle" colspan="2" rowspan="2" style="height:5.5em">{{ $chartTypeLabels[$chartType] }}</td>
                       @elseif(($rowIdx==1 && $colIdx==2) || ($rowIdx==2 && $colIdx==0) || ($rowIdx==2 && $colIdx==3))
                         {{-- skip colspan/rowspan cells --}}
                       @elseif($bn !== null)
@@ -250,7 +260,7 @@
           </div>
           @endforeach
           <div class="mt-3 flex items-center gap-3">
-            <button type="button" onclick="saveHoroscopeBoxes(this)" class="px-4 py-2 bg-[#8B1A1A] text-white text-sm rounded-lg hover:bg-red-800">Save Charts</button>
+            <button type="button" onclick="saveHoroscopeBoxes(this)" class="px-4 py-2 bg-[#8B1A1A] text-white text-sm rounded-lg hover:bg-red-800">{{ __('ui.pe_save_charts') }}</button>
             <span id="hbox-msg" class="text-sm"></span>
           </div>
         </div>
@@ -259,179 +269,433 @@
         <div x-show="tab === 'physical'" class="space-y-4">
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label class="label">Height (cm)</label>
-              <input type="number" x-model="form.height" class="input" placeholder="e.g. 170">
+              <label class="label">{{ __('ui.ms_label_height') }} (cm)</label>
+              <input type="number" x-model="form.height" class="input" placeholder="{{ __('ui.pe_ph_height') }}">
             </div>
             <div>
-              <label class="label">Weight (kg)</label>
-              <input type="number" x-model="form.weight" class="input" placeholder="e.g. 65">
+              <label class="label">{{ __('ui.ms_label_weight') }} (kg)</label>
+              <input type="number" x-model="form.weight" class="input" placeholder="{{ __('ui.pe_ph_weight') }}">
             </div>
             <div>
-              <label class="label">Complexion</label>
+              <label class="label">{{ __('ui.ms_label_complexion') }}</label>
               <select x-model="form.complexion" class="input">
-                <option value="">Select</option>
-                <option value="fair">Fair</option>
-                <option value="wheatish">Wheatish</option>
-                <option value="dark">Dark</option>
+                <option value="">{{ __('ui.pe_opt_select') }}</option>
+                <option value="fair">{{ __('ui.pe_opt_fair') }}</option>
+                <option value="wheatish">{{ __('ui.pe_opt_wheatish') }}</option>
+                <option value="dark">{{ __('ui.pe_opt_dark') }}</option>
               </select>
             </div>
             <div>
-              <label class="label">Body Type</label>
+              <label class="label">{{ __('ui.ms_label_body_type') }}</label>
               <select x-model="form.body_type" class="input">
-                <option value="">Select</option>
-                <option value="slim">Slim</option>
-                <option value="athletic">Athletic</option>
-                <option value="average">Average</option>
-                <option value="heavy">Heavy</option>
+                <option value="">{{ __('ui.pe_opt_select') }}</option>
+                <option value="slim">{{ __('ui.pe_opt_slim') }}</option>
+                <option value="athletic">{{ __('ui.pe_opt_athletic') }}</option>
+                <option value="average">{{ __('ui.pe_opt_average') }}</option>
+                <option value="heavy">{{ __('ui.pe_opt_heavy') }}</option>
               </select>
             </div>
             <div>
-              <label class="label">Blood Group</label>
+              <label class="label">{{ __('ui.ms_label_blood_group') }}</label>
               <select x-model="form.blood_group" class="input">
-                <option value="">Select</option>
+                <option value="">{{ __('ui.pe_opt_select') }}</option>
                 @foreach(['A+','A-','B+','B-','O+','O-','AB+','AB-'] as $bg)
                   <option value="{{ $bg }}">{{ $bg }}</option>
                 @endforeach
               </select>
             </div>
             <div>
-              <label class="label">Physical Status</label>
+              <label class="label">{{ __('ui.ms_label_physical_status') }}</label>
               <select x-model="form.physical_status" class="input">
-                <option value="">Select</option>
-                <option value="normal">Normal</option>
-                <option value="differently_abled">Differently Abled</option>
+                <option value="">{{ __('ui.pe_opt_select') }}</option>
+                <option value="normal">{{ __('ui.pe_opt_normal') }}</option>
+                <option value="differently_abled">{{ __('ui.pe_opt_differently_abled') }}</option>
               </select>
             </div>
             <div>
-              <label class="label">Eye Color</label>
-              <input type="text" x-model="form.eye_color" class="input" placeholder="e.g. Black">
+              <label class="label">{{ __('ui.ms_label_eye_color') }}</label>
+              <input type="text" x-model="form.eye_color" class="input" placeholder="{{ __('ui.pe_ph_eye_color') }}">
             </div>
             <div>
-              <label class="label">Hair Color</label>
-              <input type="text" x-model="form.hair_color" class="input" placeholder="e.g. Black">
+              <label class="label">{{ __('ui.ms_label_hair_color') }}</label>
+              <input type="text" x-model="form.hair_color" class="input" placeholder="{{ __('ui.pe_ph_hair_color') }}">
             </div>
           </div>
         </div>
 
         {{-- Career --}}
         <div x-show="tab === 'career'" class="space-y-4">
+          @if($isLocked)
+          <div class="mb-4 p-3 bg-amber-50 border border-amber-300 rounded-lg text-amber-800 text-sm font-medium">⚠️ {{ __("ui.pe_lock_message") }}</div>
+          @endif
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label class="label">Education</label>
-              <input type="text" x-model="form.education" class="input" placeholder="e.g. B.Tech">
+              <label class="label">{{ __('ui.ms_label_education') }}</label>
+              <input type="text" x-model="form.education" class="input" placeholder="{{ __('ui.pe_ph_education') }}">
             </div>
             <div>
-              <label class="label">Study Details</label>
-              <input type="text" x-model="form.study_details" class="input" placeholder="e.g. Computer Science">
+              <label class="label">{{ __('ui.ms_label_study_details') }}</label>
+              <input type="text" x-model="form.study_details" class="input" placeholder="{{ __('ui.pe_ph_study_details') }}">
             </div>
             <div>
-              <label class="label">Occupation</label>
-              <input type="text" x-model="form.occupation" class="input" placeholder="e.g. Software Engineer">
+              <label class="label">{{ __('ui.ms_label_occupation') }}</label>
+              <input type="text" x-model="form.occupation" class="input" placeholder="{{ __('ui.pe_ph_occupation') }}">
             </div>
             <div>
-              <label class="label">Work Location</label>
-              <input type="text" x-model="form.work_location" class="input" placeholder="e.g. Bangalore">
+              <label class="label">{{ __('ui.ms_label_work_location') }}</label>
+              <input type="text" x-model="form.work_location" class="input" placeholder="{{ __('ui.pe_ph_work_location') }}">
             </div>
             <div>
-              <label class="label">Income Level</label>
+              <label class="label">{{ __('ui.pe_label_income_level') }}</label>
               <select x-model="form.income" class="input">
-                <option value="">Select</option>
-                <option value="low">Low</option>
-                <option value="medium">Medium</option>
-                <option value="high">High</option>
+                <option value="">{{ __('ui.pe_opt_select') }}</option>
+                <option value="low">{{ __('ui.pe_opt_low') }}</option>
+                <option value="medium">{{ __('ui.pe_opt_medium') }}</option>
+                <option value="high">{{ __('ui.pe_opt_high') }}</option>
               </select>
             </div>
             <div>
-              <label class="label">Income Amount (monthly)</label>
-              <input type="number" x-model="form.income_amount" class="input" placeholder="e.g. 50000">
+              <label class="label">{{ __('ui.ms_label_income_amount') }} (monthly)</label>
+              <input type="number" x-model="form.income_amount" class="input" placeholder="{{ __('ui.pe_ph_income_amount') }}">
             </div>
             <div>
-              <label class="label">Earnings Type</label>
+              <label class="label">{{ __('ui.ms_label_earnings_type') }}</label>
               <select x-model="form.earnings" class="input">
-                <option value="">Select</option>
-                <option value="monthly">Monthly</option>
-                <option value="yearly">Yearly</option>
+                <option value="">{{ __('ui.pe_opt_select') }}</option>
+                <option value="monthly">{{ __('ui.pe_opt_monthly') }}</option>
+                <option value="yearly">{{ __('ui.pe_opt_yearly') }}</option>
               </select>
             </div>
           </div>
           <div>
-            <label class="label">Career Profile</label>
-            <textarea x-model="form.career_profile" rows="3" class="input" placeholder="Brief description of your career..."></textarea>
+            <label class="label">{{ __('ui.ms_label_career_profile') }}</label>
+            <textarea x-model="form.career_profile" rows="3" class="input" placeholder="{{ __('ui.pe_ph_career_profile') }}"></textarea>
           </div>
         </div>
 
         {{-- Contact --}}
         <div x-show="tab === 'contact'" class="space-y-4">
+          @if($isLocked)
+          <div class="mb-4 p-3 bg-amber-50 border border-amber-300 rounded-lg text-amber-800 text-sm font-medium">⚠️ {{ __("ui.pe_lock_message") }}</div>
+          @endif
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label class="label">City</label>
-              <input type="text" x-model="form.city" class="input" placeholder="e.g. Chennai">
+              <label class="label">{{ __('ui.ms_label_city') }}</label>
+              <input type="text" x-model="form.city" class="input" placeholder="{{ __('ui.pe_ph_city') }}">
             </div>
             <div>
-              <label class="label">Current City</label>
-              <input type="text" x-model="form.current_city" class="input" placeholder="e.g. Bangalore">
+              <label class="label">{{ __('ui.ms_label_current_city') }}</label>
+              <input type="text" x-model="form.current_city" class="input" placeholder="{{ __('ui.pe_ph_current_city') }}">
             </div>
             <div>
-              <label class="label">State</label>
-              <input type="text" x-model="form.state" class="input" placeholder="e.g. Tamil Nadu">
+              <label class="label">{{ __('ui.ms_label_state') }}</label>
+              <input type="text" x-model="form.state" class="input" placeholder="{{ __('ui.pe_ph_state') }}">
             </div>
             <div>
-              <label class="label">Country</label>
-              <input type="text" x-model="form.country" class="input" placeholder="e.g. India">
+              <label class="label">{{ __('ui.ms_label_country') }}</label>
+              <input type="text" x-model="form.country" class="input" placeholder="{{ __('ui.pe_ph_country') }}">
             </div>
             <div>
-              <label class="label">Native Place</label>
-              <input type="text" x-model="form.native_place" class="input" placeholder="e.g. Madurai">
+              <label class="label">{{ __('ui.ms_label_native_place') }}</label>
+              <input type="text" x-model="form.native_place" class="input" placeholder="{{ __('ui.pe_ph_native_place') }}">
             </div>
             <div>
-              <label class="label">Postal Code</label>
-              <input type="text" x-model="form.postal_code" class="input" placeholder="e.g. 600001">
+              <label class="label">{{ __('ui.ms_label_postal_code') }}</label>
+              <input type="text" x-model="form.postal_code" class="input" placeholder="{{ __('ui.pe_ph_postal_code') }}">
             </div>
             <div>
-              <label class="label">Mobile</label>
+              <label class="label">{{ __('ui.ms_label_mobile') }}</label>
               <input type="text" value="{{ $user['profile']['user']['phone'] ?? $profile['mobile'] ?? '' }}" class="input bg-gray-100 cursor-not-allowed" readonly disabled>
             </div>
             <div>
-              <label class="label">Alternate Number</label>
+              <label class="label">{{ __('ui.ms_label_alternate_number') }}</label>
               <input type="text" x-model="form.alternate_number" class="input">
             </div>
             <div>
-              <label class="label">Landline</label>
-              <input type="text" x-model="form.landline" class="input" placeholder="e.g. 044-12345678">
+              <label class="label">{{ __('ui.ms_label_landline') }}</label>
+              <input type="text" x-model="form.landline" class="input" placeholder="{{ __('ui.pe_ph_landline') }}">
             </div>
           </div>
           <div>
-            <label class="label">Address</label>
-            <textarea x-model="form.address" rows="3" class="input" placeholder="Full address..."></textarea>
+            <label class="label">{{ __('ui.ms_label_address') }}</label>
+            <textarea x-model="form.address" rows="3" class="input" placeholder="{{ __('ui.pe_ph_address') }}"></textarea>
+          </div>
+        </div>
+
+        {{-- Family --}}
+        <div x-show="tab === 'family'" class="space-y-4">
+          @if($isLocked)
+          <div class="mb-4 p-3 bg-amber-50 border border-amber-300 rounded-lg text-amber-800 text-sm font-medium">⚠️ {{ __("ui.pe_lock_message") }}</div>
+          @endif
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="label">{{ __('ui.pe_label_surname') }}</label>
+              <input type="text" x-model="familyForm.surname" class="input" placeholder="{{ __('ui.pe_ph_surname') }}">
+            </div>
+
+            <div>
+              <label class="label">{{ __('ui.pe_label_father_name') }}</label>
+              <input type="text" x-model="familyForm.father_name" class="input" placeholder="{{ __('ui.pe_ph_father_name') }}">
+            </div>
+            <div>
+              <label class="label">{{ __('ui.pe_label_father_occupation') }}</label>
+              <input type="text" x-model="familyForm.father_occupation" class="input" placeholder="{{ __('ui.pe_ph_father_occupation') }}">
+            </div>
+            <div>
+              <label class="label">{{ __('ui.pe_label_mother_name') }}</label>
+              <input type="text" x-model="familyForm.mother_name" class="input" placeholder="{{ __('ui.pe_ph_mother_name') }}">
+            </div>
+            <div>
+              <label class="label">{{ __('ui.pe_label_mother_occupation') }}</label>
+              <input type="text" x-model="familyForm.mother_occupation" class="input" placeholder="{{ __('ui.pe_ph_mother_occupation') }}">
+            </div>
+            <div>
+              <label class="label">{{ __('ui.pe_label_father_vangusam') }}</label>
+              <input type="text" x-model="familyForm.father_vangusam" class="input" placeholder="{{ __('ui.pe_ph_father_vangusam') }}">
+            </div>
+            <div>
+              <label class="label">{{ __('ui.pe_label_mother_vangusam') }}</label>
+              <input type="text" x-model="familyForm.mother_vangusam" class="input" placeholder="{{ __('ui.pe_ph_mother_vangusam') }}">
+            </div>
+            <div>
+              <label class="label">{{ __('ui.pe_label_brothers_count') }}</label>
+              <input type="number" x-model="familyForm.brothers_count" class="input" min="0" placeholder="0">
+            </div>
+            <div>
+              <label class="label">{{ __('ui.pe_label_brothers_married') }}</label>
+              <input type="number" x-model="familyForm.brothers_married" class="input" min="0" placeholder="0">
+            </div>
+            <div>
+              <label class="label">{{ __('ui.pe_label_sisters_count') }}</label>
+              <input type="number" x-model="familyForm.sisters_count" class="input" min="0" placeholder="0">
+            </div>
+            <div>
+              <label class="label">{{ __('ui.pe_label_sisters_married') }}</label>
+              <input type="number" x-model="familyForm.sisters_married" class="input" min="0" placeholder="0">
+            </div>
+            <div>
+              <label class="label">{{ __('ui.pe_label_family_status') }}</label>
+              <select x-model="familyForm.family_status" class="input">
+                <option value="">{{ __('ui.pe_opt_select') }}</option>
+                <option value="middle class">{{ __('ui.pe_opt_middle_class') }}</option>
+                <option value="upper">{{ __('ui.pe_opt_upper') }}</option>
+                <option value="rich">{{ __('ui.pe_opt_rich') }}</option>
+              </select>
+            </div>
+            <div>
+              <label class="label">{{ __('ui.pe_label_family_type') }}</label>
+              <select x-model="familyForm.family_type" class="input">
+                <option value="">{{ __('ui.pe_opt_select') }}</option>
+                <option value="joint">{{ __('ui.pe_opt_joint') }}</option>
+                <option value="nuclear">{{ __('ui.pe_opt_nuclear') }}</option>
+              </select>
+            </div>
+            <div>
+              <label class="label">{{ __('ui.pe_label_family_values') }}</label>
+              <select x-model="familyForm.family_values" class="input">
+                <option value="">{{ __('ui.pe_opt_select') }}</option>
+                <option value="traditional">{{ __('ui.pe_opt_traditional') }}</option>
+                <option value="modern">{{ __('ui.pe_opt_modern') }}</option>
+              </select>
+            </div>
+            <div>
+              <label class="label">{{ __('ui.pe_label_soveran_details') }}</label>
+              <input type="number" x-model="familyForm.soveran_details" class="input" min="0" placeholder="0">
+            </div>
+          </div>
+          <div>
+            <label class="label">{{ __('ui.pe_label_about_family') }}</label>
+            <textarea x-model="familyForm.about_family" rows="3" class="input" placeholder="{{ __('ui.pe_ph_about_family') }}"></textarea>
+          </div>
+          <div>
+            <label class="label">{{ __('ui.pe_label_property_description') }}</label>
+            <textarea x-model="familyForm.property_description" rows="3" class="input" placeholder="{{ __('ui.pe_ph_property_description') }}"></textarea>
+          </div>
+          <div x-show="familySuccess" x-cloak class="p-3 bg-green-50 border border-green-200 rounded-lg text-green-700 text-sm" x-text="familySuccess"></div>
+          <div x-show="familyError" x-cloak class="p-3 bg-red-50 border border-red-200 rounded-lg text-red-600 text-sm" x-text="familyError"></div>
+          <div class="flex justify-end">
+            <button type="button" @click="saveFamily" :disabled="familyLoading @if($isLocked) || true @endif"
+                    class="bg-red-800 hover:bg-red-900 text-white px-8 py-3 rounded-lg font-semibold transition disabled:opacity-50">
+              <span x-show="!familyLoading">{{ __('ui.pe_save_changes') }}</span>
+              <span x-show="familyLoading">{{ __('ui.pe_saving') }}</span>
+            </button>
+          </div>
+        </div>
+
+        {{-- Partner Preference --}}
+        <div x-show="tab === 'partner'" class="space-y-4">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="label">{{ __('ui.pe_label_preferred_age_min') }}</label>
+              <input type="number" x-model="partnerForm.preferred_age_min" class="input" min="18" placeholder="{{ __('ui.pe_ph_preferred_age_min') }}">
+            </div>
+            <div>
+              <label class="label">{{ __('ui.pe_label_preferred_age_max') }}</label>
+              <input type="number" x-model="partnerForm.preferred_age_max" class="input" min="18" placeholder="{{ __('ui.pe_ph_preferred_age_max') }}">
+            </div>
+            <div>
+              <label class="label">{{ __('ui.pe_label_preferred_height_min') }}</label>
+              <input type="number" x-model="partnerForm.preferred_height_min" class="input" min="50" placeholder="{{ __('ui.pe_ph_preferred_height_min') }}">
+            </div>
+            <div>
+              <label class="label">{{ __('ui.pe_label_preferred_height_max') }}</label>
+              <input type="number" x-model="partnerForm.preferred_height_max" class="input" min="50" placeholder="{{ __('ui.pe_ph_preferred_height_max') }}">
+            </div>
+            <div>
+              <label class="label">{{ __('ui.pe_label_partner_marital_status') }}</label>
+              <select x-model="partnerForm.marital_status" class="input">
+                <option value="">{{ __('ui.pe_opt_select') }}</option>
+                <option value="never_married">{{ __('ui.never_married') }}</option>
+                <option value="divorced">{{ __('ui.divorced') }}</option>
+                <option value="widowed">{{ __('ui.widowed') }}</option>
+                <option value="separated">{{ __('ui.separated') }}</option>
+              </select>
+            </div>
+            <div>
+              <label class="label">{{ __('ui.pe_label_children_acceptables') }}</label>
+              <select x-model="partnerForm.children_acceptables" class="input">
+                <option value="">{{ __('ui.pe_opt_select') }}</option>
+                <option value="yes">{{ __('ui.pe_opt_yes') }}</option>
+                <option value="no">{{ __('ui.pe_opt_no') }}</option>
+              </select>
+            </div>
+            <div>
+              <label class="label">{{ __('ui.pe_label_partner_religion') }}</label>
+              <input type="text" x-model="partnerForm.religion" class="input" placeholder="{{ __('ui.pe_ph_partner_religion') }}">
+            </div>
+            <div>
+              <label class="label">{{ __('ui.pe_label_partner_caste') }}</label>
+              <input type="text" x-model="partnerForm.caste" class="input" placeholder="{{ __('ui.pe_ph_partner_caste') }}">
+            </div>
+            <div>
+              <label class="label">{{ __('ui.pe_label_partner_education') }}</label>
+              <input type="text" x-model="partnerForm.education" class="input" placeholder="{{ __('ui.pe_ph_partner_education') }}">
+            </div>
+            <div>
+              <label class="label">{{ __('ui.pe_label_partner_occupation') }}</label>
+              <input type="text" x-model="partnerForm.occupation" class="input" placeholder="{{ __('ui.pe_ph_partner_occupation') }}">
+            </div>
+            <div>
+              <label class="label">{{ __('ui.pe_label_partner_profession') }}</label>
+              <input type="text" x-model="partnerForm.profession" class="input" placeholder="{{ __('ui.pe_ph_partner_profession') }}">
+            </div>
+            <div>
+              <label class="label">{{ __('ui.pe_label_partner_location') }}</label>
+              <input type="text" x-model="partnerForm.location" class="input" placeholder="{{ __('ui.pe_ph_partner_location') }}">
+            </div>
+            <div>
+              <label class="label">{{ __('ui.pe_label_partner_family_type') }}</label>
+              <select x-model="partnerForm.family_type" class="input">
+                <option value="">{{ __('ui.pe_opt_select') }}</option>
+                <option value="joint">{{ __('ui.pe_opt_joint') }}</option>
+                <option value="nuclear">{{ __('ui.pe_opt_nuclear') }}</option>
+              </select>
+            </div>
+            <div>
+              <label class="label">{{ __('ui.pe_label_horoscope_required') }}</label>
+              <select x-model="partnerForm.horoscope_required" class="input">
+                <option value="">{{ __('ui.pe_opt_select') }}</option>
+                <option value="1">{{ __('ui.pe_opt_yes') }}</option>
+                <option value="0">{{ __('ui.pe_opt_no') }}</option>
+              </select>
+            </div>
+            <div>
+              <label class="label">{{ __('ui.pe_label_horoscope_natchathiram') }}</label>
+              <input type="text" x-model="partnerForm.horoscope_natchathiram" class="input" placeholder="{{ __('ui.pe_ph_horoscope_natchathiram') }}">
+            </div>
+            <div>
+              <label class="label">{{ __('ui.pe_label_horoscope_rasi') }}</label>
+              <input type="text" x-model="partnerForm.horoscope_rasi" class="input" placeholder="{{ __('ui.pe_ph_horoscope_rasi') }}">
+            </div>
+            <div>
+              <label class="label">{{ __('ui.pe_label_partner_dosham') }}</label>
+              <select x-model="partnerForm.dosham" class="input">
+                <option value="">{{ __('ui.pe_opt_select') }}</option>
+                <option value="no">{{ __('ui.pe_opt_no') }}</option>
+                <option value="yes">{{ __('ui.pe_opt_yes') }}</option>
+                <option value="partial">{{ __('ui.pe_opt_partial') }}</option>
+              </select>
+            </div>
+            <div>
+              <label class="label">{{ __('ui.pe_label_partner_type_of_dosham') }}</label>
+              <input type="text" x-model="partnerForm.type_of_dosham" class="input" placeholder="{{ __('ui.pe_ph_partner_type_of_dosham') }}">
+            </div>
+            <div>
+              <label class="label">{{ __('ui.pe_label_drinking') }}</label>
+              <select x-model="partnerForm.drinking" class="input">
+                <option value="">{{ __('ui.pe_opt_select') }}</option>
+                <option value="yes">{{ __('ui.pe_opt_yes') }}</option>
+                <option value="no">{{ __('ui.pe_opt_no') }}</option>
+              </select>
+            </div>
+            <div>
+              <label class="label">{{ __('ui.pe_label_smoking') }}</label>
+              <select x-model="partnerForm.smoking" class="input">
+                <option value="">{{ __('ui.pe_opt_select') }}</option>
+                <option value="yes">{{ __('ui.pe_opt_yes') }}</option>
+                <option value="no">{{ __('ui.pe_opt_no') }}</option>
+              </select>
+            </div>
+            <div>
+              <label class="label">{{ __('ui.pe_label_partner_body_type') }}</label>
+              <select x-model="partnerForm.body_type" class="input">
+                <option value="">{{ __('ui.pe_opt_select') }}</option>
+                <option value="slim">{{ __('ui.pe_opt_slim') }}</option>
+                <option value="athletic">{{ __('ui.pe_opt_athletic') }}</option>
+                <option value="average">{{ __('ui.pe_opt_average') }}</option>
+                <option value="heavy">{{ __('ui.pe_opt_heavy') }}</option>
+              </select>
+            </div>
+            <div>
+              <label class="label">{{ __('ui.pe_label_partner_physical_status') }}</label>
+              <select x-model="partnerForm.physical_status" class="input">
+                <option value="">{{ __('ui.pe_opt_select') }}</option>
+                <option value="normal">{{ __('ui.pe_opt_normal') }}</option>
+                <option value="differently_abled">{{ __('ui.pe_opt_differently_abled') }}</option>
+              </select>
+            </div>
+          </div>
+          <div>
+            <label class="label">{{ __('ui.pe_label_expectations') }}</label>
+            <textarea x-model="partnerForm.expectations" rows="4" class="input" placeholder="{{ __('ui.pe_ph_expectations') }}"></textarea>
+          </div>
+          <div x-show="partnerSuccess" x-cloak class="p-3 bg-green-50 border border-green-200 rounded-lg text-green-700 text-sm" x-text="partnerSuccess"></div>
+          <div x-show="partnerError" x-cloak class="p-3 bg-red-50 border border-red-200 rounded-lg text-red-600 text-sm" x-text="partnerError"></div>
+          <div class="flex justify-end">
+            <button type="button" @click="savePartner" :disabled="partnerLoading"
+                    class="bg-red-800 hover:bg-red-900 text-white px-8 py-3 rounded-lg font-semibold transition disabled:opacity-50">
+              <span x-show="!partnerLoading">{{ __('ui.pe_save_changes') }}</span>
+              <span x-show="partnerLoading">{{ __('ui.pe_saving') }}</span>
+            </button>
           </div>
         </div>
 
         {{-- Security --}}
         <div x-show="tab === 'security'" class="space-y-4">
-          <p class="text-sm text-gray-500">Change your login password below.</p>
+          <p class="text-sm text-gray-500">{{ __('ui.pe_security_desc') }}</p>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4" x-data="{ showCurrent: false, showNew: false, showConfirm: false }">
             <div>
-              <label class="label">Current Password</label>
+              <label class="label">{{ __('ui.pe_label_current_password') }}</label>
               <div class="relative">
-                <input :type="showCurrent ? 'text' : 'password'" x-model="pwForm.current_password" class="input pr-10" placeholder="Enter current password" autocomplete="new-password">
+                <input :type="showCurrent ? 'text' : 'password'" x-model="pwForm.current_password" class="input pr-10" placeholder="{{ __('ui.pe_ph_current_password') }}" autocomplete="new-password">
                 <button type="button" @click="showCurrent = !showCurrent" class="absolute right-3 top-2.5 text-gray-400 hover:text-gray-600">
                   <i :class="showCurrent ? 'fas fa-eye-slash' : 'fas fa-eye'" class="text-sm"></i>
                 </button>
               </div>
             </div>
             <div>
-              <label class="label">New Password</label>
+              <label class="label">{{ __('ui.pe_label_new_password') }}</label>
               <div class="relative">
-                <input :type="showNew ? 'text' : 'password'" x-model="pwForm.new_password" class="input pr-10" placeholder="Enter new password">
+                <input :type="showNew ? 'text' : 'password'" x-model="pwForm.new_password" class="input pr-10" placeholder="{{ __('ui.pe_ph_new_password') }}">
                 <button type="button" @click="showNew = !showNew" class="absolute right-3 top-2.5 text-gray-400 hover:text-gray-600">
                   <i :class="showNew ? 'fas fa-eye-slash' : 'fas fa-eye'" class="text-sm"></i>
                 </button>
               </div>
             </div>
             <div>
-              <label class="label">Confirm New Password</label>
+              <label class="label">{{ __('ui.pe_label_confirm_new_password') }}</label>
               <div class="relative">
-                <input :type="showConfirm ? 'text' : 'password'" x-model="pwForm.new_password_confirmation" class="input pr-10" placeholder="Confirm new password">
+                <input :type="showConfirm ? 'text' : 'password'" x-model="pwForm.new_password_confirmation" class="input pr-10" placeholder="{{ __('ui.pe_ph_confirm_new_password') }}">
                 <button type="button" @click="showConfirm = !showConfirm" class="absolute right-3 top-2.5 text-gray-400 hover:text-gray-600">
                   <i :class="showConfirm ? 'fas fa-eye-slash' : 'fas fa-eye'" class="text-sm"></i>
                 </button>
@@ -443,17 +707,17 @@
           <div class="flex justify-end">
             <button type="button" @click="changePassword" :disabled="pwLoading"
                     class="bg-red-800 hover:bg-red-900 text-white px-8 py-3 rounded-lg font-semibold transition disabled:opacity-50">
-              <span x-show="!pwLoading">Change Password</span>
-              <span x-show="pwLoading">Saving...</span>
+              <span x-show="!pwLoading">{{ __('ui.pe_change_password') }}</span>
+              <span x-show="pwLoading">{{ __('ui.pe_saving') }}</span>
             </button>
           </div>
         </div>
 
-        <div x-show="tab !== 'security'" class="mt-6 flex justify-end">
-          <button type="submit" :disabled="loading"
+        <div x-show="tab !== 'security' && tab !== 'family' && tab !== 'partner'" class="mt-6 flex justify-end">
+          <button type="submit" :disabled="loading @if($isLocked) || ['career','contact'].includes(tab) @endif"
                   class="bg-red-800 hover:bg-red-900 text-white px-8 py-3 rounded-lg font-semibold transition disabled:opacity-50">
-            <span x-show="!loading">Save Changes</span>
-            <span x-show="loading">Saving...</span>
+            <span x-show="!loading">{{ __('ui.pe_save_changes') }}</span>
+            <span x-show="loading">{{ __('ui.pe_saving') }}</span>
           </button>
         </div>
 
@@ -469,6 +733,21 @@
 </style>
 
 <script>
+const peI18n = {
+  profileIdNotFound: @json(__('ui.pe_js_profile_id_not_found')),
+  chartsSaved:       @json(__('ui.pe_js_charts_saved')),
+  chartsSaveFailed:  @json(__('ui.pe_js_charts_save_failed')),
+  selectPhotoFirst:  @json(__('ui.pe_js_select_photo_first')),
+  uploading:         @json(__('ui.pe_js_uploading')),
+  photoUploaded:     @json(__('ui.pe_js_photo_uploaded')),
+  uploadFailed:      @json(__('ui.pe_js_upload_failed')),
+  uploadError:       @json(__('ui.pe_js_upload_error')),
+  somethingWrong:    @json(__('ui.pe_js_something_wrong')),
+  updateFailed:      @json(__('ui.pe_js_update_failed')),
+  updateSuccess:     @json(__('ui.pe_js_update_success')),
+  saving:            @json(__('ui.pe_saving')),
+};
+
 function profileEdit() {
   return {
     tab: 'basic',
@@ -556,16 +835,173 @@ function profileEdit() {
             const saveBtn = document.querySelector('[onclick="saveHoroscopeBoxes(this)"]');
             if (saveBtn) await saveHoroscopeBoxes(saveBtn);
           }
-          this.success = data.message ?? 'Profile updated successfully!';
+          this.success = data.message ?? peI18n.updateSuccess;
           window.scrollTo(0, 0);
           setTimeout(() => { window.location.href = '/profile/me'; }, 1000);
         } else {
-          this.error = data.message ?? 'Failed to update profile.';
+          this.error = data.message ?? peI18n.updateFailed;
         }
       } catch (e) {
-        this.error = 'Something went wrong. Please try again.';
+        this.error = peI18n.somethingWrong;
       }
       this.loading = false;
+    },
+
+    familyLoading: false,
+    familySuccess: '',
+    familyError: '',
+    familyForm: {
+      surname: '', father_name: '', father_occupation: '',
+      mother_name: '', mother_occupation: '', father_vangusam: '', mother_vangusam: '',
+      brothers_count: '', brothers_married: '', sisters_count: '', sisters_married: '',
+      family_status: '', family_type: '', family_values: '',
+      soveran_details: '', about_family: '', property_description: '',
+    },
+
+    async init() {
+      await this.loadFamilyData();
+    },
+
+    async loadFamilyData() {
+      try {
+        const profileId = {{ $profile['id'] ?? 'null' }};
+        if (!profileId) return;
+        const res = await fetch('/profile/family/load?profile_id=' + profileId, {
+          headers: { 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content }
+        });
+        const data = await res.json();
+        if (data.success && data.data) {
+          const d = data.data;
+          this.familyForm.surname = d.surname || '';
+          this.familyForm.soveran_name = d.soveran_name || '';
+          this.familyForm.father_name = d.father_name || '';
+          this.familyForm.father_occupation = d.father_occupation || '';
+          this.familyForm.mother_name = d.mother_name || '';
+          this.familyForm.mother_occupation = d.mother_occupation || '';
+          this.familyForm.father_vangusam = d.father_vangusam || '';
+          this.familyForm.mother_vangusam = d.mother_vangusam || '';
+          this.familyForm.brothers_count = d.brothers_count ?? '';
+          this.familyForm.brothers_married = d.brothers_married ?? '';
+          this.familyForm.sisters_count = d.sisters_count ?? '';
+          this.familyForm.sisters_married = d.sisters_married ?? '';
+          this.familyForm.family_status = d.family_status || '';
+          this.familyForm.family_type = d.family_type || '';
+          this.familyForm.family_values = d.family_values || '';
+          this.familyForm.soveran_details = d.soveran_details ?? '';
+          this.familyForm.about_family = d.about_family || '';
+          this.familyForm.property_description = d.property_description || '';
+        }
+      } catch(e) {}
+    },
+
+    async saveFamily() {
+      this.familySuccess = '';
+      this.familyError = '';
+      this.familyLoading = true;
+      try {
+        const res = await fetch('/profile/family', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+          },
+          body: JSON.stringify(this.familyForm),
+        });
+        const data = await res.json();
+        if (data.success) {
+          this.familySuccess = data.message;
+          window.scrollTo(0, 0);
+          setTimeout(() => { window.location.href = '/profile/me'; }, 1000);
+        } else {
+          this.familyError = data.message;
+        }
+      } catch(e) {
+        this.familyError = 'Something went wrong.';
+      }
+      this.familyLoading = false;
+    },
+
+    partnerLoading: false,
+    partnerSuccess: '',
+    partnerError: '',
+    partnerForm: {
+      preferred_age_min:        '{{ $partner_preference["preferred_age_min"] ?? "" }}',
+      preferred_age_max:        '{{ $partner_preference["preferred_age_max"] ?? "" }}',
+      preferred_height_min:     '{{ $partner_preference["preferred_height_min"] ?? "" }}',
+      preferred_height_max:     '{{ $partner_preference["preferred_height_max"] ?? "" }}',
+      marital_status:           '{{ $partner_preference["marital_status"] ?? "" }}',
+      children_acceptables:     '{{ $partner_preference["children_acceptables"] ?? "" }}',
+      religion:                 '{{ $partner_preference["religion"] ?? "" }}',
+      caste:                    '{{ $partner_preference["caste"] ?? "" }}',
+      education:                '{{ $partner_preference["education"] ?? "" }}',
+      occupation:               '{{ $partner_preference["occupation"] ?? "" }}',
+      profession:               '{{ $partner_preference["profession"] ?? "" }}',
+      location:                 '{{ $partner_preference["location"] ?? "" }}',
+      family_type:              '{{ $partner_preference["family_type"] ?? "" }}',
+      horoscope_required:       '{{ $partner_preference["horoscope_required"] ?? "" }}',
+      horoscope_natchathiram:   '{{ $partner_preference["horoscope_natchathiram"] ?? "" }}',
+      horoscope_rasi:           '{{ $partner_preference["horoscope_rasi"] ?? "" }}',
+      dosham:                   '{{ $partner_preference["dosham"] ?? "" }}',
+      type_of_dosham:           '{{ $partner_preference["type_of_dosham"] ?? "" }}',
+      drinking:                 '{{ $partner_preference["drinking"] ?? "" }}',
+      smoking:                  '{{ $partner_preference["smoking"] ?? "" }}',
+      body_type:                '{{ $partner_preference["body_type"] ?? "" }}',
+      physical_status:          '{{ $partner_preference["physical_status"] ?? "" }}',
+      expectations:             @json($partner_preference["expectations"] ?? ""),
+    },
+
+    async loadPartnerData() {
+      try {
+        const profileId = {{ $profile['id'] ?? 'null' }};
+        if (!profileId) return;
+        const res = await fetch('/profile/partner/load?profile_id=' + profileId, {
+          headers: { 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content }
+        });
+        const data = await res.json();
+        if (data.success && data.data) {
+          const d = data.data;
+          Object.keys(this.partnerForm).forEach(k => {
+            if (d[k] !== undefined && d[k] !== null) this.partnerForm[k] = d[k];
+          });
+        }
+      } catch(e) {}
+    },
+
+    async savePartner() {
+      this.partnerSuccess = '';
+      this.partnerError = '';
+      this.partnerLoading = true;
+      if (this.partnerForm.preferred_age_min && this.partnerForm.preferred_age_max && parseInt(this.partnerForm.preferred_age_min) > parseInt(this.partnerForm.preferred_age_max)) {
+        this.partnerError = 'Minimum age cannot be greater than maximum age.';
+        this.partnerLoading = false;
+        return;
+      }
+      if (this.partnerForm.preferred_height_min && this.partnerForm.preferred_height_max && parseInt(this.partnerForm.preferred_height_min) > parseInt(this.partnerForm.preferred_height_max)) {
+        this.partnerError = 'Minimum height cannot be greater than maximum height.';
+        this.partnerLoading = false;
+        return;
+      }
+      try {
+        const res = await fetch('/profile/partner', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+          },
+          body: JSON.stringify(this.partnerForm),
+        });
+        const data = await res.json();
+        if (data.success) {
+          this.partnerSuccess = data.message;
+          window.scrollTo(0, 0);
+          setTimeout(() => { window.location.href = '/profile/me'; }, 1000);
+        } else {
+          this.partnerError = data.message;
+        }
+      } catch(e) {
+        this.partnerError = 'Something went wrong.';
+      }
+      this.partnerLoading = false;
     },
 
     async changePassword() {
@@ -589,7 +1025,7 @@ function profileEdit() {
           this.pwError = data.message;
         }
       } catch (e) {
-        this.pwError = 'Something went wrong. Please try again.';
+        this.pwError = peI18n.somethingWrong;
       }
       this.pwLoading = false;
     }
@@ -598,13 +1034,13 @@ function profileEdit() {
 
 async function saveHoroscopeBoxes(btn) {
   const msg = document.getElementById('hbox-msg');
-  msg.textContent = 'Saving...';
+  msg.textContent = peI18n.saving;
   msg.className = 'text-sm text-gray-500';
   btn.disabled = true;
   const csrf = document.querySelector('meta[name="csrf-token"]').content;
   const profileId = {{ $profile['id'] ?? 'null' }};
   if (!profileId) {
-    msg.textContent = 'Profile ID not found.';
+    msg.textContent = peI18n.profileIdNotFound;
     msg.className = 'text-sm text-red-600';
     btn.disabled = false;
     return;
@@ -625,10 +1061,10 @@ async function saveHoroscopeBoxes(btn) {
   const data = await res.json();
   btn.disabled = false;
   if (data.success) {
-    msg.textContent = 'Charts saved!';
+    msg.textContent = peI18n.chartsSaved;
     msg.className = 'text-sm text-green-600';
   } else {
-    msg.textContent = 'Failed to save charts. Please try again.';
+    msg.textContent = peI18n.chartsSaveFailed;
     msg.className = 'text-sm text-red-600';
   }
 }
@@ -645,11 +1081,11 @@ async function uploadPhoto() {
   const input = document.getElementById('photoInput');
   const status = document.getElementById('photoStatus');
   if (!input.files || !input.files[0]) {
-    status.textContent = 'Please select a photo first.';
+    status.textContent = peI18n.selectPhotoFirst;
     status.className = 'text-xs mt-1 text-red-500';
     return;
   }
-  status.textContent = 'Uploading...';
+  status.textContent = peI18n.uploading;
   status.className = 'text-xs mt-1 text-gray-500';
   const formData = new FormData();
   formData.append('profile_id', '{{ $profile["id"] ?? "" }}');
@@ -663,14 +1099,14 @@ async function uploadPhoto() {
     });
     const data = await res.json();
     if (data.success) {
-      status.textContent = 'Photo uploaded successfully!';
+      status.textContent = peI18n.photoUploaded;
       status.className = 'text-xs mt-1 text-green-600';
     } else {
-      status.textContent = data.message ?? 'Upload failed.';
+      status.textContent = data.message ?? peI18n.uploadFailed;
       status.className = 'text-xs mt-1 text-red-500';
     }
   } catch (e) {
-    status.textContent = 'Upload error. Please try again.';
+    status.textContent = peI18n.uploadError;
     status.className = 'text-xs mt-1 text-red-500';
   }
 }

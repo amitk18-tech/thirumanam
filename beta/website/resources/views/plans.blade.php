@@ -1,14 +1,14 @@
 @extends('layouts.app')
 
-@section('title', 'Membership Plans — Thirumanam')
+@section('title', __('ui.plans_title'))
 
 @section('content')
 <div class="min-h-screen bg-rose-50 py-12 px-4">
     <div class="max-w-5xl mx-auto">
 
         <div class="text-center mb-10">
-            <h1 class="text-3xl font-bold text-primary mb-2">Choose Your Plan</h1>
-            <p class="text-gray-500">Find your perfect match with the right membership</p>
+            <h1 class="text-3xl font-bold text-primary mb-2">{{ __('ui.plans_title') }}</h1>
+            <p class="text-gray-500">{{ __('ui.plans_subtitle') }}</p>
         </div>
 
         @if(session('error'))
@@ -32,7 +32,7 @@
 
                 <div class="text-4xl text-center mb-3">{{ $icon }}</div>
                 <h2 class="text-xl font-bold text-center text-primary mb-1">{{ $plan['name'] }}</h2>
-                <p class="text-center text-gray-400 text-sm mb-4">6 months validity</p>
+                <p class="text-center text-gray-400 text-sm mb-4">{{ __('ui.plans_validity') }}</p>
 
                 <div class="text-center mb-6">
                     <span class="text-4xl font-extrabold text-primary">₹{{ number_format($plan['price']) }}</span>
@@ -41,39 +41,43 @@
                 <ul class="space-y-2 mb-6 flex-1">
                     <li class="flex items-center gap-2 text-sm text-gray-600">
                         <span class="text-green-500">✓</span>
-                        View up to <strong>{{ $plan['profiles_view_allowed'] }}</strong> profiles
+                        {{ __('ui.plans_view_profiles') }} <strong>{{ $plan['profiles_view_allowed'] }}</strong> {{ __('ui.plans_profiles') }}
                     </li>
                     <li class="flex items-center gap-2 text-sm text-gray-600">
                         <span class="text-green-500">✓</span>
-                        Send <strong>{{ $plan['sent_interest_allowed'] }}</strong> interests
+                        {{ __('ui.plans_send_interests') }} <strong>{{ $plan['sent_interest_allowed'] }}</strong> {{ __('ui.plans_interests') }}
                     </li>
                     <li class="flex items-center gap-2 text-sm text-gray-600">
                         <span class="text-green-500">✓</span>
-                        Send <strong>{{ $plan['messages_sent_allowed'] }}</strong> messages
+                        {{ __('ui.plans_send_interests') }} <strong>{{ $plan['messages_sent_allowed'] }}</strong> {{ __('ui.plans_messages') }}
                     </li>
                     <li class="flex items-center gap-2 text-sm text-gray-600">
                         <span class="text-green-500">✓</span>
-                        6 months validity
+                        {{ __('ui.plans_validity') }}
+                    <li class="flex items-center gap-2 text-sm text-gray-600">
+                        <span class="text-green-500">✓</span>
+                        {{ $plan['soveran_show'] }}
+                    </li>
                     </li>
                 </ul>
 
                 @if($isCurrent)
                 <button disabled class="w-full text-center bg-green-100 text-green-700 font-semibold py-3 rounded-xl cursor-not-allowed">
-                    ✓ Current Plan
+                    {{ __('ui.plans_current') }}
                 </button>
                 @elseif($isDowngrade)
                 <button disabled class="w-full text-center bg-gray-100 text-gray-400 font-semibold py-3 rounded-xl cursor-not-allowed">
-                    Not Available
+                    {{ __('ui.plans_not_available') }}
                 </button>
                 @elseif($isLoggedIn)
                 <a href="{{ url('/payment?membership_id=' . $plan['id']) }}"
                    class="block text-center bg-primary hover:bg-red-900 text-white font-semibold py-3 rounded-xl transition">
-                    Get {{ $plan['name'] }}
+                    {{ __('ui.plans_get') }} {{ $plan['name'] }}
                 </a>
                 @else
                 <a href="{{ route('login') }}"
                    class="block text-center bg-primary hover:bg-red-900 text-white font-semibold py-3 rounded-xl transition">
-                    Login to Upgrade
+                    {{ __('ui.plans_login_upgrade') }}
                 </a>
                 @endif
             </div>
@@ -81,7 +85,7 @@
         </div>
 
         <p class="text-center text-gray-400 text-xs mt-8">
-            All plans are valid for 6 months from activation. Payments are processed securely via Razorpay.
+            {{ __('ui.plans_footer') }}
         </p>
     </div>
 </div>
