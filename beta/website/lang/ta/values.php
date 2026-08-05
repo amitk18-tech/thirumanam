@@ -48,4 +48,48 @@ return [
         'wednesday' => 'புதன்', 'thursday' => 'வியாழன்', 'friday' => 'வெள்ளி',
         'saturday' => 'சனி',
     ],
+    'gender' => [
+        'male' => 'ஆண்', 'female' => 'பெண்', 'other' => 'மற்றவை',
+    ],
+    'marital_status' => [
+        'never_married' => 'திருமணம் ஆகாதவர்', 'single' => 'தனியர்',
+        'divorced' => 'விவாகரத்து', 'widowed' => 'விதவை / விதுரர்', 'separated' => 'பிரிந்தவர்',
+    ],
+    'family_type' => [
+        'joint' => 'கூட்டுக் குடும்பம்', 'nuclear' => 'தனிக் குடும்பம்',
+    ],
+    'family_status' => [
+        'middle class' => 'நடுத்தர வர்க்கம்', 'upper' => 'உயர் வர்க்கம்', 'rich' => 'செல்வந்தர்',
+    ],
+    'family_values' => [
+        'traditional' => 'பாரம்பரியம்', 'modern' => 'நவீனம்',
+    ],
+    'earnings' => [
+        'month' => 'மாதம்', 'monthly' => 'மாதம்', 'year' => 'வருடம்',
+    ],
+    'membership_type' => [
+        'default' => 'இலவசம்', 'essential' => 'எசன்சியல்', 'classic' => 'கிளாசிக்',
+        'prime' => 'பிரைம்', 'yellow' => 'யெல்லோ', 'blue' => 'ப்ளூ', 'green' => 'கிரீன்',
+    ],
+    'children_acceptables' => [
+        'yes' => 'ஆம்', 'no' => 'இல்லை', 'acceptable' => 'ஏற்கலாம்',
+    ],
+    'drinking' => [
+        'yes' => 'ஆம்', 'no' => 'இல்லை', 'occasionally' => 'எப்போதாவது',
+    ],
+    'smoking' => [
+        'yes' => 'ஆம்', 'no' => 'இல்லை', 'occasionally' => 'எப்போதாவது',
+    ],
+    'planet' => [
+        'SUN' => 'சூரியன்', 'SUN(V)' => 'சூரியன் (வ)',
+        'MOON' => 'சந்திரன்', 'MOON(V)' => 'சந்திரன் (வ)',
+        'MARS' => 'செவ்வாய்', 'MARS(V)' => 'செவ்வாய் (வ)',
+        'MERCURY' => 'புதன்', 'MERCURY(V)' => 'புதன் (வ)',
+        'JUPITER' => 'குரு', 'JUPITER(V)' => 'குரு (வ)',
+        'VENUS' => 'சுக்கிரன்', 'VENUS(V)' => 'சுக்கிரன் (வ)',
+        'SATURN' => 'சனி', 'SATURN(V)' => 'சனி (வ)',
+        'RAGU' => 'ராகு', 'RAGU(V)' => 'ராகு (வ)',
+        'KETHU' => 'கேது', 'KETHU(V)' => 'கேது (வ)',
+        'LAKKNAM' => 'லக்கினம்', 'MANTHU' => 'மந்து',
+    ],
 ];

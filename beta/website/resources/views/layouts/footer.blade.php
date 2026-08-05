@@ -4,7 +4,7 @@
 
             <!-- Brand -->
             <div>
-                <h3 class="text-lg font-bold text-white mb-3">Sri Sowdeswari Amman Narpani Mandram</h3>
+                <h3 class="text-lg font-bold text-white mb-3">{{ __('ui.contact_org_name') }}</h3>
                 <p class="text-sm text-gray-400">{{ __('ui.footer_tagline') }}</p>
             </div>
 
@@ -34,7 +34,7 @@
         </div>
 
         <div class="border-t border-gray-700 pt-6 text-center text-sm text-gray-500">
-            &copy; {{ date('Y') }} Sri Sowdeswari Amman Narpani Mandram. {{ __('ui.all_rights_reserved') }}
+            &copy; {{ date('Y') }} {{ __('ui.contact_org_name') }}. {{ __('ui.all_rights_reserved') }}
         </div>
     </div>
 </footer>

@@ -734,4 +734,11 @@ return [
     'pe_lock_message' => 'Cannot edit these fields after 7 days. Contact Admin for any changes.',
 
     'back' => 'Back',
+    'contact_org_name' => 'Sri Sowdeswari Amman Narpani Mandram',
+    'contact_org_trust' => '(Managed by Alagirisamy Vijayalakshmi Charitable Trust)',
+    'contact_hall_name' => 'Sri Vijayalakshmi Mahal Thirumana Mandapam',
+    'contact_address_line1' => '32/1 Chinnusamy Nagar Main Road,',
+    'contact_address_line2' => '(Behind Dharan Hospital),',
+    'contact_address_line3' => 'Seelanaickenpatty,',
+    'contact_address_line4' => 'Salem – 636 201.',
 ];

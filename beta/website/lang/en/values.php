@@ -48,4 +48,48 @@ return [
         'wednesday' => 'Wednesday', 'thursday' => 'Thursday', 'friday' => 'Friday',
         'saturday' => 'Saturday',
     ],
+    'gender' => [
+        'male' => 'Male', 'female' => 'Female', 'other' => 'Other',
+    ],
+    'marital_status' => [
+        'never_married' => 'Never Married', 'single' => 'Single',
+        'divorced' => 'Divorced', 'widowed' => 'Widowed', 'separated' => 'Separated',
+    ],
+    'family_type' => [
+        'joint' => 'Joint Family', 'nuclear' => 'Nuclear Family',
+    ],
+    'family_status' => [
+        'middle class' => 'Middle Class', 'upper' => 'Upper Class', 'rich' => 'Rich',
+    ],
+    'family_values' => [
+        'traditional' => 'Traditional', 'modern' => 'Modern',
+    ],
+    'earnings' => [
+        'month' => 'Per Month', 'monthly' => 'Per Month', 'year' => 'Per Year',
+    ],
+    'membership_type' => [
+        'default' => 'Free', 'essential' => 'Essential', 'classic' => 'Classic',
+        'prime' => 'Prime', 'yellow' => 'Yellow', 'blue' => 'Blue', 'green' => 'Green',
+    ],
+    'children_acceptables' => [
+        'yes' => 'Yes', 'no' => 'No', 'acceptable' => 'Acceptable',
+    ],
+    'drinking' => [
+        'yes' => 'Yes', 'no' => 'No', 'occasionally' => 'Occasionally',
+    ],
+    'smoking' => [
+        'yes' => 'Yes', 'no' => 'No', 'occasionally' => 'Occasionally',
+    ],
+    'planet' => [
+        'SUN' => 'Sun', 'SUN(V)' => 'Sun (V)',
+        'MOON' => 'Moon', 'MOON(V)' => 'Moon (V)',
+        'MARS' => 'Mars', 'MARS(V)' => 'Mars (V)',
+        'MERCURY' => 'Mercury', 'MERCURY(V)' => 'Mercury (V)',
+        'JUPITER' => 'Jupiter', 'JUPITER(V)' => 'Jupiter (V)',
+        'VENUS' => 'Venus', 'VENUS(V)' => 'Venus (V)',
+        'SATURN' => 'Saturn', 'SATURN(V)' => 'Saturn (V)',
+        'RAGU' => 'Ragu', 'RAGU(V)' => 'Ragu (V)',
+        'KETHU' => 'Kethu', 'KETHU(V)' => 'Kethu (V)',
+        'LAKKNAM' => 'Lakknam', 'MANTHU' => 'Manthu',
+    ],
 ];

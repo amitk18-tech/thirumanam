@@ -32,7 +32,7 @@
                 <p class="text-gray-500 text-sm mt-0.5">
                     {{ $member['member_no'] ?? '' }}
                     @if(!empty($member['basic']['age'])) &bull; {{ $member['basic']['age'] }} {{ __('ui.yrs') }} @endif
-                    @if(!empty($member['basic']['gender'])) &bull; {{ ucfirst($member['basic']['gender']) }} @endif
+                    @if(!empty($member['basic']['gender'])) &bull; {{ tv('gender', $member['basic']['gender']) }} @endif
                 </p>
             </div>
 
@@ -194,8 +194,8 @@
                     @foreach([
                         __('ui.ms_label_age')           => $member['basic']['age'] ?? null,
                         __('ui.ms_label_dob')            => $member['basic']['dob'] ?? null,
-                        __('ui.ms_label_gender')         => ucfirst($member['basic']['gender'] ?? ''),
-                        __('ui.ms_label_marital_status') => ucwords(str_replace('_', ' ', $member['basic']['marital_status'] ?? '')),
+                        __('ui.ms_label_gender')         => tv('gender', $member['basic']['gender'] ?? ''),
+                        __('ui.ms_label_marital_status') => tv('marital_status', $member['basic']['marital_status'] ?? ''),
                         __('ui.ms_label_religion')       => $member['basic']['religion'] ?? null,
                         __('ui.ms_label_caste')          => $member['basic']['caste'] ?? null,
                         __('ui.ms_label_subcaste')       => $member['basic']['subcaste'] ?? null,
@@ -258,7 +258,7 @@
                     $bn   = $box['box_number'] ?? 0;
                     $val  = $box['value'] ?? '';
                     if (!isset($grid[$type][$bn])) $grid[$type][$bn] = [];
-                    if ($val) $grid[$type][$bn][] = $val;
+                    if ($val) $grid[$type][$bn][] = tv('planet', $val);
                 }
                 $getBox = function($grid, $type, $bn) {
                     $items = $grid[$type][$bn] ?? [];
@@ -373,7 +373,7 @@
                         __('ui.ms_label_work_location')  => $member['career']['work_location'] ?? null,
                         __('ui.ms_label_income')         => ucfirst($member['career']['income'] ?? ''),
                         __('ui.ms_label_income_amount')  => !empty($member['career']['income_amount']) ? '₹' . number_format($member['career']['income_amount']) : null,
-                        __('ui.ms_label_earnings_type')  => ucfirst($member['career']['earnings'] ?? ''),
+                        __('ui.ms_label_earnings_type')  => tv('earnings', $member['career']['earnings'] ?? ''),
                         __('ui.ms_label_career_profile') => $member['career']['career_profile'] ?? null,
                     ] as $label => $value)
                     <div class="flex py-2 border-b border-gray-50 last:border-0">
@@ -420,9 +420,9 @@
                             __('ui.ms_label_brothers_married')  => isset($fam['brothers_married']) ? $fam['brothers_married'] : null,
                             __('ui.ms_label_sisters_count')     => isset($fam['sisters_count']) ? $fam['sisters_count'] : null,
                             __('ui.ms_label_sisters_married')   => isset($fam['sisters_married']) ? $fam['sisters_married'] : null,
-                            __('ui.ms_label_family_type')       => ucfirst($fam['family_type'] ?? ''),
-                            __('ui.ms_label_family_status')     => ucfirst($fam['family_status'] ?? ''),
-                            __('ui.ms_label_family_values')     => ucfirst($fam['family_values'] ?? ''),
+                            __('ui.ms_label_family_type')       => tv('family_type', $fam['family_type'] ?? ''),
+                            __('ui.ms_label_family_status')     => tv('family_status', $fam['family_status'] ?? ''),
+                            __('ui.ms_label_family_values')     => tv('family_values', $fam['family_values'] ?? ''),
                             __('ui.ms_label_soveran_details')   => $fam['soveran_details'] ?? null,
                             __('ui.ms_label_property')          => $fam['property_description'] ?? null,
                             __('ui.ms_label_about_family')      => $fam['about_family'] ?? null,
@@ -505,24 +505,24 @@
                     @foreach([
                         __('ui.ms_label_preferred_age')           => $ageRange,
                         __('ui.ms_label_preferred_height')        => $heightRange,
-                        __('ui.ms_label_marital_status')          => ucwords(str_replace('_', ' ', $pp['marital_status'] ?? '')),
-                        __('ui.ms_label_children_acceptables')    => ucfirst($pp['children_acceptables'] ?? ''),
+                        __('ui.ms_label_marital_status')          => tv('marital_status', $pp['marital_status'] ?? ''),
+                        __('ui.ms_label_children_acceptables')    => tv('children_acceptables', $pp['children_acceptables'] ?? ''),
                         __('ui.ms_label_religion')                => $pp['religion'] ?? null,
                         __('ui.ms_label_caste')                   => $pp['caste'] ?? null,
                         __('ui.ms_label_education')               => ucwords(str_replace(['_', '/'], [' ', ' / '], $pp['education'] ?? '')),
                         __('ui.ms_label_occupation')              => ucwords(str_replace('_', ' ', $pp['occupation'] ?? '')),
                         __('ui.ms_label_profession')              => ucwords(str_replace('_', ' ', $pp['profession'] ?? '')),
                         __('ui.ms_label_location')                => $pp['location'] ?? null,
-                        __('ui.ms_label_family_type')             => ucfirst($pp['family_type'] ?? ''),
+                        __('ui.ms_label_family_type')             => tv('family_type', $pp['family_type'] ?? ''),
                         __('ui.ms_label_body_type')               => ucfirst($pp['body_type'] ?? ''),
                         __('ui.ms_label_physical_status')         => ucfirst(str_replace('_', ' ', $pp['physical_status'] ?? '')),
                         __('ui.ms_label_horoscope_required')      => isset($pp['horoscope_required']) && $pp['horoscope_required'] !== '' ? ($pp['horoscope_required'] ? __('ui.pe_opt_yes') : __('ui.pe_opt_no')) : null,
                         __('ui.ms_label_horoscope_natchathiram')  => $pp['horoscope_natchathiram'] ?? null,
                         __('ui.ms_label_horoscope_rasi')          => $pp['horoscope_rasi'] ?? null,
-                        __('ui.ms_label_dosham')                  => ucfirst($pp['dosham'] ?? ''),
+                        __('ui.ms_label_dosham')                  => tv('dosham', $pp['dosham'] ?? ''),
                         __('ui.ms_label_type_of_dosham')          => $pp['type_of_dosham'] ?? null,
-                        __('ui.ms_label_drinking')                => ucfirst($pp['drinking'] ?? ''),
-                        __('ui.ms_label_smoking')                 => ucfirst($pp['smoking'] ?? ''),
+                        __('ui.ms_label_drinking')                => tv('drinking', $pp['drinking'] ?? ''),
+                        __('ui.ms_label_smoking')                => tv('smoking', $pp['smoking'] ?? ''),
                         __('ui.ms_label_expectations')            => $pp['expectations'] ?? null,
                     ] as $label => $value)
                     <div class="flex py-2 border-b border-gray-50 last:border-0">

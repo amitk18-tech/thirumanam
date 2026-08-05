@@ -78,7 +78,7 @@
             {{-- Logo --}}
             <a href="{{ url('/') }}" class="flex items-center space-x-2">
                 <img src="{{ asset('logo-ssam.png') }}" alt="Logo" class="h-9 w-9 object-contain rounded-full">
-                <span class="text-sm font-bold text-primary leading-tight">Sri Sowdeswari Amman<br>Narpani Mandram</span>
+                <span class="text-sm font-bold text-primary leading-tight">{{ __('ui.contact_org_name') }}</span>
             </a>
 
             {{-- Desktop Menu --}}

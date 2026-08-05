@@ -12,7 +12,7 @@
             $photoUrl = $photo
                 ? (str_starts_with($photo, 'http') ? $photo : 'https://api.thirumanam.info/' . $photo)
                 : null;
-            $membershipType = $member['profile']['membership_name'] ?? ucfirst($member['profile']['membership_type'] ?? 'default');
+            $membershipType = tv('membership_type', $member['profile']['membership_type'] ?? 'default');
         @endphp
 
         {{-- Profile Completion --}}
